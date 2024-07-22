@@ -5,24 +5,21 @@
 
 #include "PlayerType.h"
 
-// class Manager {
-//    public:
-//     static void setupGame();
-//     static void startGame(PlayerType::Type White, PlayerType::Type Black);
-//     static void closeGame();
-// };
-
 class Manager {
-    Manager() {}
+    Manager();
 
    public:
     Manager(Manager const&) = delete;
     Manager& operator=(Manager const&) = delete;
 
     static std::shared_ptr<Manager> instance() {
-        static std::shared_ptr<Manager> s{new Manager};
-        return s;
+        static std::shared_ptr<Manager> m{new Manager};
+        return m;
     }
+
+    static void setupGame();
+    static void startGame(PlayerType::Type white, PlayerType::Type black);
+    static void closeGame();
 };
 
 #endif
