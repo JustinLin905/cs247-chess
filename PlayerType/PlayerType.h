@@ -11,19 +11,19 @@ struct PlayerType {
         COMPUTER4
     };
 
-    static Tye HashPlayerType(const std::string& type) {
+    static Type HashPlayerType(const std::string& type) {
         if (type == "human") {
-            return Tye::HUMAN;
+            return Type::HUMAN;
         } else if (type == "computer1") {
-            return Tye::COMPUTER1;
+            return Type::COMPUTER1;
         } else if (type == "computer2") {
-            return Tye::COMPUTER2;
+            return Type::COMPUTER2;
         } else if (type == "computer3") {
-            return Tye::COMPUTER3;
+            return Type::COMPUTER3;
         } else if (type == "computer4") {
-            return Tye::COMPUTER4;
+            return Type::COMPUTER4;
         } else {
-            return Tye::HUMAN;
+            return Type::HUMAN;
         }
     }
 };
