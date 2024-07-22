@@ -3,8 +3,8 @@
 #include <iostream>
 #include <memory>
 
-#include "ChessBoard.h"
-#include "observer.h"
+#include "../ChessBoard/ChessBoard.h"
+#include "Observer.h"
 
 class TextObserver : public Observer {
   std::shared_ptr<ChessBoard> _chess_board;

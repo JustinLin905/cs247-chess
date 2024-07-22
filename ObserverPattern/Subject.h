@@ -2,8 +2,7 @@
 #define SUBJECT_H
 
 #include <vector>
-
-class Observer;
+#include "Observer.h"
 
 class Subject {
   std::vector<std::unique_ptr<Observer>> observers;
