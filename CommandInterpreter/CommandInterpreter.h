@@ -2,13 +2,17 @@
 #define COMMAND_INTERPRETER_H
 
 #include <iostream>
+#include <memory>
 #include <string>
 
 #include "Manager.h"
 
+class Player;
+class Game;
+
 class CommandInterpreter {
-    std::istream& _in = std::cin;  // default
-    Manager& _manager;
+    CommandInterpreter();
+    static std::istream& _in;  // default
 
     // enum class to ensure type safety
     enum class GameCmds {
@@ -19,11 +23,20 @@ class CommandInterpreter {
         CMD_UNKNOWN
     };
 
-    GameCmds hashGameCommand(const std::string& cmd);
+    static GameCmds hashGameCommand(const std::string& cmd);
+    static GameCmds hashPlayerCommand(const std::string& cmd);
 
    public:
-    CommandInterpreter(Manager& manager);
-    void processGameInput();
-    void processSetupInput();
+    CommandInterpreter(CommandInterpreter const&) = delete;
+    CommandInterpreter& operator=(CommandInterpreter const&) = delete;
+
+    static std::shared_ptr<CommandInterpreter> instance() {
+        static std::shared_ptr<CommandInterpreter> ci{new CommandInterpreter};
+        return ci;
+    }
+
+    static void processGameInput();
+    static void processPlayerInput(const Game& Game, const Player& player);
+    static void processSetupInput();
 };
 #endif
