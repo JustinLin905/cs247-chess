@@ -1,9 +1,9 @@
 #include "CommandInterpreter.h"
 
-#include "Game.h"
-#include "Move.h"
-#include "Player.h"
-#include "PlayerType.h"
+#include "../Game/Game.h"
+#include "../Move/Move.h"
+#include "../Player/Player.h"
+#include "../PlayerType/PlayerType.h"
 
 std::istream& CommandInterpreter::_in = std::cin;
 
