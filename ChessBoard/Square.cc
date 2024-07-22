@@ -2,9 +2,11 @@
 
 #include "../Piece/Piece.h"
 
-Square::Square(Position position) : _position(position) {}
+Square::Square(Position position) : _position(position), _piece{nullptr} {}
 
 bool Square::isEmpty() const { return _piece == nullptr; }
+
+void Square::setPosition(Position position) { _position = position; }
 
 void Square::setPiece(std::unique_ptr<Piece> piece) {
   _piece = std::move(piece);

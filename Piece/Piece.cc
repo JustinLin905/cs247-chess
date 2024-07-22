@@ -3,4 +3,5 @@
 #include "../ChessBoard/Square.h"
 #include "../Player/Player.h"
 
-bool Piece::temp() const { return true; }
+Piece::Piece(Color color, std::shared_ptr<Player> player)
+    : _player(player), _color(color) {}

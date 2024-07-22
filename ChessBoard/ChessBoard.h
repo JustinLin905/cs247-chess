@@ -2,9 +2,10 @@
 #define CHESS_BOARD_H
 
 #include "../ObserverPattern/Subject.h"
+#include "Square.h"
 
 class ChessBoard : public Subject {
-  std::array<std::array<char, 8>, 8> _board;
+  std::array<std::array<Square, 8>, 8> _board;
 
  public:
   ChessBoard();
