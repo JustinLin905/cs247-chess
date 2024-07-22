@@ -3,9 +3,9 @@
 
 #include <memory>
 
-#include "../Piece/Piece.h"
 #include "../Position/Position.h"
 #include "../enums.h"
+#include "../Piece/Piece.h"
 
 class Square {
   Position _position;

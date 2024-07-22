@@ -1,5 +1,7 @@
 #include "Square.h"
 
+#include "../Piece/Piece.h"
+
 Square::Square(Position position) : _position(position) {}
 
 bool Square::isEmpty() const { return _piece == nullptr; }
