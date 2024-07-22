@@ -1,6 +1,8 @@
 #ifndef PLAYER_TYPE_H
 #define PLAYER_TYPE_H
 
+#include <string>
+
 struct PlayerType {
    public:
     enum class Type {

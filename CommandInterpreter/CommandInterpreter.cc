@@ -1,5 +1,8 @@
 #include "CommandInterpreter.h"
 
+#include "Game.h"
+#include "Move.h"
+#include "Player.h"
 #include "PlayerType.h"
 
 std::istream& CommandInterpreter::_in = std::cin;
@@ -43,21 +46,21 @@ void CommandInterpreter::processGameInput() {
 }
 
 // Passing in a Game reference so Manager can run multiple games at once
-void CommandInterpreter::processPlayerInput(const Game& Game, const Player& player) {
+void CommandInterpreter::processPlayerInput(Game& Game, Player& player) {
     std::string cmd;
     _in >> cmd;
 
     switch (hashPlayerCommand(cmd)) {
         case GameCmds::CMD_RESIGN:
-            // player.resign();
+            player.resign();
             break;
         case GameCmds::CMD_MOVE: {
-            std::string original_pos, new_pos;
-            _in >> original_pos >> new_pos;
-            // Game.makeTurn(player, original_pos, new_pos);
+            char og_col, og_row, new_col, new_row;
+            _in >> og_col >> og_row >> new_col >> new_row;
+            Move move(Position{og_col, og_row}, Position{new_col, new_row});
+            Game.makeTurn(move);
             break;
         }
-
         case GameCmds::CMD_UNKNOWN:  // equivalent to default
             throw std::invalid_argument("Invalid command");
             break;

@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "PlayerType.h"
+#include "../PlayerType/PlayerType.h"
 
 class Manager {
     Manager();

@@ -5,10 +5,9 @@
 #include <memory>
 #include <string>
 
-#include "Manager.h"
-
-class Player;
-class Game;
+#include "../Game/Game.h"
+#include "../Manager/Manager.h"
+#include "../Player/Player.h"
 
 class CommandInterpreter {
     CommandInterpreter();
@@ -36,7 +35,7 @@ class CommandInterpreter {
     }
 
     static void processGameInput();
-    static void processPlayerInput(const Game& Game, const Player& player);
+    static void processPlayerInput(Game& Game, Player& player);
     static void processSetupInput();
 };
 #endif
