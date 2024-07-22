@@ -19,7 +19,9 @@ void ChessBoard::reset() {
 void ChessBoard::defaultSetup() {
   reset();
   for (int i = 0; i < 8; i++) {
-    // _board[1][i].setPiece(std::make_unique<Pawn>(Color::WHITE));
+    // Need to update to set Player pointers correctly, instead of to nullptr
+    _board[1][i].setPiece(std::make_unique<Pawn>(Color::WHITE, nullptr));
+    _board[6][i].setPiece(std::make_unique<Pawn>(Color::BLACK, nullptr));
   }
   // _board[0][0] = 'r';
   // _board[0][1] = 'n';

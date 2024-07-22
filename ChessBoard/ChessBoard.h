@@ -2,6 +2,12 @@
 #define CHESS_BOARD_H
 
 #include "../ObserverPattern/Subject.h"
+#include "../Piece/PieceTypes/Bishop.h"
+#include "../Piece/PieceTypes/King.h"
+#include "../Piece/PieceTypes/Knight.h"
+#include "../Piece/PieceTypes/Pawn.h"
+#include "../Piece/PieceTypes/Queen.h"
+#include "../Piece/PieceTypes/Rook.h"
 #include "Square.h"
 
 class ChessBoard : public Subject {
