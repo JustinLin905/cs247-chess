@@ -9,6 +9,7 @@ class Square;
 class Player;
 
 class Piece {
+ protected:
   std::unique_ptr<Square> _square;
   std::shared_ptr<Player> _player;
   Color _color;
