@@ -6,11 +6,14 @@
 
 #include "../enums.h"
 
+class Piece;
+
 class Player {
-  std::vector<std::unique_ptr<Piece>> _alive_pieces;
+  std::vector<std::shared_ptr<Piece>> _alive_pieces;
   Color _color;
 
  public:
+  Player(Color color);
   void resign();
   // std::vector<Moves> getValidPlayerMoves();
   // virtual Move getMove() = 0;
