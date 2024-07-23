@@ -10,6 +10,13 @@ Piece::Piece(Color color, std::shared_ptr<Player> player,
 
 Color Piece::getColor() const { return _color; }
 
+/*
+tryAttackSquare is a helper function that checks if a square can be attacked by
+this piece. Handles bounds checking and opposing color checking.
+
+Returns true if the loop using this function should continue searching in this
+direction, false otherwise.
+*/
 bool Piece::tryAttackSquare(
     Position pos, std::unordered_set<Position>& attacked_squares) const {
   if (pos.r < 0 || pos.r >= 8 || pos.c < 0 || pos.c >= 8) {
