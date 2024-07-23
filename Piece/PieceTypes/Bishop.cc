@@ -1,9 +1,9 @@
 #include "Bishop.h"
 
 Bishop::Bishop(Color color, std::shared_ptr<Player> player,
-               std::shared_ptr<ChessBoard> board)
-    : (Color color, std::shared_ptr<Player> player,
-       std::shared_ptr<ChessBoard> board, std::unique_ptr<Square> square) {}
+               std::shared_ptr<ChessBoard> board,
+               std::shared_ptr<Square> square)
+    : Piece(color, player, board, square) {}
 
 char Bishop::getPieceChar() const { return _color == Color::WHITE ? 'B' : 'b'; }
 

@@ -23,43 +23,61 @@ void ChessBoard::defaultSetup() {
   for (int i = 0; i < 8; i++) {
     // Need to update to set Player pointers correctly, instead of to nullptr
     _board[1][i].setPiece(std::make_unique<Pawn>(
-        Color::BLACK, nullptr, std::shared_ptr<ChessBoard>(this)));
+        Color::BLACK, nullptr, std::shared_ptr<ChessBoard>(this),
+        std::shared_ptr<Square>(&_board[1][i])));
     _board[6][i].setPiece(std::make_unique<Pawn>(
-        Color::WHITE, nullptr, std::shared_ptr<ChessBoard>(this)));
+        Color::WHITE, nullptr, std::shared_ptr<ChessBoard>(this),
+        std::shared_ptr<Square>(&_board[6][i])));
   }
   _board[0][0].setPiece(std::make_unique<Rook>(
-      Color::BLACK, nullptr, std::shared_ptr<ChessBoard>(this)));
+      Color::BLACK, nullptr, std::shared_ptr<ChessBoard>(this),
+      std::shared_ptr<Square>(&_board[0][0])));
   _board[0][1].setPiece(std::make_unique<Knight>(
-      Color::BLACK, nullptr, std::shared_ptr<ChessBoard>(this)));
+      Color::BLACK, nullptr, std::shared_ptr<ChessBoard>(this),
+      std::shared_ptr<Square>(&_board[0][1])));
   _board[0][2].setPiece(std::make_unique<Bishop>(
-      Color::BLACK, nullptr, std::shared_ptr<ChessBoard>(this)));
+      Color::BLACK, nullptr, std::shared_ptr<ChessBoard>(this),
+      std::shared_ptr<Square>(&_board[0][2])));
   _board[0][3].setPiece(std::make_unique<Queen>(
-      Color::BLACK, nullptr, std::shared_ptr<ChessBoard>(this)));
+      Color::BLACK, nullptr, std::shared_ptr<ChessBoard>(this),
+      std::shared_ptr<Square>(&_board[0][3])));
   _board[0][4].setPiece(std::make_unique<King>(
-      Color::BLACK, nullptr, std::shared_ptr<ChessBoard>(this)));
+      Color::BLACK, nullptr, std::shared_ptr<ChessBoard>(this),
+      std::shared_ptr<Square>(&_board[0][4])));
   _board[0][5].setPiece(std::make_unique<Bishop>(
-      Color::BLACK, nullptr, std::shared_ptr<ChessBoard>(this)));
+      Color::BLACK, nullptr, std::shared_ptr<ChessBoard>(this),
+      std::shared_ptr<Square>(&_board[0][5])));
   _board[0][6].setPiece(std::make_unique<Knight>(
-      Color::BLACK, nullptr, std::shared_ptr<ChessBoard>(this)));
+      Color::BLACK, nullptr, std::shared_ptr<ChessBoard>(this),
+      std::shared_ptr<Square>(&_board[0][6])));
   _board[0][7].setPiece(std::make_unique<Rook>(
-      Color::BLACK, nullptr, std::shared_ptr<ChessBoard>(this)));
+      Color::BLACK, nullptr, std::shared_ptr<ChessBoard>(this),
+      std::shared_ptr<Square>(&_board[0][7])));
 
   _board[7][0].setPiece(std::make_unique<Rook>(
-      Color::WHITE, nullptr, std::shared_ptr<ChessBoard>(this)));
+      Color::WHITE, nullptr, std::shared_ptr<ChessBoard>(this),
+      std::shared_ptr<Square>(&_board[7][0])));
   _board[7][1].setPiece(std::make_unique<Knight>(
-      Color::WHITE, nullptr, std::shared_ptr<ChessBoard>(this)));
+      Color::WHITE, nullptr, std::shared_ptr<ChessBoard>(this),
+      std::shared_ptr<Square>(&_board[7][1])));
   _board[7][2].setPiece(std::make_unique<Bishop>(
-      Color::WHITE, nullptr, std::shared_ptr<ChessBoard>(this)));
+      Color::WHITE, nullptr, std::shared_ptr<ChessBoard>(this),
+      std::shared_ptr<Square>(&_board[7][2])));
   _board[7][3].setPiece(std::make_unique<Queen>(
-      Color::WHITE, nullptr, std::shared_ptr<ChessBoard>(this)));
+      Color::WHITE, nullptr, std::shared_ptr<ChessBoard>(this),
+      std::shared_ptr<Square>(&_board[7][3])));
   _board[7][4].setPiece(std::make_unique<King>(
-      Color::WHITE, nullptr, std::shared_ptr<ChessBoard>(this)));
+      Color::WHITE, nullptr, std::shared_ptr<ChessBoard>(this),
+      std::shared_ptr<Square>(&_board[7][4])));
   _board[7][5].setPiece(std::make_unique<Bishop>(
-      Color::WHITE, nullptr, std::shared_ptr<ChessBoard>(this)));
+      Color::WHITE, nullptr, std::shared_ptr<ChessBoard>(this),
+      std::shared_ptr<Square>(&_board[7][5])));
   _board[7][6].setPiece(std::make_unique<Knight>(
-      Color::WHITE, nullptr, std::shared_ptr<ChessBoard>(this)));
+      Color::WHITE, nullptr, std::shared_ptr<ChessBoard>(this),
+      std::shared_ptr<Square>(&_board[7][6])));
   _board[7][7].setPiece(std::make_unique<Rook>(
-      Color::WHITE, nullptr, std::shared_ptr<ChessBoard>(this)));
+      Color::WHITE, nullptr, std::shared_ptr<ChessBoard>(this),
+      std::shared_ptr<Square>(&_board[7][7])));
 }
 
 char ChessBoard::getState(int row, int col) const {
