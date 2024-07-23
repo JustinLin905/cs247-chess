@@ -9,36 +9,6 @@ char Bishop::getPieceChar() const { return _color == Color::WHITE ? 'B' : 'b'; }
 
 std::unordered_set<Position> Bishop::getAttackedSquares() const {
   std::unordered_set<Position> attacked_squares;
-  Position currentPos = _square->getPosition();
-
-  // Check all diagonals
-  for (int i = 1; i < 8; i++) {
-    Position next_pos = Position{currentPos.r + i, currentPos.c + i};
-    if (!tryAttackSquare(next_pos, attacked_squares)) {
-      break;
-    }
-  }
-
-  for (int i = 1; i < 8; i++) {
-    Position next_pos = Position{currentPos.r - i, currentPos.c - i};
-    if (!tryAttackSquare(next_pos, attacked_squares)) {
-      break;
-    }
-  }
-
-  for (int i = 1; i < 8; i++) {
-    Position next_pos = Position{currentPos.r + i, currentPos.c - i};
-    if (!tryAttackSquare(next_pos, attacked_squares)) {
-      break;
-    }
-  }
-
-  for (int i = 1; i < 8; i++) {
-    Position next_pos = Position{currentPos.r - i, currentPos.c + i};
-    if (!tryAttackSquare(next_pos, attacked_squares)) {
-      break;
-    }
-  }
-
+  attackDiagonal(attacked_squares);
   return attacked_squares;
 }

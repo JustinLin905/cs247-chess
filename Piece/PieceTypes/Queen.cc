@@ -6,7 +6,9 @@ Queen::Queen(Color color, std::shared_ptr<Player> player,
 
 char Queen::getPieceChar() const { return _color == Color::WHITE ? 'Q' : 'q'; }
 
-// TODO
 std::unordered_set<Position> Queen::getAttackedSquares() const {
-  return std::unordered_set<Position>();
+  std::unordered_set<Position> attacked_squares;
+  attackDiagonal(attacked_squares);
+  attackStraight(attacked_squares);
+  return attacked_squares;
 }

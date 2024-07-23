@@ -38,3 +38,82 @@ bool Piece::tryAttackSquare(
     return false;
   }
 }
+
+/*
+Methods to handle attacking diagonally.
+
+Re-used by Bishop and Queen.
+*/
+void Piece::attackDiagonal(
+    std::unordered_set<Position>& attacked_squares) const {
+  Position current_pos = _square->getPosition();
+
+  // Check all diagonals
+  for (int i = 1; i < 8; i++) {
+    Position next_pos = Position{current_pos.r + i, current_pos.c + i};
+    if (!tryAttackSquare(next_pos, attacked_squares)) {
+      break;
+    }
+  }
+
+  for (int i = 1; i < 8; i++) {
+    Position next_pos = Position{current_pos.r - i, current_pos.c - i};
+    if (!tryAttackSquare(next_pos, attacked_squares)) {
+      break;
+    }
+  }
+
+  for (int i = 1; i < 8; i++) {
+    Position next_pos = Position{current_pos.r + i, current_pos.c - i};
+    if (!tryAttackSquare(next_pos, attacked_squares)) {
+      break;
+    }
+  }
+
+  for (int i = 1; i < 8; i++) {
+    Position next_pos = Position{current_pos.r - i, current_pos.c + i};
+    if (!tryAttackSquare(next_pos, attacked_squares)) {
+      break;
+    }
+  }
+}
+
+/*
+Methods to handle attacking straight.
+
+Re-used by Rook and Queen.
+*/
+void Piece::attackStraight(
+    std::unordered_set<Position>& attacked_squares) const {
+  Position current_pos = _square->getPosition();
+  int row = current_pos.r;
+  int col = current_pos.c;
+
+  // Check all squares to the right of the piece
+  for (int i = col + 1; i < 8; i++) {
+    if (!tryAttackSquare(Position{row, i}, attacked_squares)) {
+      break;
+    }
+  }
+
+  // Check all squares to the left of the piece
+  for (int i = col - 1; i >= 0; i--) {
+    if (!tryAttackSquare(Position{row, i}, attacked_squares)) {
+      break;
+    }
+  }
+
+  // Check all squares above the piece
+  for (int i = row - 1; i >= 0; i--) {
+    if (!tryAttackSquare(Position{i, col}, attacked_squares)) {
+      break;
+    }
+  }
+
+  // Check all squares below the piece
+  for (int i = row + 1; i < 8; i++) {
+    if (!tryAttackSquare(Position{i, col}, attacked_squares)) {
+      break;
+    }
+  }
+}

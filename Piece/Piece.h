@@ -22,6 +22,8 @@ class Piece {
   Color _color;
   bool tryAttackSquare(Position pos,
                        std::unordered_set<Position>& attackedSquares) const;
+  void attackDiagonal(std::unordered_set<Position>& attackedSquares) const;
+  void attackStraight(std::unordered_set<Position>& attackedSquares) const;
 
  public:
   Piece(Color color, std::shared_ptr<Player> player,
