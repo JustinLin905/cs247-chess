@@ -1,3 +1,6 @@
+#ifndef BISHOP_H
+#define BISHOP_H
+
 #include "../../ChessBoard/ChessBoard.h"
 #include "../../ChessBoard/Square.h"
 #include "../../Player/Player.h"
@@ -11,3 +14,5 @@ class Bishop final : public Piece {
   std::unordered_set<Position> getAttackedSquares() const override;
   ~Bishop() = default;
 };
+
+#endif

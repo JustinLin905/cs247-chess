@@ -5,3 +5,8 @@ Queen::Queen(Color color, std::shared_ptr<Player> player,
     : Piece(color, player, board) {}
 
 char Queen::getPieceChar() const { return _color == Color::WHITE ? 'Q' : 'q'; }
+
+// TODO
+std::unordered_set<Position> Queen::getAttackedSquares() const {
+  return std::unordered_set<Position>();
+}

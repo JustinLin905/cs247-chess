@@ -1,3 +1,6 @@
+#ifndef QUEEN_H
+#define QUEEN_H
+
 #include "../../ChessBoard/ChessBoard.h"
 #include "../../ChessBoard/Square.h"
 #include "../../Player/Player.h"
@@ -11,3 +14,5 @@ class Queen final : public Piece {
   std::unordered_set<Position> getAttackedSquares() const override;
   ~Queen() = default;
 };
+
+#endif

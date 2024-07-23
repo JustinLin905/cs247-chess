@@ -4,10 +4,14 @@
 #include <memory>
 #include <unordered_set>
 
+// #include "../ChessBoard/ChessBoard.h"
+// #include "../Position/Position.h"
 #include "../enums.h"
 
 class Square;
 class Player;
+class ChessBoard;
+struct Position;
 
 class Piece {
  protected:
