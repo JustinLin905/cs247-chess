@@ -23,7 +23,27 @@ int main() {
       board->getSquare(pawn_pos).getPiece()->getAttackedSquares();
 
   for (const Position& pos : pawn_attacked_squares) {
-    std::cout << pos.r << " " << pos.c << " attacked!" << std::endl;
+    std::cout << pos.r << " " << pos.c << " attacked by pawn!" << std::endl;
   }
+
+  // Test rook attacked squares
+  Position rook_pos{7, 7};
+  if (board->getSquare(rook_pos).getPiece() == nullptr) {
+    std::cerr << "No piece found at " << rook_pos.r << " " << rook_pos.c
+              << std::endl;
+    return 1;
+  }
+  if (board->getSquare(rook_pos).getPiece()->getPieceChar() != 'R') {
+    std::cerr << "Piece at " << rook_pos.r << " " << rook_pos.c
+              << " is not a rook" << std::endl;
+    return 1;
+  }
+  std::unordered_set<Position> rook_attacked_squares =
+      board->getSquare(rook_pos).getPiece()->getAttackedSquares();
+
+  for (const Position& pos : rook_attacked_squares) {
+    std::cout << pos.r << " " << pos.c << " attacked by rook!" << std::endl;
+  }
+
   return 0;
 }
