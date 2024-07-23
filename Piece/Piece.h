@@ -15,6 +15,8 @@ class Piece {
   std::shared_ptr<Player> _player;
   std::shared_ptr<ChessBoard> _board;
   Color _color;
+  bool tryAttackSquare(Position pos,
+                       std::unordered_set<Position>& attackedSquares) const;
 
  public:
   Piece(Color color, std::shared_ptr<Player> player,

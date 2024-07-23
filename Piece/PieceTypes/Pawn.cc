@@ -13,23 +13,11 @@ std::unordered_set<Position> Pawn::getAttackedSquares() const {
   int col = currentPos.c;
 
   if (_color == Color::WHITE) {
-    if (row - 1 >= 0) {
-      if (col - 1 >= 0) {
-        attackedSquares.insert(Position{row - 1, col - 1});
-      }
-      if (col + 1 < 8) {
-        attackedSquares.insert(Position{row - 1, col + 1});
-      }
-    }
+    tryAttackSquare(Position{row - 1, col - 1}, attackedSquares);
+    tryAttackSquare(Position{row - 1, col + 1}, attackedSquares);
   } else {
-    if (row + 1 < 8) {
-      if (col - 1 >= 0) {
-        attackedSquares.insert(Position{row + 1, col - 1});
-      }
-      if (col + 1 < 8) {
-        attackedSquares.insert(Position{row + 1, col + 1});
-      }
-    }
+    tryAttackSquare(Position{row + 1, col - 1}, attackedSquares);
+    tryAttackSquare(Position{row + 1, col + 1}, attackedSquares);
   }
   return attackedSquares;
 }

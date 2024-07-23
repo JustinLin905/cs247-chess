@@ -16,52 +16,28 @@ std::unordered_set<Position> Rook::getAttackedSquares() const {
 
   // Check all squares to the right of the rook
   for (int i = col + 1; i < 8; i++) {
-    if (_board->getSquare(Position{row, i}).isEmpty()) {
-      attackedSquares.insert(Position{row, i});
-    } else {
-      if (_board->getSquare(Position{row, i}).getPiece()->getColor() !=
-          _color) {
-        attackedSquares.insert(Position{row, i});
-      }
+    if (!tryAttackSquare(Position{row, i}, attackedSquares)) {
       break;
     }
   }
 
   // Check all squares to the left of the rook
   for (int i = col - 1; i >= 0; i--) {
-    if (_board->getSquare(Position{row, i}).isEmpty()) {
-      attackedSquares.insert(Position{row, i});
-    } else {
-      if (_board->getSquare(Position{row, i}).getPiece()->getColor() !=
-          _color) {
-        attackedSquares.insert(Position{row, i});
-      }
+    if (!tryAttackSquare(Position{row, i}, attackedSquares)) {
       break;
     }
   }
 
   // Check all squares above the rook
   for (int i = row - 1; i >= 0; i--) {
-    if (_board->getSquare(Position{i, col}).isEmpty()) {
-      attackedSquares.insert(Position{i, col});
-    } else {
-      if (_board->getSquare(Position{i, col}).getPiece()->getColor() !=
-          _color) {
-        attackedSquares.insert(Position{i, col});
-      }
+    if (!tryAttackSquare(Position{i, col}, attackedSquares)) {
       break;
     }
   }
 
   // Check all squares below the rook
   for (int i = row + 1; i < 8; i++) {
-    if (_board->getSquare(Position{i, col}).isEmpty()) {
-      attackedSquares.insert(Position{i, col});
-    } else {
-      if (_board->getSquare(Position{i, col}).getPiece()->getColor() !=
-          _color) {
-        attackedSquares.insert(Position{i, col});
-      }
+    if (!tryAttackSquare(Position{i, col}, attackedSquares)) {
       break;
     }
   }
