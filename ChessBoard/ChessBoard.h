@@ -15,6 +15,7 @@ class ChessBoard : public Subject {
 
  public:
   ChessBoard();
+  Square &getSquare(Position position);
   char getState(int row, int col) const;
   void render();
   void defaultSetup();

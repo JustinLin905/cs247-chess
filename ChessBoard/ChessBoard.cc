@@ -48,4 +48,8 @@ char ChessBoard::getState(int row, int col) const {
   return _board[row][col].getState();
 }
 
+Square &ChessBoard::getSquare(Position position) {
+  return _board[position.r][position.c];
+}
+
 void ChessBoard::render() { notifyObservers(); }
