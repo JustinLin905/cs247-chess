@@ -1,13 +1,17 @@
 #include "Pawn.h"
 
 Pawn::Pawn(Color color, std::shared_ptr<Player> player,
-           std::shared_ptr<ChessBoard> board)
-    : Piece(color, player, board) {}
+           std::shared_ptr<ChessBoard> board, std::shared_ptr<Square> square)
+    : Piece(color, player, board, square) {}
 
 char Pawn::getPieceChar() const { return _color == Color::WHITE ? 'P' : 'p'; }
 
 std::unordered_set<Position> Pawn::getAttackedSquares() const {
   std::unordered_set<Position> attackedSquares;
+  if (_square == nullptr) {
+    std::cout << "Error: Square is null" << std::endl;
+    return attackedSquares;
+  }
   Position currentPos = _square->getPosition();
   int row = currentPos.r;
   int col = currentPos.c;

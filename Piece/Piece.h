@@ -1,6 +1,7 @@
 #ifndef PIECE_H
 #define PIECE_H
 
+#include <iostream>
 #include <memory>
 #include <unordered_set>
 
@@ -15,7 +16,7 @@ struct Position;
 
 class Piece {
  protected:
-  std::unique_ptr<Square> _square;
+  std::shared_ptr<Square> _square;
   std::shared_ptr<Player> _player;
   std::shared_ptr<ChessBoard> _board;
   Color _color;
@@ -24,7 +25,7 @@ class Piece {
 
  public:
   Piece(Color color, std::shared_ptr<Player> player,
-        std::shared_ptr<ChessBoard> board);
+        std::shared_ptr<ChessBoard> board, std::shared_ptr<Square> square);
   virtual std::unordered_set<Position> getAttackedSquares() const = 0;
   // std::unordered_set<Move> getValidMoves() const;
   Color getColor() const;
