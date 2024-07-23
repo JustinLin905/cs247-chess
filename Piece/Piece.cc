@@ -6,7 +6,7 @@
 
 Piece::Piece(Color color, std::shared_ptr<Player> player,
              std::shared_ptr<ChessBoard> board)
-    : _player(player), _color(color), _board(board) {}
+    : _player(player), _board(board), _color(color) {}
 
 Color Piece::getColor() const { return _color; }
 
