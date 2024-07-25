@@ -8,9 +8,13 @@ bool Square::isEmpty() const { return _piece == nullptr; }
 
 void Square::setPosition(Position position) { _position = position; }
 
+Position Square::getPosition() const { return _position; }
+
 void Square::setPiece(std::unique_ptr<Piece> piece) {
   _piece = std::move(piece);
 }
+
+Piece *Square::getPiece() const { return _piece.get(); }
 
 char Square::getState() const {
   if (_piece == nullptr) {

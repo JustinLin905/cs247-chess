@@ -9,7 +9,20 @@ TextObserver::TextObserver(std::shared_ptr<ChessBoard> chess_board,
 }
 
 void TextObserver::notify() {
+  _out << "   ";
   for (int i = 0; i < 8; i++) {
+    _out << i << " ";
+  }
+  _out << std::endl;
+
+  _out << "   ";
+  for (int i = 0; i < 8; i++) {
+    _out << "— ";
+  }
+  _out << std::endl;
+
+  for (int i = 0; i < 8; i++) {
+    _out << i << "| ";
     for (int j = 0; j < 8; j++) {
       _out << _chess_board->getState(i, j) << " ";
     }
