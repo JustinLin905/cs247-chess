@@ -47,7 +47,7 @@ int main() {
 
   // Test queen attacked squares
   std::cout << "Testing queen attacked squares" << std::endl;
-  Position queen_pos{4, 3};
+  Position queen_pos{7, 3};
   if (board->getSquare(queen_pos).getPiece() == nullptr) {
     std::cerr << "No piece found at " << queen_pos.r << " " << queen_pos.c
               << std::endl;
@@ -63,6 +63,26 @@ int main() {
 
   for (const Position& pos : queen_attacked_squares) {
     std::cout << pos.r << " " << pos.c << " attacked by queen!" << std::endl;
+  }
+
+  // Test knight attacked squares
+  std::cout << "Testing knight attacked squares" << std::endl;
+  Position knight_pos{7, 1};
+  if (board->getSquare(knight_pos).getPiece() == nullptr) {
+    std::cerr << "No piece found at " << knight_pos.r << " " << knight_pos.c
+              << std::endl;
+    return 1;
+  }
+  if (board->getSquare(knight_pos).getPiece()->getPieceChar() != 'N') {
+    std::cerr << "Piece at " << knight_pos.r << " " << knight_pos.c
+              << " is not a knight" << std::endl;
+    return 1;
+  }
+  std::unordered_set<Position> knight_attacked_squares =
+      board->getSquare(knight_pos).getPiece()->getAttackedSquares();
+
+  for (const Position& pos : knight_attacked_squares) {
+    std::cout << pos.r << " " << pos.c << " attacked by knight!" << std::endl;
   }
 
   return 0;

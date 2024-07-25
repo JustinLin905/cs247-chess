@@ -63,9 +63,9 @@ void ChessBoard::defaultSetup() {
   _board[7][2].setPiece(std::make_unique<Bishop>(
       Color::WHITE, nullptr, std::shared_ptr<ChessBoard>(this),
       std::shared_ptr<Square>(&_board[7][2])));
-  _board[4][3].setPiece(std::make_unique<Queen>(
+  _board[7][3].setPiece(std::make_unique<Queen>(
       Color::WHITE, nullptr, std::shared_ptr<ChessBoard>(this),
-      std::shared_ptr<Square>(&_board[4][3])));
+      std::shared_ptr<Square>(&_board[7][3])));
   _board[7][4].setPiece(std::make_unique<King>(
       Color::WHITE, nullptr, std::shared_ptr<ChessBoard>(this),
       std::shared_ptr<Square>(&_board[7][4])));
