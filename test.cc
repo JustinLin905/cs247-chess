@@ -45,5 +45,25 @@ int main() {
     std::cout << pos.r << " " << pos.c << " attacked by rook!" << std::endl;
   }
 
+  // Test queen attacked squares
+  std::cout << "Testing queen attacked squares" << std::endl;
+  Position queen_pos{4, 3};
+  if (board->getSquare(queen_pos).getPiece() == nullptr) {
+    std::cerr << "No piece found at " << queen_pos.r << " " << queen_pos.c
+              << std::endl;
+    return 1;
+  }
+  if (board->getSquare(queen_pos).getPiece()->getPieceChar() != 'Q') {
+    std::cerr << "Piece at " << queen_pos.r << " " << queen_pos.c
+              << " is not a queen" << std::endl;
+    return 1;
+  }
+  std::unordered_set<Position> queen_attacked_squares =
+      board->getSquare(queen_pos).getPiece()->getAttackedSquares();
+
+  for (const Position& pos : queen_attacked_squares) {
+    std::cout << pos.r << " " << pos.c << " attacked by queen!" << std::endl;
+  }
+
   return 0;
 }
