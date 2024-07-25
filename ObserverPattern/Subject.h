@@ -1,7 +1,10 @@
 #ifndef SUBJECT_H
 #define SUBJECT_H
 
+#include <algorithm>
+#include <memory>
 #include <vector>
+
 #include "Observer.h"
 
 class Subject {
