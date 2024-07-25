@@ -11,13 +11,16 @@ GraphicsObserver::~GraphicsObserver() { delete _w; }
 void GraphicsObserver::notify() {
   for (int i = 0; i < 8; ++i) {
     for (int j = 0; j < 8; ++j) {
-      // Empty square
+      bool isWhite = (i + j) % 2 == 0;
+
+      // Draw squares
+      if (isWhite) {
+        _w->fillRectangle(100 * j, 100 * i, 100, 100, Xwindow::White);
+      } else {
+        _w->fillRectangle(100 * j, 100 * i, 100, 100, Xwindow::Black);
+      }
+
       if (_chess_board->getSquare(Position{i, j}).getPiece() == nullptr) {
-        if ((i + j) % 2 == 0) {
-          _w->fillRectangle(100 * j, 100 * i, 100, 100, Xwindow::White);
-        } else {
-          _w->fillRectangle(100 * j, 100 * i, 100, 100, Xwindow::Black);
-        }
         continue;
       }
 
@@ -25,7 +28,16 @@ void GraphicsObserver::notify() {
       char cur =
           _chess_board->getSquare(Position{i, j}).getPiece()->getPieceChar();
 
-      _w->fillRectangle(100 * j, 100 * i, 100, 100, Xwindow::Red);
+      drawPiece(cur, i, j, isWhite);
     }
   }
+}
+
+void GraphicsObserver::drawPiece(char piece, int row, int col, bool isWhite) {
+  // Draw piece on the window
+  // RN IM using the wrong bool for isWhite, I need to getColor on the piece
+  std::string piece_str =
+      isWhite ? "w" + std::string(1, piece) : "b" + std::string(1, piece);
+  _w->drawString(100 * col + 40, 100 * row + 60, piece_str,
+                 isWhite ? Xwindow::White : Xwindow::Black);
 }
