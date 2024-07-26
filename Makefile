@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -std=c++14 -Wall -g -MMD
+CXXFLAGS = -std=c++14 -Wall -g -MMD 
 LDFLAGS = -lX11
 EXEC = chess
 CCFILES = $(shell find . -name '*.cc')

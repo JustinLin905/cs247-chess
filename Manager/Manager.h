@@ -3,9 +3,12 @@
 
 #include <memory>
 
+#include "../Game/Game.h"
 #include "../PlayerType/PlayerType.h"
 
 class Manager {
+    static Game _CurrGame;
+
     Manager();
 
    public:

@@ -1,5 +1,7 @@
 #include "CommandInterpreter.h"
 
+#include <string>
+
 #include "../Game/Game.h"
 #include "../Move/Move.h"
 #include "../Player/Player.h"
@@ -35,11 +37,15 @@ void CommandInterpreter::processGameInput() {
         case GameCmds::CMD_RESIGN:
             Manager::closeGame();
             break;
-        case GameCmds::CMD_MOVE:
-            std::cout << "Player moved" << std::endl;
+        case GameCmds::CMD_SETUP: {
+            std::string white, black;
+            _in >> white >> black;
+            PlayerType::Type whiteType = PlayerType::HashPlayerType(white);
+            PlayerType::Type blackType = PlayerType::HashPlayerType(black);
+            Manager::startGame(whiteType, blackType);
             break;
-
-        case GameCmds::CMD_UNKNOWN:  // equivalent to defaults
+        }
+        case GameCmds::CMD_UNKNOWN:  // equivalent to default
             throw std::invalid_argument("Invalid command");
             break;
     }
