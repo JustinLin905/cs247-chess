@@ -21,7 +21,7 @@ class Player {
    public:
     Player(Color color, std::shared_ptr<Game> game);
     void resign();
-    std::unordered_set<Move> getValidPlayerMoves();
+    bool hasValidMove();
     virtual Move getMove() = 0;
     void addAlivePiece(std::shared_ptr<Piece> piece);
 };

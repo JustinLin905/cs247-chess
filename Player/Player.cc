@@ -10,15 +10,12 @@ void Player::addAlivePiece(std::shared_ptr<Piece> piece) {
     _alive_pieces.insert(piece);
 }
 
-std::unordered_set<Move> Player::getValidPlayerMoves() {
-    std::unordered_set<Move> validPlayerMoves;
-
+bool Player::hasValidMove() {
     for(auto p : _alive_pieces) {
-        std::unordered_set<Move> pieceValidMoves = p->getValidMoves();
-        validPlayerMoves.insert(pieceValidMoves.begin(), pieceValidMoves.end());
+        if (p->getValidMoves().size() > 0) return true;
     }
 
-    return validPlayerMoves;
+    return false;
 }
 
 void Player::resign() {
