@@ -19,6 +19,9 @@ bool Game::makeTurn(Move move) {
     auto initial = move.initial_pos;
     auto final = move.final_pos;
 
+    std::cout << initial.c << initial.r << std::endl;
+    std::cout << final.c << final.r << std::endl;
+
     Square& init_square = _chess_board->getSquare(initial);
     Square& final_square = _chess_board->getSquare(final);
 
@@ -36,8 +39,6 @@ bool Game::makeTurn(Move move) {
 
 void Game::renderBoard() const {
     _chess_board->render();
-    // std::cout << &text_observer << std::endl;
-    // std::cout << _chess_board->observers.size() + " HI" << std::endl;
 }
 
 void Game::reverseMoves(int n) {

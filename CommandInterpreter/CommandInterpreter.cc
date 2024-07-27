@@ -64,7 +64,8 @@ Move CommandInterpreter::processPlayerInput(std::shared_ptr<Game> Game, Player& 
             player.resign();
             break;
         case GameCmds::CMD_MOVE: {
-            char og_col, og_row, new_col, new_row;
+            int og_col, new_col;
+            int og_row, new_row;
             _in >> og_col >> og_row >> new_col >> new_row;
             Move move(Position{og_col, og_row}, Position{new_col, new_row});
             return move;

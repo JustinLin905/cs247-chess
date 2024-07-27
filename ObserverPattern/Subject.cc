@@ -6,7 +6,6 @@
 
 void Subject::attach(std::shared_ptr<Observer> o) {
     observers.emplace_back(o);
-    std::cout << observers.size() << " attach" << std::endl;
 }
 
 void Subject::detach(std::shared_ptr<Observer> o) {
@@ -14,7 +13,6 @@ void Subject::detach(std::shared_ptr<Observer> o) {
 }
 
 void Subject::notifyObservers() {
-    std::cout << observers.size() << " BALLLLLZ" << std::endl;
     for (auto &o : observers) {
         o->notify();
     }
