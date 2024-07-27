@@ -16,6 +16,8 @@ struct Move {
     }
 
     bool operator!=(const Move &other) const { return !(*this == other); }
+
+    friend std::ostream& operator<<(std::ostream& out, Move& move);
 };
 
 // Hash function for Move

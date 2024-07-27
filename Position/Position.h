@@ -3,6 +3,7 @@
 
 #include <cstddef>     // For size_t
 #include <functional>  // For std::hash
+#include <iostream>
 
 struct Position {
     int r;
@@ -20,6 +21,8 @@ struct Position {
         }
         return c < other.c;
     }
+
+    friend std::ostream& operator<<(std::ostream& out, Position& pos);
 };
 
 // Hash function for Position
