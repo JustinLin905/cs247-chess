@@ -1,6 +1,7 @@
 #include "Square.h"
 
 #include "../Piece/Piece.h"
+#include "../Player/Player.h"
 
 Square::Square(Position position) : _position(position), _piece{nullptr} {}
 
@@ -13,6 +14,7 @@ Position Square::getPosition() const { return _position; }
 std::unique_ptr<Piece> Square::setPiece(std::unique_ptr<Piece> piece) {
     std::unique_ptr<Piece> old = std::move(_piece);
     _piece = std::move(piece);
+    _piece->_player->addAlivePiece(_piece.get());
     return old;
 }
 

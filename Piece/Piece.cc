@@ -4,7 +4,7 @@
 #include "../ChessBoard/Square.h"
 #include "../Player/Player.h"
 
-Piece::Piece(Color color, std::shared_ptr<Player> player,
+Piece::Piece(Color color, Player* player,
              std::shared_ptr<ChessBoard> board, std::shared_ptr<Square> square)
     : _color(color), _player(player), _board(board), _square(square) {}
 

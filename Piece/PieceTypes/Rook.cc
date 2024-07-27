@@ -2,7 +2,7 @@
 
 #include "../../ChessBoard/ChessBoard.h"
 
-Rook::Rook(Color color, std::shared_ptr<Player> player,
+Rook::Rook(Color color, Player* player,
            std::shared_ptr<ChessBoard> board, std::shared_ptr<Square> square)
     : Piece(color, player, board, square) {}
 

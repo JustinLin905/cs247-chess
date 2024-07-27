@@ -1,6 +1,6 @@
 #include "King.h"
 
-King::King(Color color, std::shared_ptr<Player> player,
+King::King(Color color, Player* player,
            std::shared_ptr<ChessBoard> board, std::shared_ptr<Square> square)
     : Piece(color, player, board, square) {}
 

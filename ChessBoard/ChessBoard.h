@@ -20,7 +20,7 @@ class ChessBoard : public Subject {
     Square &getSquare(Position position);
     char getState(int row, int col) const;
     void render();
-    void defaultSetup();
+    void defaultSetup(std::unique_ptr<Player> &whitePlayer, std::unique_ptr<Player> &blackPlayer);
     // void customSetup();
     void reset();
 };

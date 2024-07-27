@@ -1,6 +1,6 @@
 #include "Bishop.h"
 
-Bishop::Bishop(Color color, std::shared_ptr<Player> player,
+Bishop::Bishop(Color color, Player* player,
                std::shared_ptr<ChessBoard> board,
                std::shared_ptr<Square> square)
     : Piece(color, player, board, square) {}

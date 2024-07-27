@@ -18,7 +18,7 @@ class Game {
     std::shared_ptr<GraphicsObserver> _graphics_observer;
     std::shared_ptr<TextObserver> _text_observer;
 
-   public:
+public:
     Game(PlayerType::Type white, PlayerType::Type black);
     void initDefaultGame();
     bool makeTurn(Move move);
