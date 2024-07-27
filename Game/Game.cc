@@ -3,12 +3,25 @@
 #include <iostream>
 #include <memory>
 
+#include "../Player/ComputerPlayer/ComputerLevel1.h"
+// #include "../Player/ComputerPlayer/ComputerLevel2.h"
+// #include "../Player/ComputerPlayer/ComputerLevel3.h"
+// #include "../Player/ComputerPlayer/ComputerLevel4.h"
 #include "../Player/HumanPlayer.h"
 #include "../PlayerType/PlayerType.h"
 
-Game::Game(PlayerType::Type white, PlayerType::Type black) : _chess_board(std::make_shared<ChessBoard>()), _text_observer{std::make_shared<TextObserver>(_chess_board, std::cout)}, _graphics_observer{std::make_shared<GraphicsObserver>(_chess_board)} {
-    if (white == PlayerType::Type::HUMAN) _white = std::make_unique<HumanPlayer>(Color::WHITE, std::shared_ptr<Game>(this));
-    if (black == PlayerType::Type::HUMAN) _black = std::make_unique<HumanPlayer>(Color::BLACK, std::shared_ptr<Game>(this));
+Game::Game(PlayerType::Type white, PlayerType::Type black) : _chess_board(std::make_shared<ChessBoard>()), _text_observer{std::make_shared<TextObserver>(_chess_board, std::cout)}, _graphics_observer{std::make_shared<GraphicsObserver>(_chess_board)}, _white{createPlayerPtr(white)}, _black{createPlayerPtr(black)} {}
+
+std::unique_ptr<Player> Game::createPlayerPtr(PlayerType::Type type) {
+    switch (type) {
+        case PlayerType::Type::HUMAN:
+            return std::make_unique<HumanPlayer>(Color::WHITE, std::shared_ptr<Game>(this));
+        case PlayerType::Type::COMPUTER_LEVEL1:
+            return std::make_unique<ComputerLevel1>(Color::WHITE, std::shared_ptr<Game>(this));
+
+        default:
+            throw std::invalid_argument("Invalid player type");
+    }
 }
 
 void Game::initDefaultGame() {
