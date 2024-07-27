@@ -11,21 +11,21 @@ GraphicsObserver::~GraphicsObserver() { delete _w; }
 void GraphicsObserver::notify() {
   for (int i = 0; i < 8; ++i) {
     for (int j = 0; j < 8; ++j) {
-      // Empty square
+      if ((i + j) % 2 == 0) {
+        _w->fillRectangle(100 * j, 100 * i, 100, 100, Xwindow::White);
+      } else {
+        _w->fillRectangle(100 * j, 100 * i, 100, 100, Xwindow::Black);
+      }
+
+      // If square is occupied by piece, render text
       if (_chess_board->getSquare(Position{i, j}).getPiece() == nullptr) {
-        if ((i + j) % 2 == 0) {
-          _w->fillRectangle(100 * j, 100 * i, 100, 100, Xwindow::White);
-        } else {
-          _w->fillRectangle(100 * j, 100 * i, 100, 100, Xwindow::Black);
-        }
         continue;
       }
 
-      // Square is occupied by piece
       char cur =
           _chess_board->getSquare(Position{i, j}).getPiece()->getPieceChar();
 
-      _w->fillRectangle(100 * j, 100 * i, 100, 100, Xwindow::Red);
+      _w->drawString(100 * j + 50, 100 * i + 50, std::string(1, cur));
     }
   }
 }
