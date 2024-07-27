@@ -2,7 +2,7 @@
 
 Knight::Knight(Color color, Player* player,
                std::shared_ptr<ChessBoard> board,
-               std::shared_ptr<Square> square)
+               std::weak_ptr<Square> square)
     : Piece(color, player, board, square) {}
 
 char Knight::getPieceChar() const { return _color == Color::WHITE ? 'N' : 'n'; }
@@ -10,13 +10,7 @@ char Knight::getPieceChar() const { return _color == Color::WHITE ? 'N' : 'n'; }
 std::unordered_set<Position> Knight::getAttackedSquares() const {
     std::unordered_set<Position> attackedSquares;
 
-    if (_square == nullptr) {
-        std::cout << "Error: Square is null" << std::endl;
-        return attackedSquares;
-    }
-
-    // This is possibly not updating when pieces move
-    Position currentPos = _square->getPosition();
+    Position currentPos = getSquare()->getPosition();
     int row = currentPos.r;
     int col = currentPos.c;
 
