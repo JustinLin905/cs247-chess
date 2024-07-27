@@ -4,11 +4,12 @@
 #include "../ChessBoard/Square.h"
 #include "../Player/Player.h"
 
-Piece::Piece(Color color, std::shared_ptr<Player> player,
+Piece::Piece(Color color, Player* player,
              std::shared_ptr<ChessBoard> board, std::shared_ptr<Square> square)
     : _color(color), _player(player), _board(board), _square(square) {}
 
 Color Piece::getColor() const { return _color; }
+Player* Piece::getPlayer() const { return _player; }
 
 /*
 tryAttackSquare is a helper function that checks if a square can be attacked by
@@ -116,4 +117,20 @@ void Piece::attackStraight(
       break;
     }
   }
+}
+
+/*
+Get all valid moves of a piece.
+By default, the valid moves of a piece is the same as the squares they attack.
+This method will be overridden for special cases (ex. Pawns)
+*/
+std::unordered_set<Move> Piece::getValidMoves() const {
+  std::unordered_set<Move> validMoves;
+  std::unordered_set<Position> attackedSquares = getAttackedSquares();
+
+  for(Position p : attackedSquares) {
+    validMoves.insert(Move{_square->getPosition(), p, MoveType::UNDETERMINED});
+  }
+
+  return validMoves;
 }

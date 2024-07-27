@@ -8,7 +8,7 @@
 
 class Knight final : public Piece {
  public:
-  Knight(Color color, std::shared_ptr<Player> player,
+  Knight(Color color, Player* player,
          std::shared_ptr<ChessBoard> board, std::shared_ptr<Square> square);
   char getPieceChar() const override;
   std::unordered_set<Position> getAttackedSquares() const override;

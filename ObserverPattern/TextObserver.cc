@@ -11,7 +11,7 @@ TextObserver::TextObserver(std::shared_ptr<ChessBoard> chess_board,
 void TextObserver::notify() {
     _out << "   ";
     for (int i = 0; i < 8; i++) {
-        _out << i << " ";
+        _out << char(65+i) << " ";
     }
     _out << std::endl;
 

@@ -12,7 +12,7 @@ Game::Game(PlayerType::Type white, PlayerType::Type black) : _chess_board(std::m
 }
 
 void Game::initDefaultGame() {
-    _chess_board->defaultSetup();
+    _chess_board->defaultSetup(_white, _black);
 }
 
 bool Game::makeTurn(Move move) {

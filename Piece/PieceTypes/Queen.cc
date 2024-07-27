@@ -1,6 +1,6 @@
 #include "Queen.h"
 
-Queen::Queen(Color color, std::shared_ptr<Player> player,
+Queen::Queen(Color color, Player* player,
              std::shared_ptr<ChessBoard> board, std::shared_ptr<Square> square)
     : Piece(color, player, board, square) {}
 
