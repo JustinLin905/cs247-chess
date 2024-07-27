@@ -13,7 +13,7 @@
 #include "Square.h"
 
 class ChessBoard : public Subject {
-    std::array<std::array<Square, 8>, 8> _board;
+    std::array<std::array<std::shared_ptr<Square>, 8>, 8> _board;
 
    public:
     ChessBoard();

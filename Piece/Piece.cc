@@ -5,7 +5,7 @@
 #include "../Player/Player.h"
 
 Piece::Piece(Color color, Player* player,
-             std::shared_ptr<ChessBoard> board, std::shared_ptr<Square> square)
+             std::shared_ptr<ChessBoard> board, std::weak_ptr<Square> square)
     : _color(color), _player(player), _board(board), _square(square) {}
 
 Color Piece::getColor() const { return _color; }
@@ -40,6 +40,16 @@ bool Piece::tryAttackSquare(
     }
 }
 
+std::shared_ptr<Square> Piece::getSquare() const {
+    auto square_shared = _square.lock();
+    if (!square_shared) {
+        std::cerr << "Error: Square is null" << std::endl;
+        throw std::runtime_error("Square is null");
+    }
+
+    return square_shared;
+}
+
 /*
 Methods to handle attacking diagonally.
 
@@ -47,7 +57,7 @@ Re-used by Bishop and Queen.
 */
 void Piece::attackDiagonal(
     std::unordered_set<Position>& attacked_squares) const {
-    Position current_pos = _square->getPosition();
+    Position current_pos = getSquare()->getPosition();
 
     // Check all diagonals
     for (int i = 1; i < 8; i++) {
@@ -86,7 +96,7 @@ Re-used by Rook and Queen.
 */
 void Piece::attackStraight(
     std::unordered_set<Position>& attacked_squares) const {
-    Position current_pos = _square->getPosition();
+    Position current_pos = getSquare()->getPosition();
     int row = current_pos.r;
     int col = current_pos.c;
 
@@ -127,9 +137,10 @@ This method will be overridden for special cases (ex. Pawns)
 std::unordered_set<Move> Piece::getValidMoves() const {
     std::unordered_set<Move> validMoves;
     std::unordered_set<Position> attackedSquares = getAttackedSquares();
+    Position current_pos = getSquare()->getPosition();
 
     for (Position p : attackedSquares) {
-        validMoves.insert(Move{_square->getPosition(), p, MoveType::UNDETERMINED});
+        validMoves.insert(Move{current_pos, p, MoveType::UNDETERMINED});
     }
 
     return validMoves;
