@@ -25,7 +25,7 @@ class ChessBoard : public Subject {
     void render();
     void defaultSetup(std::unique_ptr<Player> &whitePlayer, std::unique_ptr<Player> &blackPlayer);
     void updateAttackMap();
-    bool isPositionUnderAttack(Position position, Color color);
+    bool isPositionUnderAttack(Position position, Color color) const;
     // void customSetup();
     void reset();
 };

@@ -12,6 +12,7 @@ class King final : public Piece {
          std::shared_ptr<ChessBoard> board, std::weak_ptr<Square> square);
     char getPieceChar() const override;
     std::unordered_set<Position> getAttackedSquares() const override;
+    bool inCheck() const;
     ~King() = default;
 };
 

@@ -17,7 +17,7 @@ class Piece {
    protected:
     std::weak_ptr<Square> _square;
     Player* _player;
-    std::shared_ptr<ChessBoard> _board;
+    std::weak_ptr<ChessBoard> _board;
     Color _color;
     bool tryAttackSquare(Position pos,
                          std::unordered_set<Position>& attackedSquares) const;

@@ -135,12 +135,12 @@ Returns true if a position on the Chessboard is under attack by a piece of the s
 
 For example, if we pass in Color::WHITE, this function will return true if a white piece is attacking that position
 */
-bool ChessBoard::isPositionUnderAttack(Position position, Color color) {
+bool ChessBoard::isPositionUnderAttack(Position position, Color color) const {
     if (attack_map.find(position) == attack_map.end()) {
         return false;
     }
 
-    for (auto &piece : attack_map[position]) {
+    for (auto &piece : attack_map.at(position)) {
         if (piece.lock() && piece.lock()->getColor() == color) {
             return true;
         }

@@ -24,16 +24,17 @@ bool Piece::tryAttackSquare(
         return false;
     }
 
-    if (_board == nullptr) {
+    std::shared_ptr<ChessBoard> board_shared = _board.lock();
+    if (!board_shared) {
         std::cerr << "Error: Board is null" << std::endl;
         return false;
     }
 
-    if (_board->getSquare(pos).isEmpty()) {
+    if (board_shared->getSquare(pos).isEmpty()) {
         attacked_squares.insert(pos);
         return true;
     } else {
-        if (_board->getSquare(pos).getPiece()->getColor() != _color) {
+        if (board_shared->getSquare(pos).getPiece()->getColor() != _color) {
             attacked_squares.insert(pos);
         }
         return false;

@@ -23,3 +23,19 @@ std::unordered_set<Position> King::getAttackedSquares() const {
 
     return attackedSquares;
 }
+
+bool King::inCheck() const {
+    Position currentPos = getSquare()->getPosition();
+    Color enemy_color = _color == Color::WHITE ? Color::BLACK : Color::WHITE;
+    std::shared_ptr<ChessBoard> board_shared = _board.lock();
+    if (!board_shared) {
+        std::cerr << "Error: Board is null" << std::endl;
+        return false;
+    }
+
+    if (board_shared->isPositionUnderAttack(currentPos, enemy_color)) {
+        return true;
+    }
+
+    return false;
+}
