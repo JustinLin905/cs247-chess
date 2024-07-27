@@ -30,6 +30,7 @@ CommandInterpreter::GameCmds CommandInterpreter::hashPlayerCommand(const std::st
     }
 }
 
+// returns true if game has started. Flag to start taking player input for moves instead
 bool CommandInterpreter::processGameInput() {
     std::string cmd;
     _in >> cmd;
