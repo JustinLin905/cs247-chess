@@ -14,8 +14,6 @@ CommandInterpreter::GameCmds CommandInterpreter::hashGameCommand(
     const std::string& cmd) {
   if (cmd == "game") {
     return GameCmds::CMD_GAME;
-  } else if (cmd == "score") {
-    return GameCmds::CMD_SCORE;
   } else if (cmd == "setup") {
     return GameCmds::CMD_SETUP;
   } else {
@@ -43,9 +41,6 @@ bool CommandInterpreter::processGameInput() {
   switch (hashGameCommand(cmd)) {
     case GameCmds::CMD_SETUP:
       break;
-    case GameCmds::CMD_SCORE:
-      Manager::getLeaderBoard().printScores();
-      break;
     case GameCmds::CMD_GAME: {
       std::string white, black;
       _in >> white >> black;
@@ -69,21 +64,18 @@ Move CommandInterpreter::processPlayerInput(std::shared_ptr<Game> Game,
   std::string cmd;
   _in >> cmd;
 
-    switch (hashPlayerCommand(cmd)) {
-        case GameCmds::CMD_RESIGN:
-            player.resign();
-            break;
-        case GameCmds::CMD_MOVE: {
-            char og_col, new_col;
-            int og_row, new_row;
-            _in >> og_col >> og_row >> new_col >> new_row;
-            Move move(Position{(int)og_col - 97, og_row}, Position{(int)og_col - 97, new_row});
-            return move;
-            break;
-        }
-        case GameCmds::CMD_UNKNOWN:  // equivalent to default
-            throw std::invalid_argument("Invalid command");
-            break;
+  switch (hashPlayerCommand(cmd)) {
+    case GameCmds::CMD_RESIGN:
+      player.resign();
+      break;
+    case GameCmds::CMD_MOVE: {
+      char og_col, new_col;
+      int og_row, new_row;
+      _in >> og_col >> og_row >> new_col >> new_row;
+      Move move(Position{(int)og_col - 97, og_row},
+                Position{(int)og_col - 97, new_row});
+      return move;
+      break;
     }
     case GameCmds::CMD_UNKNOWN:  // equivalent to default
       throw std::invalid_argument("Invalid command");

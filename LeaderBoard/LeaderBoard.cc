@@ -6,6 +6,7 @@ void LeaderBoard::addScore(float white_score, float black_score) {
 }
 
 void LeaderBoard::printScores() {
+  std::cout << "Final Scores:" << std::endl;
   std::cout << "White: " << _white_score << std::endl;
   std::cout << "Black: " << _black_score << std::endl;
 }
