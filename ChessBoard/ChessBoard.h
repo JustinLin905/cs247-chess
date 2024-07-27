@@ -1,6 +1,8 @@
 #ifndef CHESS_BOARD_H
 #define CHESS_BOARD_H
 
+#include <array>
+
 #include "../ObserverPattern/Subject.h"
 #include "../Piece/PieceTypes/Bishop.h"
 #include "../Piece/PieceTypes/King.h"
@@ -11,16 +13,16 @@
 #include "Square.h"
 
 class ChessBoard : public Subject {
-  std::array<std::array<Square, 8>, 8> _board;
+    std::array<std::array<Square, 8>, 8> _board;
 
- public:
-  ChessBoard();
-  Square &getSquare(Position position);
-  char getState(int row, int col) const;
-  void render();
-  void defaultSetup();
-  // void customSetup();
-  void reset();
+   public:
+    ChessBoard();
+    Square &getSquare(Position position);
+    char getState(int row, int col) const;
+    void render();
+    void defaultSetup();
+    // void customSetup();
+    void reset();
 };
 
 #endif
