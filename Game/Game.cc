@@ -30,6 +30,15 @@ bool Game::makeTurn(Move move) {
 
     if (piece_at_init == nullptr) return false;
 
+    // If move is not in the piece's valid moves, return false
+    if (piece_at_init->getValidMoves().find(move) == piece_at_init->getValidMoves().end()) {
+        std::cout << "Not found in legal moves. Legal moves for this piece: " << std::endl;
+        for (auto m : piece_at_init->getValidMoves()) {
+            std::cout << m.initial_pos.c << m.initial_pos.r << " -> " << m.final_pos.c << m.final_pos.r << std::endl;
+        }
+        return false;
+    }
+
     final_square.setPiece(init_square.setPiece(nullptr));
 
     _chess_board->render();  // rerender board

@@ -8,25 +8,26 @@ Knight::Knight(Color color, Player* player,
 char Knight::getPieceChar() const { return _color == Color::WHITE ? 'N' : 'n'; }
 
 std::unordered_set<Position> Knight::getAttackedSquares() const {
-  std::unordered_set<Position> attackedSquares;
+    std::unordered_set<Position> attackedSquares;
 
-  if (_square == nullptr) {
-    std::cout << "Error: Square is null" << std::endl;
+    if (_square == nullptr) {
+        std::cout << "Error: Square is null" << std::endl;
+        return attackedSquares;
+    }
+
+    // This is possibly not updating when pieces move
+    Position currentPos = _square->getPosition();
+    int row = currentPos.r;
+    int col = currentPos.c;
+
+    tryAttackSquare(Position{row - 2, col - 1}, attackedSquares);
+    tryAttackSquare(Position{row - 2, col + 1}, attackedSquares);
+    tryAttackSquare(Position{row - 1, col - 2}, attackedSquares);
+    tryAttackSquare(Position{row - 1, col + 2}, attackedSquares);
+    tryAttackSquare(Position{row + 1, col - 2}, attackedSquares);
+    tryAttackSquare(Position{row + 1, col + 2}, attackedSquares);
+    tryAttackSquare(Position{row + 2, col - 1}, attackedSquares);
+    tryAttackSquare(Position{row + 2, col + 1}, attackedSquares);
+
     return attackedSquares;
-  }
-
-  Position currentPos = _square->getPosition();
-  int row = currentPos.r;
-  int col = currentPos.c;
-
-  tryAttackSquare(Position{row - 2, col - 1}, attackedSquares);
-  tryAttackSquare(Position{row - 2, col + 1}, attackedSquares);
-  tryAttackSquare(Position{row - 1, col - 2}, attackedSquares);
-  tryAttackSquare(Position{row - 1, col + 2}, attackedSquares);
-  tryAttackSquare(Position{row + 1, col - 2}, attackedSquares);
-  tryAttackSquare(Position{row + 1, col + 2}, attackedSquares);
-  tryAttackSquare(Position{row + 2, col - 1}, attackedSquares);
-  tryAttackSquare(Position{row + 2, col + 1}, attackedSquares);
-
-  return attackedSquares;
 }
