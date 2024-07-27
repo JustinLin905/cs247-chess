@@ -39,7 +39,9 @@ bool Game::makeTurn(Move move) {
         return false;
     }
 
+    // Move the piece
     final_square.setPiece(init_square.setPiece(nullptr));
+    // piece_at_init->setSquare(_chess_board->getSquarePtr(final));
 
     _chess_board->render();  // rerender board
 
