@@ -9,6 +9,7 @@ Piece::Piece(Color color, Player* player,
     : _color(color), _player(player), _board(board), _square(square) {}
 
 Color Piece::getColor() const { return _color; }
+Player* Piece::getPlayer() const { return _player; }
 
 /*
 tryAttackSquare is a helper function that checks if a square can be attacked by

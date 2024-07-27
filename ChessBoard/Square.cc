@@ -14,7 +14,7 @@ Position Square::getPosition() const { return _position; }
 std::unique_ptr<Piece> Square::setPiece(std::unique_ptr<Piece> piece) {
     std::unique_ptr<Piece> old = std::move(_piece);
     _piece = std::move(piece);
-    _piece->_player->addAlivePiece(_piece.get());
+    _piece->getPlayer()->addAlivePiece(_piece.get());
     return old;
 }
 

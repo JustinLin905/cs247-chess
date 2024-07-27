@@ -15,7 +15,7 @@ class ChessBoard;
 struct Position;
 
 class Piece {
- public:
+protected:
   std::shared_ptr<Square> _square;
   Player* _player;
   std::shared_ptr<ChessBoard> _board;
@@ -25,12 +25,13 @@ class Piece {
   void attackDiagonal(std::unordered_set<Position>& attackedSquares) const;
   void attackStraight(std::unordered_set<Position>& attackedSquares) const;
 
- public:
+public:
   Piece(Color color, Player* player,
         std::shared_ptr<ChessBoard> board, std::shared_ptr<Square> square);
   virtual std::unordered_set<Position> getAttackedSquares() const = 0;
   // std::unordered_set<Move> getValidMoves() const;
   Color getColor() const;
+  Player* getPlayer() const;
   virtual char getPieceChar() const = 0;
   virtual ~Piece() = default;
 };
