@@ -8,6 +8,7 @@
 
 class GraphicsObserver : public Observer {
   std::shared_ptr<ChessBoard> _chess_board;
+  void drawPiece(char piece, int row, int col, bool isWhite);
   Xwindow *_w;
 
  public:
