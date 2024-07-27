@@ -75,9 +75,6 @@ void Xwindow::fillRectangle(int x, int y, int width, int height, int colour) {
   XSetForeground(d, gc, colours[Black]);
 }
 
-void Xwindow::drawString(int x, int y, const std::string &msg,
-                         unsigned long color) {
-  XSetForeground(d, gc, color);
+void Xwindow::drawString(int x, int y, const std::string &msg) {
   XDrawString(d, w, DefaultGC(d, s), x, y, msg.c_str(), msg.length());
-  XSetForeground(d, gc, colours[Black]);
 }
