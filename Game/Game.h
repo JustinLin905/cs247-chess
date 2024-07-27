@@ -10,13 +10,13 @@
 #include "../Player/Player.h"
 #include "../PlayerType/PlayerType.h"
 
-class Game : public std::enable_shared_from_this<Game> {
+class Game {
     std::shared_ptr<ChessBoard> _chess_board;
     std::unique_ptr<Player> _white;
     std::unique_ptr<Player> _black;
 
-    TextObserver text_observer;
     GraphicsObserver graphics_observer;
+    TextObserver text_observer;
 
    public:
     Game(PlayerType::Type white, PlayerType::Type black);

@@ -16,6 +16,7 @@ void Manager::startGame(PlayerType::Type white, PlayerType::Type black) {
     _CurrGame = std::make_shared<Game>(white, black);
     _CurrGame->initDefaultGame();
 
+    std::cout << "ballz" << std::endl;
     _CurrGame->renderBoard();
 
     int turn_count = 0;

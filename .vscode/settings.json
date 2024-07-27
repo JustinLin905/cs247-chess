@@ -70,6 +70,7 @@
         "ranges": "cpp",
         "span": "cpp",
         "cinttypes": "cpp",
-        "numeric": "cpp"
+        "numeric": "cpp",
+        "unordered_set": "cpp"
     }
 }

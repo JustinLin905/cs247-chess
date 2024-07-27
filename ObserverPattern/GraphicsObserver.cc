@@ -1,5 +1,7 @@
 #include "GraphicsObserver.h"
 
+#include "../ChessBoard/ChessBoard.h"
+
 GraphicsObserver::GraphicsObserver(std::shared_ptr<ChessBoard> chess_board)
     : _chess_board(chess_board) {
     _w = new Xwindow(800, 800);
