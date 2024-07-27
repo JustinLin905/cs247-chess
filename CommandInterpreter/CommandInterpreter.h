@@ -11,7 +11,7 @@
 
 class CommandInterpreter {
     CommandInterpreter();
-    static std::istream& _in;  // default
+    static std::istream& _in;
 
     // enum class to ensure type safety
     enum class GameCmds {
@@ -34,8 +34,8 @@ class CommandInterpreter {
         return ci;
     }
 
-    static void processGameInput();
-    static void processPlayerInput(Game& Game, Player& player);
+    static bool processGameInput();
+    static Move processPlayerInput(std::shared_ptr<Game> Game, Player& player);
     static void processSetupInput();
 };
 #endif

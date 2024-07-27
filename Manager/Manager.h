@@ -7,7 +7,7 @@
 #include "../PlayerType/PlayerType.h"
 
 class Manager {
-    static Game _CurrGame;
+    static std::shared_ptr<Game> _CurrGame;
 
     Manager();
 

@@ -10,20 +10,22 @@ void Square::setPosition(Position position) { _position = position; }
 
 Position Square::getPosition() const { return _position; }
 
-void Square::setPiece(std::unique_ptr<Piece> piece) {
-  _piece = std::move(piece);
+std::unique_ptr<Piece> Square::setPiece(std::unique_ptr<Piece> piece) {
+    std::unique_ptr<Piece> old = std::move(_piece);
+    _piece = std::move(piece);
+    return old;
 }
 
 Piece *Square::getPiece() const { return _piece.get(); }
 
 char Square::getState() const {
-  if (_piece == nullptr) {
-    return '-';
-  }
-  return _piece->getPieceChar();
+    if (_piece == nullptr) {
+        return '-';
+    }
+    return _piece->getPieceChar();
 }
 
 bool Square::isAttacked(Color color) const {
-  // needs implementation
-  return false;
+    // needs implementation
+    return false;
 }
