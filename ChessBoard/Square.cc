@@ -26,8 +26,3 @@ char Square::getState() const {
     }
     return _piece->getPieceChar();
 }
-
-bool Square::isAttacked(Color color) const {
-    // needs implementation
-    return false;
-}

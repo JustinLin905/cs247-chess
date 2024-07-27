@@ -13,6 +13,13 @@ struct Position {
     }
 
     bool operator!=(const Position &other) const { return !(*this == other); }
+
+    bool operator<(const Position &other) const {
+        if (r != other.r) {
+            return r < other.r;
+        }
+        return c < other.c;
+    }
 };
 
 // Hash function for Position
