@@ -29,7 +29,7 @@ class Piece {
   Piece(Color color, std::shared_ptr<Player> player,
         std::shared_ptr<ChessBoard> board, std::shared_ptr<Square> square);
   virtual std::unordered_set<Position> getAttackedSquares() const = 0;
-  // std::unordered_set<Move> getValidMoves() const;
+  std::unordered_set<Move> getValidMoves() const;
   Color getColor() const;
   virtual char getPieceChar() const = 0;
   virtual ~Piece() = default;

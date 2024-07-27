@@ -4,9 +4,10 @@
 #include "../ChessBoard/Square.h"
 #include "../Player/Player.h"
 
-Piece::Piece(Color color, std::shared_ptr<Player> player,
-             std::shared_ptr<ChessBoard> board, std::shared_ptr<Square> square)
-    : _color(color), _player(player), _board(board), _square(square) {}
+Piece::Piece(Color color, std::shared_ptr<Player> player, std::shared_ptr<ChessBoard> board, std::shared_ptr<Square> square)
+    : _color(color), _player(player), _board(board), _square(square) {
+  _player->addAlivePiece(std::shared_ptr<Piece>(this));
+}
 
 Color Piece::getColor() const { return _color; }
 
@@ -17,8 +18,7 @@ this piece. Handles bounds checking and opposing color checking.
 Returns true if the loop using this function should continue searching in this
 direction, false otherwise.
 */
-bool Piece::tryAttackSquare(
-    Position pos, std::unordered_set<Position>& attacked_squares) const {
+bool Piece::tryAttackSquare(Position pos, std::unordered_set<Position>& attacked_squares) const {
   if (pos.r < 0 || pos.r >= 8 || pos.c < 0 || pos.c >= 8) {
     return false;
   }
@@ -116,4 +116,16 @@ void Piece::attackStraight(
       break;
     }
   }
+}
+
+
+std::unordered_set<Move> Piece::getValidMoves() const {
+  std::unordered_set<Position> attackedSquares = getAttackedSquares();
+  std::unordered_set<Move> validMoves;
+
+  for(Position i : attackedSquares) {
+    validMoves.insert(Move{_square->getPosition(), i, MoveType::UNDETERMINED});
+  }
+
+  return validMoves;
 }
