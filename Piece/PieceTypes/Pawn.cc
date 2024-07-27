@@ -25,3 +25,16 @@ std::unordered_set<Position> Pawn::getAttackedSquares() const {
   }
   return attackedSquares;
 }
+
+/*
+Only has move for moving forward by one square.
+TODO: NEED UPDATE
+*/
+std::unordered_set<Move> Pawn::getValidMoves() const {
+  Position currentPos = _square->getPosition();
+  int row = currentPos.r;
+  int col = currentPos.c;
+  Position nextPos = _color == Color::WHITE ? Position{row - 1, col} : Position{row + 1, col};
+
+  return std::unordered_set<Move>{Move{currentPos, nextPos, MoveType::UNDETERMINED}};
+}
