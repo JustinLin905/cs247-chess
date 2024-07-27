@@ -5,8 +5,7 @@
 TextObserver::TextObserver(std::shared_ptr<ChessBoard> chess_board,
                            std::ostream &out)
     : _chess_board{chess_board}, _out{out} {
-    _chess_board->attach(std::make_unique<TextObserver>(*this));
-    std::cout << "ballz2.0" << std::endl;
+    _chess_board->attach(std::shared_ptr<TextObserver>(this));
 }
 
 void TextObserver::notify() {

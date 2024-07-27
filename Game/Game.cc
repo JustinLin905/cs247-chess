@@ -6,11 +6,9 @@
 #include "../Player/HumanPlayer.h"
 #include "../PlayerType/PlayerType.h"
 
-Game::Game(PlayerType::Type white, PlayerType::Type black) : _chess_board(std::make_shared<ChessBoard>()), graphics_observer{GraphicsObserver(_chess_board)}, text_observer{TextObserver(_chess_board, std::cout)} {
+Game::Game(PlayerType::Type white, PlayerType::Type black) : _chess_board(std::make_shared<ChessBoard>()), _text_observer{std::make_shared<TextObserver>(_chess_board, std::cout)}, _graphics_observer{std::make_shared<GraphicsObserver>(_chess_board)} {
     if (white == PlayerType::Type::HUMAN) _white = std::make_unique<HumanPlayer>(Color::WHITE, std::shared_ptr<Game>(this));
     if (black == PlayerType::Type::HUMAN) _black = std::make_unique<HumanPlayer>(Color::BLACK, std::shared_ptr<Game>(this));
-
-    _chess_board = std::make_shared<ChessBoard>();
 }
 
 void Game::initDefaultGame() {

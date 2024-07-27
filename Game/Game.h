@@ -15,8 +15,8 @@ class Game {
     std::unique_ptr<Player> _white;
     std::unique_ptr<Player> _black;
 
-    GraphicsObserver graphics_observer;
-    TextObserver text_observer;
+    std::shared_ptr<GraphicsObserver> _graphics_observer;
+    std::shared_ptr<TextObserver> _text_observer;
 
    public:
     Game(PlayerType::Type white, PlayerType::Type black);
