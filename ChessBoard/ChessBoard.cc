@@ -91,4 +91,9 @@ Square &ChessBoard::getSquare(Position position) {
     return *_board[position.r][position.c];
 }
 
+// Currently used to swap the weak_ptr that pieces have to their new square, after moving
+std::shared_ptr<Square> ChessBoard::getSquarePtr(Position position) {
+    return _board[position.r][position.c];
+}
+
 void ChessBoard::render() { notifyObservers(); }

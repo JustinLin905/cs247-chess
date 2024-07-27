@@ -18,6 +18,7 @@ class ChessBoard : public Subject {
    public:
     ChessBoard();
     Square &getSquare(Position position);
+    std::shared_ptr<Square> getSquarePtr(Position position);
     char getState(int row, int col) const;
     void render();
     void defaultSetup(std::unique_ptr<Player> &whitePlayer, std::unique_ptr<Player> &blackPlayer);

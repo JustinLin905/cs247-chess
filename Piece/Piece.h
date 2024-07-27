@@ -30,7 +30,7 @@ class Piece {
     virtual std::unordered_set<Position> getAttackedSquares() const = 0;
     virtual std::unordered_set<Move> getValidMoves() const;
     std::shared_ptr<Square> getSquare() const;
-    void setSquare(std::shared_ptr<Square> square);
+    void setSquare(std::weak_ptr<Square> square);
     Color getColor() const;
     Player* getPlayer() const;
     virtual char getPieceChar() const = 0;

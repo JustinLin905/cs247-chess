@@ -146,4 +146,4 @@ std::unordered_set<Move> Piece::getValidMoves() const {
     return validMoves;
 }
 
-void Piece::setSquare(std::shared_ptr<Square> square) { _square = square; }
+void Piece::setSquare(std::weak_ptr<Square> square) { _square = square; }
