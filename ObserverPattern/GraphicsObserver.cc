@@ -1,5 +1,7 @@
 #include "GraphicsObserver.h"
 
+#include "../enums.h"
+
 GraphicsObserver::GraphicsObserver(std::shared_ptr<ChessBoard> chess_board)
     : _chess_board(chess_board) {
   _w = new Xwindow(800, 800);
@@ -47,10 +49,17 @@ void GraphicsObserver::notify() {
             centerY -
             10;  // 10 is half of the white rectangle's height (20 / 2)
 
-        _w->fillRectangle(whiteRectX, whiteRectY, 20, 20, Xwindow::White);
+        _w->fillRectangle(whiteRectX, whiteRectY, 25, 25, Xwindow::White);
       }
 
-      _w->drawString(100 * j + 50, 100 * i + 50, std::string(1, cur));
+      // Add a "w" or "b" to the piece to indicate color
+      char color_indicator =
+          _chess_board->getSquare(Position{i, j}).getPiece()->getColor() ==
+                  Color::WHITE
+              ? 'w'
+              : 'b';
+      _w->drawString(100 * j + 50, 100 * i + 50,
+                     std::string{color_indicator} + std::string{cur});
     }
   }
 }
