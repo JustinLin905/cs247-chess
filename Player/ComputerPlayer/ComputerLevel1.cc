@@ -7,6 +7,8 @@
 
 #include "../../Move/Move.h"
 
+ComputerLevel1::ComputerLevel1(Color color, std::shared_ptr<Game> game) : ComputerPlayer(color, game) {}
+
 Move ComputerLevel1::getMove() {
     while (true) {
         std::uniform_int_distribution<> dist{0, _alive_pieces.size() - 1};  // set min and max

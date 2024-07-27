@@ -14,44 +14,25 @@ class ChessBoard;
 struct Position;
 
 class Piece {
-<<<<<<< HEAD
    protected:
     std::shared_ptr<Square> _square;
-    std::shared_ptr<Player> _player;
+    Player* _player;
     std::shared_ptr<ChessBoard> _board;
     Color _color;
-    bool tryAttackSquare(Position pos, std::unordered_set<Position>& attackedSquares) const;
+    bool tryAttackSquare(Position pos,
+                         std::unordered_set<Position>& attackedSquares) const;
     void attackDiagonal(std::unordered_set<Position>& attackedSquares) const;
     void attackStraight(std::unordered_set<Position>& attackedSquares) const;
 
    public:
-    Piece(Color color, std::shared_ptr<Player> player, std::shared_ptr<ChessBoard> board, std::shared_ptr<Square> square);
+    Piece(Color color, Player* player,
+          std::shared_ptr<ChessBoard> board, std::shared_ptr<Square> square);
     virtual std::unordered_set<Position> getAttackedSquares() const = 0;
-    std::unordered_set<Move> getValidMoves() const;
+    virtual std::unordered_set<Move> getValidMoves() const;
     Color getColor() const;
+    Player* getPlayer() const;
     virtual char getPieceChar() const = 0;
     virtual ~Piece() = default;
-=======
-protected:
-  std::shared_ptr<Square> _square;
-  Player* _player;
-  std::shared_ptr<ChessBoard> _board;
-  Color _color;
-  bool tryAttackSquare(Position pos,
-                       std::unordered_set<Position>& attackedSquares) const;
-  void attackDiagonal(std::unordered_set<Position>& attackedSquares) const;
-  void attackStraight(std::unordered_set<Position>& attackedSquares) const;
-
-public:
-  Piece(Color color, Player* player,
-        std::shared_ptr<ChessBoard> board, std::shared_ptr<Square> square);
-  virtual std::unordered_set<Position> getAttackedSquares() const = 0;
-  virtual std::unordered_set<Move> getValidMoves() const;
-  Color getColor() const;
-  Player* getPlayer() const;
-  virtual char getPieceChar() const = 0;
-  virtual ~Piece() = default;
->>>>>>> main
 };
 
 #endif
