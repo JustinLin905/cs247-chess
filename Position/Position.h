@@ -5,8 +5,8 @@
 #include <functional>  // For std::hash
 
 struct Position {
-    int c;
     int r;
+    int c;
 
     bool operator==(const Position &other) const {
         return r == other.r && c == other.c;

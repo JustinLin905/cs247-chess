@@ -72,8 +72,8 @@ Move CommandInterpreter::processPlayerInput(std::shared_ptr<Game> Game,
       char og_col, new_col;
       int og_row, new_row;
       _in >> og_col >> og_row >> new_col >> new_row;
-      Move move(Position{(int)og_col - 97, og_row},
-                Position{(int)og_col - 97, new_row});
+      Move move(Position{og_row, (int)og_col - 97},
+                Position{new_row, (int)og_col - 97});
       return move;
       break;
     }
