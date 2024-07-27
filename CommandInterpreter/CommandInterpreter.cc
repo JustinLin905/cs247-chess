@@ -69,17 +69,21 @@ Move CommandInterpreter::processPlayerInput(std::shared_ptr<Game> Game,
   std::string cmd;
   _in >> cmd;
 
-  switch (hashPlayerCommand(cmd)) {
-    case GameCmds::CMD_RESIGN:
-      player.resign();
-      break;
-    case GameCmds::CMD_MOVE: {
-      int og_col, new_col;
-      int og_row, new_row;
-      _in >> og_col >> og_row >> new_col >> new_row;
-      Move move(Position{og_col, og_row}, Position{new_col, new_row});
-      return move;
-      break;
+    switch (hashPlayerCommand(cmd)) {
+        case GameCmds::CMD_RESIGN:
+            player.resign();
+            break;
+        case GameCmds::CMD_MOVE: {
+            char og_col, new_col;
+            int og_row, new_row;
+            _in >> og_col >> og_row >> new_col >> new_row;
+            Move move(Position{(int)og_col - 97, og_row}, Position{(int)og_col - 97, new_row});
+            return move;
+            break;
+        }
+        case GameCmds::CMD_UNKNOWN:  // equivalent to default
+            throw std::invalid_argument("Invalid command");
+            break;
     }
     case GameCmds::CMD_UNKNOWN:  // equivalent to default
       throw std::invalid_argument("Invalid command");

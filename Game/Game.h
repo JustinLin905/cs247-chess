@@ -28,6 +28,8 @@ class Game {
 
     Player& getWhite() const;
     Player& getBlack() const;
+
+    ~Game() = default;
 };
 
 #endif
