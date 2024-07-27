@@ -8,19 +8,19 @@
 #include "../enums.h"
 
 class Square {
-  Position _position;
-  std::unique_ptr<Piece> _piece;
+    Position _position;
+    std::unique_ptr<Piece> _piece = nullptr;
 
- public:
-  Square() = default;
-  Square(Position position);
-  void setPosition(Position position);
-  Position getPosition() const;
-  void setPiece(std::unique_ptr<Piece> piece);
-  Piece *getPiece() const;
-  bool isEmpty() const;
-  bool isAttacked(Color color) const;
-  char getState() const;
+   public:
+    Square() = default;
+    Square(Position position);
+    void setPosition(Position position);
+    Position getPosition() const;
+    std::unique_ptr<Piece> setPiece(std::unique_ptr<Piece> piece);
+    Piece *getPiece() const;
+    bool isEmpty() const;
+    bool isAttacked(Color color) const;
+    char getState() const;
 };
 
 #endif

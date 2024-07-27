@@ -1,5 +1,6 @@
 #include "CommandInterpreter.h"
 
+#include <memory>
 #include <string>
 
 #include "../Game/Game.h"
@@ -10,9 +11,9 @@
 std::istream& CommandInterpreter::_in = std::cin;
 
 CommandInterpreter::GameCmds CommandInterpreter::hashGameCommand(const std::string& cmd) {
-    if (cmd == "Game") {
+    if (cmd == "game") {
         return GameCmds::CMD_GAME;
-    } else if (cmd == "Setup") {
+    } else if (cmd == "setup") {
         return GameCmds::CMD_SETUP;
     } else {
         return GameCmds::CMD_UNKNOWN;
@@ -20,39 +21,41 @@ CommandInterpreter::GameCmds CommandInterpreter::hashGameCommand(const std::stri
 }
 
 CommandInterpreter::GameCmds CommandInterpreter::hashPlayerCommand(const std::string& cmd) {
-    if (cmd == "Resign") {
+    if (cmd == "resign") {
         return GameCmds::CMD_RESIGN;
-    } else if (cmd == "Move") {
+    } else if (cmd == "move") {
         return GameCmds::CMD_MOVE;
     } else {
         return GameCmds::CMD_UNKNOWN;
     }
 }
 
-void CommandInterpreter::processGameInput() {
+bool CommandInterpreter::processGameInput() {
     std::string cmd;
     _in >> cmd;
 
     switch (hashGameCommand(cmd)) {
-        case GameCmds::CMD_RESIGN:
-            Manager::closeGame();
+        case GameCmds::CMD_SETUP:
             break;
-        case GameCmds::CMD_SETUP: {
+        case GameCmds::CMD_GAME: {
             std::string white, black;
             _in >> white >> black;
             PlayerType::Type whiteType = PlayerType::HashPlayerType(white);
             PlayerType::Type blackType = PlayerType::HashPlayerType(black);
             Manager::startGame(whiteType, blackType);
+            return true;
             break;
         }
         case GameCmds::CMD_UNKNOWN:  // equivalent to default
             throw std::invalid_argument("Invalid command");
             break;
     }
+
+    return false;
 }
 
 // Passing in a Game reference so Manager can run multiple games at once
-void CommandInterpreter::processPlayerInput(Game& Game, Player& player) {
+Move CommandInterpreter::processPlayerInput(std::shared_ptr<Game> Game, Player& player) {
     std::string cmd;
     _in >> cmd;
 
@@ -61,10 +64,11 @@ void CommandInterpreter::processPlayerInput(Game& Game, Player& player) {
             player.resign();
             break;
         case GameCmds::CMD_MOVE: {
-            char og_col, og_row, new_col, new_row;
+            int og_col, new_col;
+            int og_row, new_row;
             _in >> og_col >> og_row >> new_col >> new_row;
             Move move(Position{og_col, og_row}, Position{new_col, new_row});
-            Game.makeTurn(move);
+            return move;
             break;
         }
         case GameCmds::CMD_UNKNOWN:  // equivalent to default

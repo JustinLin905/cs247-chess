@@ -10,15 +10,16 @@
 #include "../enums.h"
 
 class Piece;
+class Game;
 
 class Player {
    protected:
     std::vector<std::shared_ptr<Piece>> _alive_pieces;
     Color _color;
-    Game _game;
+    std::shared_ptr<Game> _game;
 
    public:
-    Player(Color color, Game &game);
+    Player(Color color, std::shared_ptr<Game> game);
     void resign();
     std::vector<Move> getValidPlayerMoves();
     virtual Move getMove() = 0;

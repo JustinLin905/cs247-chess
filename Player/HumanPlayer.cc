@@ -2,8 +2,8 @@
 
 #include "../CommandInterpreter/CommandInterpreter.h"
 
-HumanPlayer::HumanPlayer(Color color, Game& game) : Player(color, game) {}
+HumanPlayer::HumanPlayer(Color color, std::shared_ptr<Game> game) : Player(color, game) {}
 
 Move HumanPlayer::getMove() {
-    CommandInterpreter::processPlayerInput(_game, *this);
+    return CommandInterpreter::processPlayerInput(_game, *this);
 }
