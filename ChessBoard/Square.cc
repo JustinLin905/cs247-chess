@@ -14,6 +14,8 @@ Position Square::getPosition() const { return _position; }
 void Square::setPiece(std::shared_ptr<Piece> piece) {
     _piece = piece;
     if (!_piece.expired()) piece->getPlayer()->addAlivePiece(piece);
+        std::cout<< "C" << std::endl;
+
 }
 
 void Square::disconnectPiece() {

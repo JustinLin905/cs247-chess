@@ -4,9 +4,8 @@
 #include "../ChessBoard/Square.h"
 #include "../Player/Player.h"
 
-Piece::Piece(Color color, Player* player,
-             std::shared_ptr<ChessBoard> board, std::weak_ptr<Square> square)
-    : _color(color), _player(player), _board(board), _square(square) {}
+Piece::Piece(Color color, Player* player, std::weak_ptr<ChessBoard> board, std::weak_ptr<Square> square) :
+    _color(color), _player(player), _board(board), _square(square) {}
 
 Color Piece::getColor() const { return _color; }
 Player* Piece::getPlayer() const { return _player; }
