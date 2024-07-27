@@ -7,6 +7,7 @@
 
 // #include "../ChessBoard/ChessBoard.h"
 // #include "../Position/Position.h"
+#include "../Move/Move.h"
 #include "../enums.h"
 
 class Square;

@@ -10,6 +10,13 @@ struct Move {
     MoveType type;
 
     Move(Position initial_pos, Position final_pos, MoveType type = MoveType::UNDETERMINED) : initial_pos(initial_pos), final_pos(final_pos), type(type) {}
+
+    bool operator==(const Move &other) const {
+        return initial_pos == other.initial_pos && final_pos == other.final_pos && type == other.type;
+    }
+
+    bool operator!=(const Move &other) const { return !(*this == other); }
+
 };
 
 // Hash function for Move
