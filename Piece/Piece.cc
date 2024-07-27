@@ -118,3 +118,19 @@ void Piece::attackStraight(
     }
   }
 }
+
+/*
+Get all valid moves of a piece.
+By default, the valid moves of a piece is the same as the squares they attack.
+This method will be overridden for special cases (ex. Pawns)
+*/
+std::unordered_set<Move> Piece::getValidMoves() const {
+  std::unordered_set<Move> validMoves;
+  std::unordered_set<Position> attackedSquares = getAttackedSquares();
+
+  for(Position p : attackedSquares) {
+    validMoves.insert(Move{_square->getPosition(), p, MoveType::UNDETERMINED});
+  }
+
+  return validMoves;
+}

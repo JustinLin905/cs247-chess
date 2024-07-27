@@ -22,6 +22,7 @@ class Player {
     Player(Color color, std::shared_ptr<Game> game);
     void resign();
     std::vector<Move> getValidPlayerMoves();
+    bool hasValidMove() const;
     virtual Move getMove() = 0;
     void addAlivePiece(Piece* piece);
 };

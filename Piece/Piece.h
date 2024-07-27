@@ -5,8 +5,7 @@
 #include <memory>
 #include <unordered_set>
 
-// #include "../ChessBoard/ChessBoard.h"
-// #include "../Position/Position.h"
+#include "../Move/Move.h"
 #include "../enums.h"
 
 class Square;
@@ -29,7 +28,7 @@ public:
   Piece(Color color, Player* player,
         std::shared_ptr<ChessBoard> board, std::shared_ptr<Square> square);
   virtual std::unordered_set<Position> getAttackedSquares() const = 0;
-  // std::unordered_set<Move> getValidMoves() const;
+  virtual std::unordered_set<Move> getValidMoves() const;
   Color getColor() const;
   Player* getPlayer() const;
   virtual char getPieceChar() const = 0;

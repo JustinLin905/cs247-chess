@@ -13,3 +13,15 @@ void Player::addAlivePiece(Piece* piece) {
 void Player::resign() {
     Manager::closeGame();
 }
+
+/*
+This method is to check whether or not a player has any more available moves to make.
+This is used to check for checks and stalemates
+*/
+bool Player::hasValidMove() const {
+    for(auto p : _alive_pieces) {
+        if (p->getValidMoves().size() > 0) return true;
+    }
+
+    return false;
+}
