@@ -129,3 +129,22 @@ void ChessBoard::updateAttackMap() {
     //     std::cout << "----------------" << std::endl;
     // }
 }
+
+/*
+Returns true if a position on the Chessboard is under attack by a piece of the specified color.
+
+For example, if we pass in Color::WHITE, this function will return true if a white piece is attacking that position
+*/
+bool ChessBoard::isPositionUnderAttack(Position position, Color color) {
+    if (attack_map.find(position) == attack_map.end()) {
+        return false;
+    }
+
+    for (auto &piece : attack_map[position]) {
+        if (piece->getColor() == color) {
+            return true;
+        }
+    }
+
+    return false;
+}
