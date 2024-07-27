@@ -56,6 +56,9 @@ bool Game::makeTurn(Move move) {
     final_square.setPiece(init_square.setPiece(nullptr));
     piece_at_init->setSquare(_chess_board->getSquarePtr(final));
 
+    // update attack map
+    _chess_board->updateAttackMap();
+
     _chess_board->render();  // rerender board
 
     return true;  // move was valid

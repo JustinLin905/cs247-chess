@@ -2,6 +2,7 @@
 #define CHESS_BOARD_H
 
 #include <array>
+#include <map>
 
 #include "../ObserverPattern/Subject.h"
 #include "../Piece/PieceTypes/Bishop.h"
@@ -14,6 +15,7 @@
 
 class ChessBoard : public Subject {
     std::array<std::array<std::shared_ptr<Square>, 8>, 8> _board;
+    std::map<Position, std::vector<Piece *>> attack_map;
 
    public:
     ChessBoard();
@@ -22,6 +24,7 @@ class ChessBoard : public Subject {
     char getState(int row, int col) const;
     void render();
     void defaultSetup(std::unique_ptr<Player> &whitePlayer, std::unique_ptr<Player> &blackPlayer);
+    void updateAttackMap();
     // void customSetup();
     void reset();
 };
