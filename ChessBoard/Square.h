@@ -9,15 +9,16 @@
 
 class Square {
     Position _position;
-    std::unique_ptr<Piece> _piece = nullptr;
+    std::weak_ptr<Piece> _piece;
 
    public:
     Square() = default;
     Square(Position position);
     void setPosition(Position position);
     Position getPosition() const;
-    std::unique_ptr<Piece> setPiece(std::unique_ptr<Piece> piece);
-    Piece *getPiece() const;
+    void setPiece(std::shared_ptr<Piece> piece);
+    std::shared_ptr<Piece> getPiece() const;
+    void disconnectPiece();
     bool isEmpty() const;
     bool isAttacked(Color color) const;
     char getState() const;

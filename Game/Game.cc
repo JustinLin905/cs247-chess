@@ -39,8 +39,7 @@ bool Game::makeTurn(Move move) {
     Square& final_square = _chess_board->getSquare(final);
 
     auto piece_at_init = init_square.getPiece();
-    // auto piece_at_final = final_square.getPiece();
-
+ 
     if (piece_at_init == nullptr) return false;
 
     // If move is not in the piece's valid moves, return false
@@ -53,7 +52,8 @@ bool Game::makeTurn(Move move) {
     }
 
     // Move the piece
-    final_square.setPiece(init_square.setPiece(nullptr));
+    init_square.disconnectPiece();
+    final_square.setPiece(piece_at_init);
     piece_at_init->setSquare(_chess_board->getSquarePtr(final));
 
     // update attack map

@@ -15,7 +15,7 @@
 
 class ChessBoard : public Subject {
     std::array<std::array<std::shared_ptr<Square>, 8>, 8> _board;
-    std::map<Position, std::vector<Piece *>> attack_map;
+    std::map<Position, std::vector<std::weak_ptr<Piece>>> attack_map;
 
    public:
     ChessBoard();

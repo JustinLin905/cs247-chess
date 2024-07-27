@@ -3,26 +3,26 @@
 #include "../Piece/Piece.h"
 #include "../Player/Player.h"
 
-Square::Square(Position position) : _position(position), _piece{nullptr} {}
+Square::Square(Position position) : _position(position) {}
 
-bool Square::isEmpty() const { return _piece == nullptr; }
+bool Square::isEmpty() const { return _piece.expired(); }
 
 void Square::setPosition(Position position) { _position = position; }
 
 Position Square::getPosition() const { return _position; }
 
-std::unique_ptr<Piece> Square::setPiece(std::unique_ptr<Piece> piece) {
-    std::unique_ptr<Piece> old = std::move(_piece);
-    _piece = std::move(piece);
-    if (_piece != nullptr) _piece->getPlayer()->addAlivePiece(_piece.get());
-    return old;
+void Square::setPiece(std::shared_ptr<Piece> piece) {
+    _piece = piece;
+    if (!_piece.expired()) piece->getPlayer()->addAlivePiece(piece);
 }
 
-Piece *Square::getPiece() const { return _piece.get(); }
+void Square::disconnectPiece() {
+    _piece.reset();
+}
+
+std::shared_ptr<Piece> Square::getPiece() const { return _piece.lock(); }
 
 char Square::getState() const {
-    if (_piece == nullptr) {
-        return '-';
-    }
-    return _piece->getPieceChar();
+    auto piece_shared = _piece.lock();
+    return piece_shared ? _piece.lock()->getPieceChar() : '-';
 }

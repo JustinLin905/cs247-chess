@@ -72,6 +72,7 @@
         "cinttypes": "cpp",
         "numeric": "cpp",
         "unordered_set": "cpp",
-        "fstream": "cpp"
+        "fstream": "cpp",
+        "deque": "cpp"
     }
 }

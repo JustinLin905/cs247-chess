@@ -122,7 +122,7 @@ void ChessBoard::updateAttackMap() {
     //               << std::endl;
     //     std::cout << "Attacking Pieces: ";
     //     for (auto &piece : pair.second) {
-    //         std::cout << piece->getPieceChar();
+    //         if (piece.lock()) std::cout << piece.lock()->getPieceChar();
     //     }
     //     std::cout << std::endl;
 
@@ -141,7 +141,7 @@ bool ChessBoard::isPositionUnderAttack(Position position, Color color) {
     }
 
     for (auto &piece : attack_map[position]) {
-        if (piece->getColor() == color) {
+        if (piece.lock() && piece.lock()->getColor() == color) {
             return true;
         }
     }

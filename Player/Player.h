@@ -14,7 +14,7 @@ class Game;
 
 class Player {
    protected:
-    std::vector<Piece*> _alive_pieces;
+    std::vector<std::shared_ptr<Piece>> _alive_pieces;
     Color _color;
     std::shared_ptr<Game> _game;
 
@@ -24,7 +24,7 @@ class Player {
     std::vector<Move> getValidPlayerMoves();
     bool hasValidMove() const;
     virtual Move getMove() = 0;
-    void addAlivePiece(Piece* piece);
+    void addAlivePiece(std::shared_ptr<Piece> piece);
 };
 
 #endif
