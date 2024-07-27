@@ -25,6 +25,7 @@ class Manager {
   static void setupGame();
   static void startGame(PlayerType::Type white, PlayerType::Type black);
   static void closeGame();
+  static LeaderBoard& getLeaderBoard();
 };
 
 #endif

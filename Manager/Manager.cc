@@ -7,8 +7,9 @@
 #include "../PlayerType/PlayerType.h"
 
 std::shared_ptr<Game> Manager::_CurrGame = nullptr;
+std::unique_ptr<LeaderBoard> Manager::_leaderBoard = nullptr;
 
-Manager::Manager() { _leaderBoard = std::make_unique<LeaderBoard>(); }
+Manager::Manager() {}
 
 void Manager::setupGame() {}
 
@@ -35,3 +36,11 @@ void Manager::startGame(PlayerType::Type white, PlayerType::Type black) {
 }
 
 void Manager::closeGame() { std::cout << "Game over" << std::endl; }
+
+LeaderBoard& Manager::getLeaderBoard() {
+  if (_leaderBoard == nullptr) {
+    _leaderBoard = std::make_unique<LeaderBoard>();
+  }
+
+  return *_leaderBoard;
+}
