@@ -23,7 +23,7 @@ std::unordered_set<Position> Pawn::getAttackedSquares() const {
     }
 
     Position nextPos = _color == Color::WHITE ? Position{row - 1, col} : Position{row + 1, col};
-    attackedSquares.insert(nextPos);  // default attack
+    if (temp_board_ptr->getSquare(nextPos).getPiece() == nullptr) attackedSquares.insert(nextPos);  // default attack
 
     if (!_moved) {
         Position nextPos2 = _color == Color::WHITE ? Position{row - 2, col} : Position{row + 2, col};
