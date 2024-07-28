@@ -25,12 +25,12 @@ void ChessBoard::defaultSetup(std::unique_ptr<Player> &whitePlayer, std::unique_
     reset();
     for (int i = 0; i < 8; i++) {
         // Need to update to set Player pointers correctly, instead of to nullptr
-        _board[1][i]->setPiece(std::make_unique<Pawn>(
-            Color::BLACK, blackPlayer.get(), chessBoard,
-            std::weak_ptr<Square>(_board[1][i])));
-        _board[6][i]->setPiece(std::make_unique<Pawn>(
-            Color::WHITE, whitePlayer.get(), chessBoard,
-            std::weak_ptr<Square>(_board[6][i])));
+        // _board[1][i]->setPiece(std::make_unique<Pawn>(
+        //     Color::BLACK, blackPlayer.get(), chessBoard,
+        //     std::weak_ptr<Square>(_board[1][i])));
+        // _board[6][i]->setPiece(std::make_unique<Pawn>(
+        //     Color::WHITE, whitePlayer.get(), chessBoard,
+        //     std::weak_ptr<Square>(_board[6][i])));
     }
     _board[0][0]->setPiece(std::make_unique<Rook>(
         Color::BLACK, blackPlayer.get(), chessBoard,

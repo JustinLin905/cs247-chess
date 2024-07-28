@@ -55,7 +55,15 @@ bool Game::makeTurn(Move move, Color player_color) {
     // update attack map
     _chess_board->updateAttackMap();
     _chess_board->render();  // rerender board
-    return true;             // move was valid
+
+    // Check if either player is in check
+    if (_white->inCheck()) {
+        std::cout << "White is in check" << std::endl;
+    } else if (_black->inCheck()) {
+        std::cout << "Black is in check" << std::endl;
+    }
+
+    return true;  // move was valid
 }
 
 void Game::renderBoard() const {
