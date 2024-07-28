@@ -11,6 +11,7 @@
 #include "../PlayerType/PlayerType.h"
 
 class Game {
+   public:
     std::shared_ptr<ChessBoard> _chess_board;
     std::unique_ptr<Player> _white;
     std::unique_ptr<Player> _black;
@@ -20,7 +21,6 @@ class Game {
 
     std::unique_ptr<Player> createPlayerPtr(PlayerType::Type type);
 
-   public:
     Game(PlayerType::Type white, PlayerType::Type black);
     void initDefaultGame();
     bool makeTurn(Move move, Color color);
@@ -31,7 +31,9 @@ class Game {
     Player& getWhite() const;
     Player& getBlack() const;
 
-    ~Game() = default;
+    ~Game() {
+        std::cout << "FUCKKKKKKKKKK" << std::endl;
+    };
 };
 
 #endif

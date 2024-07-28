@@ -20,6 +20,8 @@ void Manager::startGame(PlayerType::Type white, PlayerType::Type black) {
 
     _CurrGame->renderBoard();
 
+    _CurrGame->getBlack().removeDeadPiece(_CurrGame->_chess_board->getSquare(Position{0, 0}).getPiece());
+
     int turn_count = 0;
 
     // Game loop
@@ -30,6 +32,19 @@ void Manager::startGame(PlayerType::Type white, PlayerType::Type black) {
             std::cout << "Invalid move" << std::endl;
             continue;
         }
+
+        // // for debugging
+        // for (auto i : _CurrGame->getBlack()._alive_pieces) {
+        //     std::cout << i->getPieceChar() << " ";
+        // }
+
+        // std::cout << std::endl;
+
+        // for (auto i : _CurrGame->getWhite()._alive_pieces) {
+        //     std::cout << i->getPieceChar() << " ";
+        // }
+
+        // std::cout << std::endl;
 
         turn_count++;
     }

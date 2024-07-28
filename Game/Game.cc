@@ -47,6 +47,12 @@ bool Game::makeTurn(Move move, Color player_color) {
         return false;
     }
 
+    // if a piece was captured
+    if (final_square.getPiece() != nullptr) {
+        Player& captured_player = player_color == Color::WHITE ? *_black : *_white;
+        captured_player.removeDeadPiece(final_square.getPiece());
+    }
+
     // Move the piece
     init_square.disconnectPiece();
     final_square.setPiece(piece_at_init, false);
