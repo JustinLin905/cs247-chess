@@ -23,64 +23,56 @@ void ChessBoard::defaultSetup(std::unique_ptr<Player> &whitePlayer, std::unique_
     // Thought: we will need to be able to reverse this based on the current
     // player's color
     reset();
-    for (int i = 0; i < 8; i++) {
-        // Need to update to set Player pointers correctly, instead of to nullptr
-        _board[1][i]->setPiece(std::make_unique<Pawn>(
-            Color::BLACK, blackPlayer.get(), chessBoard,
-            std::weak_ptr<Square>(_board[1][i])));
-        _board[6][i]->setPiece(std::make_unique<Pawn>(
-            Color::WHITE, whitePlayer.get(), chessBoard,
-            std::weak_ptr<Square>(_board[6][i])));
-    }
-    _board[0][0]->setPiece(std::make_unique<Rook>(
-        Color::BLACK, blackPlayer.get(), chessBoard,
-        std::weak_ptr<Square>(_board[0][0])));
-    _board[0][1]->setPiece(std::make_unique<Knight>(
-        Color::BLACK, blackPlayer.get(), chessBoard,
-        std::weak_ptr<Square>(_board[0][1])));
-    _board[0][2]->setPiece(std::make_unique<Bishop>(
-        Color::BLACK, blackPlayer.get(), chessBoard,
-        std::weak_ptr<Square>(_board[0][2])));
-    _board[0][3]->setPiece(std::make_unique<Queen>(
-        Color::BLACK, blackPlayer.get(), chessBoard,
-        std::weak_ptr<Square>(_board[0][3])));
-    _board[0][4]->setPiece(std::make_unique<King>(
-        Color::BLACK, blackPlayer.get(), chessBoard,
-        std::weak_ptr<Square>(_board[0][4])));
-    _board[0][5]->setPiece(std::make_unique<Bishop>(
-        Color::BLACK, blackPlayer.get(), chessBoard,
-        std::weak_ptr<Square>(_board[0][5])));
-    _board[0][6]->setPiece(std::make_unique<Knight>(
-        Color::BLACK, blackPlayer.get(), chessBoard,
-        std::weak_ptr<Square>(_board[0][6])));
-    _board[0][7]->setPiece(std::make_unique<Rook>(
-        Color::BLACK, blackPlayer.get(), chessBoard,
-        std::weak_ptr<Square>(_board[0][7])));
+    
+    char defaultBoard[8][8] = {
+        {'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'},
+        {'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'},
+        {'-', '-', '-', '-', '-', '-', '-', '-'},
+        {'-', '-', '-', '-', '-', '-', '-', '-'},
+        {'-', '-', '-', '-', '-', '-', '-', '-'},
+        {'-', '-', '-', '-', '-', '-', '-', '-'},
+        {'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'},
+        {'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'}
+    };
 
-    _board[7][0]->setPiece(std::make_unique<Rook>(
-        Color::WHITE, whitePlayer.get(), chessBoard,
-        std::weak_ptr<Square>(_board[7][0])));
-    _board[7][1]->setPiece(std::make_unique<Knight>(
-        Color::WHITE, whitePlayer.get(), chessBoard,
-        std::weak_ptr<Square>(_board[7][1])));
-    _board[7][2]->setPiece(std::make_unique<Bishop>(
-        Color::WHITE, whitePlayer.get(), chessBoard,
-        std::weak_ptr<Square>(_board[7][2])));
-    _board[7][3]->setPiece(std::make_unique<Queen>(
-        Color::WHITE, whitePlayer.get(), chessBoard,
-        std::weak_ptr<Square>(_board[7][3])));
-    _board[7][4]->setPiece(std::make_unique<King>(
-        Color::WHITE, whitePlayer.get(), chessBoard,
-        std::weak_ptr<Square>(_board[7][4])));
-    _board[7][5]->setPiece(std::make_unique<Bishop>(
-        Color::WHITE, whitePlayer.get(), chessBoard,
-        std::weak_ptr<Square>(_board[7][5])));
-    _board[7][6]->setPiece(std::make_unique<Knight>(
-        Color::WHITE, whitePlayer.get(), chessBoard,
-        std::weak_ptr<Square>(_board[7][6])));
-    _board[7][7]->setPiece(std::make_unique<Rook>(
-        Color::WHITE, whitePlayer.get(), chessBoard,
-        std::weak_ptr<Square>(_board[7][7])));
+    for(int i = 0; i < 8; i++) {
+        for(int j = 0; j < 8; j++) {
+            if (defaultBoard[i][j] == '-') continue;
+
+            char p = std::toupper(defaultBoard[i][j]);
+            bool isWhite = p == defaultBoard[i][j];
+            Color col = isWhite ? Color::WHITE : Color::BLACK;
+            Player* player = isWhite ? whitePlayer.get() : blackPlayer.get();
+
+            switch(p) {
+                case 'R' :
+                    _board[i][j]->setPiece(std::make_unique<Rook>(
+                    col, player, chessBoard, std::weak_ptr<Square>(_board[i][j])));
+                    break;
+                case 'N' :
+                    _board[i][j]->setPiece(std::make_unique<Knight>(
+                    col, player, chessBoard, std::weak_ptr<Square>(_board[i][j])));
+                    break;
+                case 'B' :
+                    _board[i][j]->setPiece(std::make_unique<Bishop>(
+                    col, player, chessBoard, std::weak_ptr<Square>(_board[i][j])));
+                    break;
+                case 'Q' :
+                    _board[i][j]->setPiece(std::make_unique<Queen>(
+                    col, player, chessBoard, std::weak_ptr<Square>(_board[i][j])));
+                    break;
+                case 'K' :
+                    _board[i][j]->setPiece(std::make_unique<King>(
+                    col, player, chessBoard, std::weak_ptr<Square>(_board[i][j])));
+                    break;
+                case 'P' :
+                    _board[i][j]->setPiece(std::make_unique<Pawn>(
+                    col, player, chessBoard, std::weak_ptr<Square>(_board[i][j])));
+                    break;
+            }
+
+        }
+    }
 
     updateAttackMap();
 }
