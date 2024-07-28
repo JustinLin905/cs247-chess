@@ -98,16 +98,6 @@ bool Game::makeTurn(Move move, Color player_color, bool in_check) {
     std::cout << initial << std::endl;
     std::cout << final << std::endl;
 
-    // Check current player is in check
-    // bool in_check = false;
-    // if (player_color == Color::WHITE) {
-    //     in_check = _white->inCheck();
-    //     if (in_check) std::cout << "White is in check" << std::endl;
-    // } else if (_black->inCheck()) {
-    //     in_check = _black->inCheck();
-    //     if (in_check) std::cout << "Black is in check" << std::endl;
-    // }
-
     Square& init_square = _chess_board->getSquare(initial);
     Square& final_square = _chess_board->getSquare(final);
 
