@@ -25,7 +25,7 @@ std::unordered_set<Position> King::getAttackedSquares() const {
     return attackedSquares;
 }
 
-void Rook::getCastleMoves(std::unordered_set<Move>& validMoves, Position current_pos) const {
+void King::getCastleMoves(std::unordered_set<Move>& validMoves, Position current_pos) const {
     if (_moved) return;
 
     auto temp_board_ref = _board.lock();
@@ -37,20 +37,20 @@ void Rook::getCastleMoves(std::unordered_set<Move>& validMoves, Position current
     auto piece_at_queen_rook = temp_board_ref->getSquare(Position{row, queen_rook_col}).getPiece();  // piece currently at the king's position
     auto piece_at_king_rook = temp_board_ref->getSquare(Position{row, king_rook_col}).getPiece();    // piece currently at the king's position
 
-    if (piece_at_queen_rook->getPieceChar() == rook_char && !piece_at_queen_rook->hasMoved()) {
-        bool can_castle = true;
-        for (int i = 1; i < 4; i++) {
-            if (temp_board_ref->getSquare(Position{row, i}).getPiece() != nullptr) can_castle = false;
+    auto check_castle = [&](int start, int end) {
+        for (int i = start; i <= end; i++) {
+            if (temp_board_ref->getSquare(Position{row, i}).getPiece() != nullptr) return false;                                              // cannot castle through pieces
+            if (temp_board_ref->isPositionUnderAttack(Position{row, i}, _color == Color::WHITE ? Color::BLACK : Color::WHITE)) return false;  // cannot castle through check
         }
-        if (can_castle) validMoves.insert(Move{current_pos, Position{row, 2}, MoveType::QUEEN_SIDE_CASTLE});
+        return true;
+    };
+
+    if (piece_at_queen_rook->getPieceChar() == rook_char && !piece_at_queen_rook->hasMoved()) {
+        if (check_castle(1, 3)) validMoves.insert(Move{current_pos, Position{row, 2}, MoveType::QUEEN_SIDE_CASTLE});
     }
 
     if (piece_at_king_rook->getPieceChar() == rook_char && !piece_at_king_rook->hasMoved()) {
-        bool can_castle = true;
-        for (int i = 5; i < 7; i++) {
-            if (temp_board_ref->getSquare(Position{row, i}).getPiece() != nullptr) can_castle = false;
-        }
-        if (can_castle) validMoves.insert(Move{current_pos, Position{row, 6}, MoveType::KING_SIDE_CASTLE});
+        if (check_castle(5, 6)) validMoves.insert(Move{current_pos, Position{row, 6}, MoveType::KING_SIDE_CASTLE});
     }
 }
 

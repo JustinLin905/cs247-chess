@@ -48,6 +48,6 @@ std::unordered_set<Move> Rook::getValidMoves() const {
 
     for (Position p : attackedSquares) validMoves.insert(Move{current_pos, p, MoveType::DEFAULT});
 
-    getCastleMoves(validMoves, current_pos);
+    // getCastleMoves(validMoves, current_pos);
     return validMoves;
 }
