@@ -7,32 +7,12 @@
 
 Player::Player(Color color) : _color(color) {}
 
-void Player::addAlivePiece(std::shared_ptr<Piece> piece) {
-    _alive_pieces.emplace_back(piece);
-
-    if (piece->getPieceChar() == 'K' || piece->getPieceChar() == 'k') {
-        _king = std::dynamic_pointer_cast<King>(piece);
-    }
-}
-
-void Player::removeDeadPiece(std::shared_ptr<Piece> piece) {
-    _alive_pieces.erase(std::remove(_alive_pieces.begin(), _alive_pieces.end(), piece), _alive_pieces.end());
+void Player::setKing(std::weak_ptr<King> king) {
+    _king = king;
 }
 
 void Player::resign() {
     Manager::closeGame();
-}
-
-/*
-This method is to check whether or not a player has any more available moves to make.
-This is used to check for checks and stalemates
-*/
-bool Player::hasValidMove() const {
-    for (auto p : _alive_pieces) {
-        if (p->getValidMoves().size() > 0) return true;
-    }
-
-    return false;
 }
 
 bool Player::inCheck() const {
@@ -44,8 +24,3 @@ bool Player::inCheck() const {
 
     return king_shared->inCheck();
 }
-
-// Used to restore alive pieces to an old state
-void Player::setAlivePieces(std::vector<std::shared_ptr<Piece>> pieces) { _alive_pieces = pieces; }
-
-std::vector<std::shared_ptr<Piece>> Player::getAlivePieces() const { return _alive_pieces; }

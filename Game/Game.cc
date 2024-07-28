@@ -17,7 +17,7 @@ std::unique_ptr<Player> Game::createPlayerPtr(PlayerType::Type type) {
         case PlayerType::Type::HUMAN:
             return std::make_unique<HumanPlayer>(Color::WHITE);
         case PlayerType::Type::COMPUTER_LEVEL1:
-            return std::make_unique<ComputerLevel1>(Color::WHITE);
+            return std::make_unique<ComputerLevel1>(Color::WHITE, _chess_board);
         default:
             throw std::invalid_argument("Invalid player type");
     }
@@ -34,7 +34,7 @@ bool Game::makeTurn(Move move, Color player_color) {
     std::cout << final << std::endl;
 
     // Check current player is in check
-    bool in_check;
+    bool in_check = false;
     if (player_color == Color::WHITE) {
         in_check = _white->inCheck();
         if (in_check) {
@@ -82,8 +82,7 @@ bool Game::makeTurn(Move move, Color player_color) {
 
     // if a piece was captured
     if (final_square.getPiece() != nullptr) {
-        Player& captured_player = player_color == Color::WHITE ? *_black : *_white;
-        captured_player.removeDeadPiece(final_square.getPiece());
+        _chess_board->removeDeadPiece(final_square.getPiece());
     }
 
     // Move the piece
@@ -108,8 +107,8 @@ If the player is in check after the move, the move is not legal and is added to 
 void Game::simulateLegality(Move move, Color player_color, std::unordered_set<Move>& valid_moves_out) {
     // Create copies of old board state
     // auto old_board = *_chess_board;
-    auto old_opponent_alive_pieces = player_color == Color::WHITE ? _black->getAlivePieces() : _white->getAlivePieces();
-
+    Color opponent_color = player_color == Color::WHITE ? Color::BLACK : Color::WHITE;
+    auto old_opponent_alive_pieces = _chess_board->getAlivePieces(opponent_color);
     auto initial = move.initial_pos;
     auto final = move.final_pos;
 
@@ -119,9 +118,8 @@ void Game::simulateLegality(Move move, Color player_color, std::unordered_set<Mo
     auto piece_at_init = init_square.getPiece();
 
     // if a piece was captured
-    Player& captured_player = player_color == Color::WHITE ? *_black : *_white;
     if (final_square.getPiece() != nullptr) {
-        captured_player.removeDeadPiece(final_square.getPiece());
+        _chess_board->removeDeadPiece(final_square.getPiece());
     }
 
     // Move the piece
@@ -148,7 +146,7 @@ void Game::simulateLegality(Move move, Color player_color, std::unordered_set<Mo
     init_square.setPiece(piece_at_init, false);
     final_square.disconnectPiece();
     piece_at_init->setSquare(_chess_board->getSquarePtr(initial));
-    captured_player.setAlivePieces(old_opponent_alive_pieces);
+    _chess_board->setAlivePieces(old_opponent_alive_pieces, opponent_color);
 }
 
 void Game::renderBoard() const {

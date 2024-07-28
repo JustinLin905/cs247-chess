@@ -44,33 +44,33 @@ void ChessBoard::defaultSetup(std::unique_ptr<Player> &whitePlayer, std::unique_
             Color col = isWhite ? Color::WHITE : Color::BLACK;
             Player* player = isWhite ? whitePlayer.get() : blackPlayer.get();
 
+            std::shared_ptr<Piece> piece;
+
             switch(p) {
                 case 'R' :
-                    _board[i][j]->setPiece(std::make_unique<Rook>(
-                    col, player, chessBoard, std::weak_ptr<Square>(_board[i][j])));
+                    piece = std::make_shared<Rook>(col, player, chessBoard, std::weak_ptr<Square>(_board[i][j]));
                     break;
                 case 'N' :
-                    _board[i][j]->setPiece(std::make_unique<Knight>(
-                    col, player, chessBoard, std::weak_ptr<Square>(_board[i][j])));
+                    piece = std::make_shared<Knight>(col, player, chessBoard, std::weak_ptr<Square>(_board[i][j]));
                     break;
                 case 'B' :
-                    _board[i][j]->setPiece(std::make_unique<Bishop>(
-                    col, player, chessBoard, std::weak_ptr<Square>(_board[i][j])));
+                    piece = std::make_shared<Bishop>(col, player, chessBoard, std::weak_ptr<Square>(_board[i][j]));
                     break;
                 case 'Q' :
-                    _board[i][j]->setPiece(std::make_unique<Queen>(
-                    col, player, chessBoard, std::weak_ptr<Square>(_board[i][j])));
+                    piece = std::make_shared<Queen>(col, player, chessBoard, std::weak_ptr<Square>(_board[i][j]));
                     break;
                 case 'K' :
-                    _board[i][j]->setPiece(std::make_unique<King>(
-                    col, player, chessBoard, std::weak_ptr<Square>(_board[i][j])));
+                    piece = std::make_shared<King>(col, player, chessBoard, std::weak_ptr<Square>(_board[i][j]));
+                    player->setKing(std::dynamic_pointer_cast<King>(piece));
                     break;
                 case 'P' :
-                    _board[i][j]->setPiece(std::make_unique<Pawn>(
-                    col, player, chessBoard, std::weak_ptr<Square>(_board[i][j])));
+                    piece = std::make_shared<Pawn>(col, player, chessBoard, std::weak_ptr<Square>(_board[i][j]));
                     break;
             }
-
+            
+            _board[i][j]->setPiece(piece);
+            if (isWhite) _white_alive_pieces.emplace_back(piece);
+            else _black_alive_pieces.emplace_back(piece);
         }
     }
 
@@ -91,6 +91,17 @@ std::shared_ptr<Square> ChessBoard::getSquarePtr(Position position) {
 }
 
 void ChessBoard::render() { notifyObservers(); }
+
+/*
+This method is to check whether or not a player has any more available moves to make.
+This is used to check for checks and stalemates
+*/
+bool ChessBoard::hasValidMove(Color color) const {
+    for (auto piece : (color == Color::WHITE ? _white_alive_pieces : _black_alive_pieces)) {
+        if (piece->getValidMoves().size() > 0) return true;
+    }
+    return false;
+}
 
 void ChessBoard::updateAttackMap() {
     attack_map.clear();
@@ -139,4 +150,18 @@ bool ChessBoard::isPositionUnderAttack(Position position, Color color) const {
     }
 
     return false;
+}
+
+void ChessBoard::removeDeadPiece(std::shared_ptr<Piece> piece) {
+    _white_alive_pieces.erase(std::remove(_white_alive_pieces.begin(), _white_alive_pieces.end(), piece), _white_alive_pieces.end());
+    _black_alive_pieces.erase(std::remove(_black_alive_pieces.begin(), _black_alive_pieces.end(), piece), _black_alive_pieces.end());
+}
+
+// Used to restore alive pieces to an old state
+void ChessBoard::setAlivePieces(std::vector<std::shared_ptr<Piece>> pieces, Color color) {
+    (color == Color::WHITE ? _white_alive_pieces : _black_alive_pieces) = pieces;
+}
+
+std::vector<std::shared_ptr<Piece>> ChessBoard::getAlivePieces(Color color) const {
+    return color == Color::WHITE ? _white_alive_pieces : _black_alive_pieces;
 }
