@@ -2,10 +2,8 @@
 
 #include "../ChessBoard/ChessBoard.h"
 
-TextObserver::TextObserver(std::shared_ptr<ChessBoard> chess_board,
-                           std::ostream &out)
-    : _chess_board{chess_board}, _out{out} {
-    _chess_board->attach(std::shared_ptr<TextObserver>(this));
+TextObserver::TextObserver(std::weak_ptr<ChessBoard> chess_board, std::ostream &out) : _chess_board{chess_board}, _out{out} {
+    _chess_board.lock()->attach(this);
 }
 
 void TextObserver::notify() {
@@ -24,7 +22,7 @@ void TextObserver::notify() {
     for (int i = 0; i < 8; i++) {
         _out << i << "| ";
         for (int j = 0; j < 8; j++) {
-            _out << _chess_board->getState(i, j) << " ";
+            _out << _chess_board.lock()->getState(i, j) << " ";
         }
         _out << std::endl;
     }

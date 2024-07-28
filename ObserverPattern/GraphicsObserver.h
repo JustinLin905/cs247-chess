@@ -9,12 +9,12 @@
 class ChessBoard;
 
 class GraphicsObserver : public Observer {
-    std::shared_ptr<ChessBoard> _chess_board;
+    std::weak_ptr<ChessBoard> _chess_board;
     void drawPiece(char piece, int row, int col, bool isWhite);
     Xwindow *_w;
 
    public:
-    GraphicsObserver(std::shared_ptr<ChessBoard> chess_board);
+    GraphicsObserver(std::weak_ptr<ChessBoard> chess_board);
     ~GraphicsObserver();
     void notify() override;
 };

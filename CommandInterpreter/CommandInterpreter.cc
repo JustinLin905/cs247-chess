@@ -16,6 +16,8 @@ CommandInterpreter::GameCmds CommandInterpreter::hashGameCommand(
         return GameCmds::CMD_GAME;
     } else if (cmd == "setup") {
         return GameCmds::CMD_SETUP;
+    } else if (cmd == "end") {
+        return GameCmds::CMD_END;
     } else {
         return GameCmds::CMD_UNKNOWN;
     }
@@ -50,6 +52,9 @@ bool CommandInterpreter::processGameInput() {
             return true;
             break;
         }
+        case GameCmds::CMD_END :
+            return false;
+            break;
         case GameCmds::CMD_UNKNOWN:  // equivalent to default
             throw std::invalid_argument("Invalid command");
             break;
