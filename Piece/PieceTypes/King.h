@@ -3,8 +3,10 @@
 
 #include "../../ChessBoard/ChessBoard.h"
 #include "../../ChessBoard/Square.h"
-#include "../../Player/Player.h"
+// #include "../../Player/Player.h"
 #include "../Piece.h"
+
+class Player;
 
 class King final : public Piece {
    public:

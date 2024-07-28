@@ -3,11 +3,16 @@
 #include "../Game/Game.h"
 #include "../Manager/Manager.h"
 #include "../Piece/Piece.h"
+#include "../Piece/PieceTypes/King.h"
 
 Player::Player(Color color) : _color(color) {}
 
 void Player::addAlivePiece(std::shared_ptr<Piece> piece) {
     _alive_pieces.emplace_back(piece);
+
+    if (piece->getPieceChar() == 'K' || piece->getPieceChar() == 'k') {
+        _king = std::dynamic_pointer_cast<King>(piece);
+    }
 }
 
 void Player::removeDeadPiece(std::shared_ptr<Piece> piece) {
@@ -29,3 +34,18 @@ bool Player::hasValidMove() const {
 
     return false;
 }
+
+bool Player::inCheck() const {
+    std::shared_ptr<King> king_shared = _king.lock();
+    if (!king_shared) {
+        std::cerr << "Error: King is null" << std::endl;
+        return false;
+    }
+
+    return king_shared->inCheck();
+}
+
+// Used to restore alive pieces to an old state
+void Player::setAlivePieces(std::vector<std::shared_ptr<Piece>> pieces) { _alive_pieces = pieces; }
+
+std::vector<std::shared_ptr<Piece>> Player::getAlivePieces() const { return _alive_pieces; }
