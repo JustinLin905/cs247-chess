@@ -16,10 +16,9 @@ class Player {
    protected:
     std::vector<std::shared_ptr<Piece>> _alive_pieces;
     Color _color;
-    std::shared_ptr<Game> _game;
 
    public:
-    Player(Color color, std::shared_ptr<Game> game);
+    Player(Color color);
     void resign();
     std::vector<Move> getValidPlayerMoves();
     bool hasValidMove() const;

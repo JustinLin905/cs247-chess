@@ -59,8 +59,7 @@ bool CommandInterpreter::processGameInput() {
 }
 
 // Passing in a Game reference so Manager can run multiple games at once
-Move CommandInterpreter::processPlayerInput(std::shared_ptr<Game> Game,
-                                            Player& player) {
+Move CommandInterpreter::processPlayerInput(Player& player) {
     std::string cmd;
     _in >> cmd;
 
