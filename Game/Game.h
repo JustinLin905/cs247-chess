@@ -24,7 +24,7 @@ class Game {
     Game(PlayerType::Type white, PlayerType::Type black);
     void initDefaultGame();
     bool makeTurn(Move move, Color color);
-    void simulateLegality(Move move, Color player_color, std::unordered_set<Move>& valid_moves_during_check);
+    void simulateLegality(Move move, Color player_color, std::unordered_set<Move>& valid_moves_out);
     void reverseMoves(int n);
 
     void renderBoard() const;

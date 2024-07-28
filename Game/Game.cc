@@ -55,28 +55,28 @@ bool Game::makeTurn(Move move, Color player_color) {
     if (piece_at_init->getColor() != player_color) return false;
 
     std::unordered_set<Move> valid_moves = piece_at_init->getValidMoves();
-    std::unordered_set<Move> valid_moves_during_check;
+    std::unordered_set<Move> valid_moves_out;
 
     if (in_check) {
         // If player is in check, simulate all moves to see if any move gets player out of check
         // This removes all moves that do not get player out of check
         for (auto it = valid_moves.begin(); it != valid_moves.end();) {
-            simulateLegality(*it, player_color, valid_moves_during_check);
+            simulateLegality(*it, player_color, valid_moves_out);
             it++;
         }
     } else {
-        valid_moves_during_check = valid_moves;
+        valid_moves_out = valid_moves;
     }
 
-    if (valid_moves_during_check.empty()) {
+    if (valid_moves_out.empty()) {
         std::cout << "No legal moves for this piece!" << std::endl;
         return false;
     }
 
     // If move is not in the piece's valid moves, return false
-    if (valid_moves_during_check.find(move) == valid_moves_during_check.end()) {
+    if (valid_moves_out.find(move) == valid_moves_out.end()) {
         std::cout << "Not found in legal moves. Legal moves for this piece: " << std::endl;
-        for (auto m : piece_at_init->getValidMoves()) std::cout << m.initial_pos.c << m.initial_pos.r << " -> " << m.final_pos.c << m.final_pos.r << std::endl;
+        for (auto m : valid_moves_out) std::cout << m.initial_pos.c << m.initial_pos.r << " -> " << m.final_pos.c << m.final_pos.r << std::endl;
         return false;
     }
 
@@ -102,7 +102,7 @@ bool Game::makeTurn(Move move, Color player_color) {
 simulateLegality goes through all moves in the validMoves set and performs the move, then rechecks if the player is in check.
 If the player is in check after the move, the move is not legal and is added to the return set.
 */
-void Game::simulateLegality(Move move, Color player_color, std::unordered_set<Move>& valid_moves_during_check) {
+void Game::simulateLegality(Move move, Color player_color, std::unordered_set<Move>& valid_moves_out) {
     // Create copies of old board state
     // auto old_board = *_chess_board;
     auto old_opponent_alive_pieces = player_color == Color::WHITE ? _black->getAlivePieces() : _white->getAlivePieces();
@@ -138,7 +138,7 @@ void Game::simulateLegality(Move move, Color player_color, std::unordered_set<Mo
 
     // If still in check, move is not legal
     if (!in_check) {
-        valid_moves_during_check.insert(move);
+        valid_moves_out.insert(move);
     }
 
     // Restore old board state

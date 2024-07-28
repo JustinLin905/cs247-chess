@@ -20,8 +20,6 @@ void Manager::startGame(PlayerType::Type white, PlayerType::Type black) {
 
     _CurrGame->renderBoard();
 
-    _CurrGame->getBlack().removeDeadPiece(_CurrGame->_chess_board->getSquare(Position{0, 0}).getPiece());
-
     int turn_count = 0;
 
     // Game loop
