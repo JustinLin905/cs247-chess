@@ -17,16 +17,14 @@ class Piece {
    protected:
     std::weak_ptr<Square> _square;
     Player* _player;
-    std::shared_ptr<ChessBoard> _board;
+    std::weak_ptr<ChessBoard> _board;
     Color _color;
-    bool tryAttackSquare(Position pos,
-                         std::unordered_set<Position>& attackedSquares) const;
+    bool tryAttackSquare(Position pos, std::unordered_set<Position>& attackedSquares) const;
     void attackDiagonal(std::unordered_set<Position>& attackedSquares) const;
     void attackStraight(std::unordered_set<Position>& attackedSquares) const;
 
    public:
-    Piece(Color color, Player* player,
-          std::shared_ptr<ChessBoard> board, std::weak_ptr<Square> square);
+    Piece(Color color, Player* player, std::weak_ptr<ChessBoard> board, std::weak_ptr<Square> square);
     virtual std::unordered_set<Position> getAttackedSquares() const = 0;
     virtual std::unordered_set<Move> getValidMoves() const;
     std::shared_ptr<Square> getSquare() const;

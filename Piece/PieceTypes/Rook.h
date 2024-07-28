@@ -7,8 +7,7 @@
 
 class Rook final : public Piece {
    public:
-    Rook(Color color, Player* player,
-         std::shared_ptr<ChessBoard> board, std::weak_ptr<Square> square);
+    Rook(Color color, Player* player, std::weak_ptr<ChessBoard> board, std::weak_ptr<Square> square);
     char getPieceChar() const override;
     std::unordered_set<Position> getAttackedSquares() const override;
     ~Rook() {
