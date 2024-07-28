@@ -44,3 +44,8 @@ bool Player::inCheck() const {
 
     return king_shared->inCheck();
 }
+
+// Used to restore alive pieces to an old state
+void Player::setAlivePieces(std::vector<std::shared_ptr<Piece>> pieces) { _alive_pieces = pieces; }
+
+std::vector<std::shared_ptr<Piece>> Player::getAlivePieces() const { return _alive_pieces; }

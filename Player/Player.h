@@ -29,7 +29,9 @@ class Player {
     bool hasValidMove() const;
     virtual Move getMove() = 0;
     void addAlivePiece(std::shared_ptr<Piece> piece);
+    void setAlivePieces(std::vector<std::shared_ptr<Piece>> pieces);
     void removeDeadPiece(std::shared_ptr<Piece> piece);
+    std::vector<std::shared_ptr<Piece>> getAlivePieces() const;
 };
 
 #endif
