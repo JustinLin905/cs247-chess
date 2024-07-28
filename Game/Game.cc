@@ -40,15 +40,32 @@ bool Game::makeTurn(Move move, Color player_color) {
     if (piece_at_init == nullptr) return false;
     if (piece_at_init->getColor() != player_color) return false;
 
+    auto valid_moves = piece_at_init->getValidMoves();
+    auto compare_moves = [initial, final](Move m) { return m.initial_pos == initial && m.final_pos == final; };
+    auto it = std::find_if(valid_moves.begin(), valid_moves.end(), compare_moves);
+
     // If move is not in the piece's valid moves, return false
-    if (piece_at_init->getValidMoves().find(move) == piece_at_init->getValidMoves().end()) {
+    if (it == valid_moves.end()) {
         std::cout << "Not found in legal moves. Legal moves for this piece: " << std::endl;
-        for (auto m : piece_at_init->getValidMoves()) std::cout << m.initial_pos.c << m.initial_pos.r << " -> " << m.final_pos.c << m.final_pos.r << std::endl;
+        for (auto m : valid_moves) std::cout << m.initial_pos.c << m.initial_pos.r << " -> " << m.final_pos.c << m.final_pos.r << std::endl;
         return false;
     }
 
+    // check if move is castle
+    char king_char = player_color == Color::WHITE ? 'K' : 'k';
+    if (piece_at_init->getPieceChar() == king_char && (it->type == MoveType::KING_SIDE_CASTLE || it->type == MoveType::QUEEN_SIDE_CASTLE) && !piece_at_init->hasMoved()) {
+        auto castle_type = it->type;
+        Position rook_init = {initial.r, castle_type == MoveType::KING_SIDE_CASTLE ? 7 : 0};
+        Position rook_final = {initial.r, castle_type == MoveType::KING_SIDE_CASTLE ? 5 : 3};
+        Square& rook_init_square = _chess_board->getSquare(rook_init);
+        Square& rook_final_square = _chess_board->getSquare(rook_final);
+        auto rook = rook_init_square.getPiece();
+        rook_init_square.disconnectPiece();
+        rook_final_square.setPiece(rook, false);
+        rook->setSquare(_chess_board->getSquarePtr(rook_final));
+    }
     // if a piece was captured
-    if (final_square.getPiece() != nullptr) {
+    else if (final_square.getPiece() != nullptr) {
         Player& captured_player = player_color == Color::WHITE ? *_black : *_white;
         captured_player.removeDeadPiece(final_square.getPiece());
     }

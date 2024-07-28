@@ -4,8 +4,7 @@
 #include "../ChessBoard/Square.h"
 #include "../Player/Player.h"
 
-Piece::Piece(Color color, Player* player, std::weak_ptr<ChessBoard> board, std::weak_ptr<Square> square) :
-    _color(color), _player(player), _board(board), _square(square) {}
+Piece::Piece(Color color, Player* player, std::weak_ptr<ChessBoard> board, std::weak_ptr<Square> square) : _color(color), _player(player), _board(board), _square(square) {}
 
 Color Piece::getColor() const { return _color; }
 Player* Piece::getPlayer() const { return _player; }
@@ -140,7 +139,7 @@ std::unordered_set<Move> Piece::getValidMoves() const {
     Position current_pos = getSquare()->getPosition();
 
     for (Position p : attackedSquares) {
-        validMoves.insert(Move{current_pos, p, MoveType::UNDETERMINED});
+        validMoves.insert(Move{current_pos, p, MoveType::DEFAULT});
     }
 
     return validMoves;

@@ -37,7 +37,8 @@ class Piece {
     Player* getPlayer() const;
     virtual char getPieceChar() const = 0;
 
-    void Moved() { _moved = true; };
+    void Moved() { _moved = true; }
+    bool hasMoved() const { return _moved; }
 
     virtual ~Piece() = default;
 };
