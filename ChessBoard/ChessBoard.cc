@@ -19,67 +19,67 @@ void ChessBoard::reset() {
     }
 }
 
-void ChessBoard::defaultSetup(std::unique_ptr<Player> &whitePlayer, std::unique_ptr<Player> &blackPlayer) {
+void ChessBoard::defaultSetup(std::unique_ptr<Player> &whitePlayer, std::unique_ptr<Player> &blackPlayer, std::shared_ptr<ChessBoard> chessBoard) {
     // Thought: we will need to be able to reverse this based on the current
     // player's color
     reset();
     for (int i = 0; i < 8; i++) {
         // Need to update to set Player pointers correctly, instead of to nullptr
         _board[1][i]->setPiece(std::make_unique<Pawn>(
-            Color::BLACK, blackPlayer.get(), std::shared_ptr<ChessBoard>(this),
+            Color::BLACK, blackPlayer.get(), chessBoard,
             std::weak_ptr<Square>(_board[1][i])));
         _board[6][i]->setPiece(std::make_unique<Pawn>(
-            Color::WHITE, whitePlayer.get(), std::shared_ptr<ChessBoard>(this),
+            Color::WHITE, whitePlayer.get(), chessBoard,
             std::weak_ptr<Square>(_board[6][i])));
     }
     _board[0][0]->setPiece(std::make_unique<Rook>(
-        Color::BLACK, blackPlayer.get(), std::shared_ptr<ChessBoard>(this),
+        Color::BLACK, blackPlayer.get(), chessBoard,
         std::weak_ptr<Square>(_board[0][0])));
     _board[0][1]->setPiece(std::make_unique<Knight>(
-        Color::BLACK, blackPlayer.get(), std::shared_ptr<ChessBoard>(this),
+        Color::BLACK, blackPlayer.get(), chessBoard,
         std::weak_ptr<Square>(_board[0][1])));
     _board[0][2]->setPiece(std::make_unique<Bishop>(
-        Color::BLACK, blackPlayer.get(), std::shared_ptr<ChessBoard>(this),
+        Color::BLACK, blackPlayer.get(), chessBoard,
         std::weak_ptr<Square>(_board[0][2])));
     _board[0][3]->setPiece(std::make_unique<Queen>(
-        Color::BLACK, blackPlayer.get(), std::shared_ptr<ChessBoard>(this),
+        Color::BLACK, blackPlayer.get(), chessBoard,
         std::weak_ptr<Square>(_board[0][3])));
     _board[0][4]->setPiece(std::make_unique<King>(
-        Color::BLACK, blackPlayer.get(), std::shared_ptr<ChessBoard>(this),
+        Color::BLACK, blackPlayer.get(), chessBoard,
         std::weak_ptr<Square>(_board[0][4])));
     _board[0][5]->setPiece(std::make_unique<Bishop>(
-        Color::BLACK, blackPlayer.get(), std::shared_ptr<ChessBoard>(this),
+        Color::BLACK, blackPlayer.get(), chessBoard,
         std::weak_ptr<Square>(_board[0][5])));
     _board[0][6]->setPiece(std::make_unique<Knight>(
-        Color::BLACK, blackPlayer.get(), std::shared_ptr<ChessBoard>(this),
+        Color::BLACK, blackPlayer.get(), chessBoard,
         std::weak_ptr<Square>(_board[0][6])));
     _board[0][7]->setPiece(std::make_unique<Rook>(
-        Color::BLACK, blackPlayer.get(), std::shared_ptr<ChessBoard>(this),
+        Color::BLACK, blackPlayer.get(), chessBoard,
         std::weak_ptr<Square>(_board[0][7])));
 
     _board[7][0]->setPiece(std::make_unique<Rook>(
-        Color::WHITE, whitePlayer.get(), std::shared_ptr<ChessBoard>(this),
+        Color::WHITE, whitePlayer.get(), chessBoard,
         std::weak_ptr<Square>(_board[7][0])));
     _board[7][1]->setPiece(std::make_unique<Knight>(
-        Color::WHITE, whitePlayer.get(), std::shared_ptr<ChessBoard>(this),
+        Color::WHITE, whitePlayer.get(), chessBoard,
         std::weak_ptr<Square>(_board[7][1])));
     _board[7][2]->setPiece(std::make_unique<Bishop>(
-        Color::WHITE, whitePlayer.get(), std::shared_ptr<ChessBoard>(this),
+        Color::WHITE, whitePlayer.get(), chessBoard,
         std::weak_ptr<Square>(_board[7][2])));
     _board[7][3]->setPiece(std::make_unique<Queen>(
-        Color::WHITE, whitePlayer.get(), std::shared_ptr<ChessBoard>(this),
+        Color::WHITE, whitePlayer.get(), chessBoard,
         std::weak_ptr<Square>(_board[7][3])));
     _board[7][4]->setPiece(std::make_unique<King>(
-        Color::WHITE, whitePlayer.get(), std::shared_ptr<ChessBoard>(this),
+        Color::WHITE, whitePlayer.get(), chessBoard,
         std::weak_ptr<Square>(_board[7][4])));
     _board[7][5]->setPiece(std::make_unique<Bishop>(
-        Color::WHITE, whitePlayer.get(), std::shared_ptr<ChessBoard>(this),
+        Color::WHITE, whitePlayer.get(), chessBoard,
         std::weak_ptr<Square>(_board[7][5])));
     _board[7][6]->setPiece(std::make_unique<Knight>(
-        Color::WHITE, whitePlayer.get(), std::shared_ptr<ChessBoard>(this),
+        Color::WHITE, whitePlayer.get(), chessBoard,
         std::weak_ptr<Square>(_board[7][6])));
     _board[7][7]->setPiece(std::make_unique<Rook>(
-        Color::WHITE, whitePlayer.get(), std::shared_ptr<ChessBoard>(this),
+        Color::WHITE, whitePlayer.get(), chessBoard,
         std::weak_ptr<Square>(_board[7][7])));
 
     updateAttackMap();
@@ -135,12 +135,12 @@ Returns true if a position on the Chessboard is under attack by a piece of the s
 
 For example, if we pass in Color::WHITE, this function will return true if a white piece is attacking that position
 */
-bool ChessBoard::isPositionUnderAttack(Position position, Color color) {
+bool ChessBoard::isPositionUnderAttack(Position position, Color color) const {
     if (attack_map.find(position) == attack_map.end()) {
         return false;
     }
 
-    for (auto &piece : attack_map[position]) {
+    for (auto &piece : attack_map.at(position)) {
         if (piece.lock() && piece.lock()->getColor() == color) {
             return true;
         }

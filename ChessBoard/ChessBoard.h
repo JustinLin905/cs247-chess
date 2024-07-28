@@ -23,9 +23,9 @@ class ChessBoard : public Subject {
     std::shared_ptr<Square> getSquarePtr(Position position);
     char getState(int row, int col) const;
     void render();
-    void defaultSetup(std::unique_ptr<Player> &whitePlayer, std::unique_ptr<Player> &blackPlayer);
+    void defaultSetup(std::unique_ptr<Player> &whitePlayer, std::unique_ptr<Player> &blackPlayer, std::shared_ptr<ChessBoard> ChessBoard);
     void updateAttackMap();
-    bool isPositionUnderAttack(Position position, Color color);
+    bool isPositionUnderAttack(Position position, Color color) const;
     // void customSetup();
     void reset();
 };

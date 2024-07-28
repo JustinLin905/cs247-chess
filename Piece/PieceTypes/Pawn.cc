@@ -1,7 +1,6 @@
 #include "Pawn.h"
 
-Pawn::Pawn(Color color, Player* player,
-           std::shared_ptr<ChessBoard> board, std::weak_ptr<Square> square)
+Pawn::Pawn(Color color, Player* player, std::weak_ptr<ChessBoard> board, std::weak_ptr<Square> square)
     : Piece(color, player, board, square) {}
 
 char Pawn::getPieceChar() const { return _color == Color::WHITE ? 'P' : 'p'; }

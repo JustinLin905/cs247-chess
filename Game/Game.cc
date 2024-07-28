@@ -24,7 +24,7 @@ std::unique_ptr<Player> Game::createPlayerPtr(PlayerType::Type type) {
 }
 
 void Game::initDefaultGame() {
-    _chess_board->defaultSetup(_white, _black);
+    _chess_board->defaultSetup(_white, _black, _chess_board);
 }
 
 bool Game::makeTurn(Move move, Color player_color) {
