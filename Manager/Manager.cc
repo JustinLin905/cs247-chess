@@ -33,18 +33,18 @@ void Manager::startGame(PlayerType::Type white, PlayerType::Type black) {
             continue;
         }
 
-        // for debugging
-        for (auto i : _CurrGame->getBlack()._alive_pieces) {
-            std::cout << i->getPieceChar() << " ";
-        }
+        // // for debugging
+        // for (auto i : _CurrGame->getBlack()._alive_pieces) {
+        //     std::cout << i->getPieceChar() << " ";
+        // }
 
-        std::cout << std::endl;
+        // std::cout << std::endl;
 
-        for (auto i : _CurrGame->getWhite()._alive_pieces) {
-            std::cout << i->getPieceChar() << " ";
-        }
+        // for (auto i : _CurrGame->getWhite()._alive_pieces) {
+        //     std::cout << i->getPieceChar() << " ";
+        // }
 
-        std::cout << std::endl;
+        // std::cout << std::endl;
 
         turn_count++;
     }

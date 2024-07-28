@@ -14,12 +14,11 @@ class Game;
 
 class Player {
    protected:
+    std::vector<std::shared_ptr<Piece>> _alive_pieces;
     Color _color;
     std::shared_ptr<Game> _game;
 
    public:
-    std::vector<std::shared_ptr<Piece>> _alive_pieces;  // temporary public for testing
-
     Player(Color color, std::shared_ptr<Game> game);
     void resign();
     std::vector<Move> getValidPlayerMoves();

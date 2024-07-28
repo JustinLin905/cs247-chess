@@ -50,19 +50,8 @@ bool Game::makeTurn(Move move, Color player_color) {
     // if a piece was captured
     if (final_square.getPiece() != nullptr) {
         Player& captured_player = player_color == Color::WHITE ? *_black : *_white;
-        auto temp = final_square.getPiece();
-        std::cout << temp.use_count() << std::endl;
-        captured_player.removeDeadPiece(temp);
-        std::cout << temp.use_count() << std::endl;
-        // temp.use_count()
-        std::cout << "here2" << std::endl;
-        std::cout << "here3" << std::endl;
-
-        // final_square.setPiece(nullptr);
-        // std::cout << final_square.getPiece().use_count() << std::endl;
+        captured_player.removeDeadPiece(final_square.getPiece());
     }
-
-    std::cout << "here3" << std::endl;
 
     // Move the piece
     init_square.disconnectPiece();
