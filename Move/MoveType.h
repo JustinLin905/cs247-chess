@@ -3,7 +3,8 @@
 
 enum class MoveType {
     DEFAULT,
-    CASTLE,
+    QUEEN_SIDE_CASTLE,
+    KING_SIDE_CASTLE,
     ENPASSANT,
     PROMOTION,
     UNDETERMINED
