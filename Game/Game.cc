@@ -27,6 +27,27 @@ void Game::initDefaultGame() {
     _chess_board->defaultSetup(_white, _black, _chess_board);
 }
 
+bool Game::anyValidMoves(Color player_color) {
+    // Get all pieces of player color
+    auto alive_pieces = _chess_board->getAlivePieces(player_color);
+
+    // Get all valid moves for each piece
+    std::unordered_set<Move> all_valid_moves;
+    for (auto piece : alive_pieces) {
+        auto valid_moves = piece->getValidMoves();
+        all_valid_moves.insert(valid_moves.begin(), valid_moves.end());
+    }
+
+    // For all of these moves, parse them using simulateLegality to see if any of them are valid
+    std::unordered_set<Move> valid_moves_out;
+    for (auto it = all_valid_moves.begin(); it != all_valid_moves.end();) {
+        simulateLegality(*it, player_color, valid_moves_out);
+        it++;
+    }
+
+    return !valid_moves_out.empty();
+}
+
 void Game::performMove(Move move, Color player_color) {
     auto initial = move.initial_pos;
     auto final = move.final_pos;
@@ -71,21 +92,21 @@ void Game::performMove(Move move, Color player_color) {
     _chess_board->updateAttackMap();
 }
 
-bool Game::makeTurn(Move move, Color player_color) {
+bool Game::makeTurn(Move move, Color player_color, bool in_check) {
     auto initial = move.initial_pos;
     auto final = move.final_pos;
     std::cout << initial << std::endl;
     std::cout << final << std::endl;
 
     // Check current player is in check
-    bool in_check = false;
-    if (player_color == Color::WHITE) {
-        in_check = _white->inCheck();
-        if (in_check) std::cout << "White is in check" << std::endl;
-    } else if (_black->inCheck()) {
-        in_check = _black->inCheck();
-        if (in_check) std::cout << "Black is in check" << std::endl;
-    }
+    // bool in_check = false;
+    // if (player_color == Color::WHITE) {
+    //     in_check = _white->inCheck();
+    //     if (in_check) std::cout << "White is in check" << std::endl;
+    // } else if (_black->inCheck()) {
+    //     in_check = _black->inCheck();
+    //     if (in_check) std::cout << "Black is in check" << std::endl;
+    // }
 
     Square& init_square = _chess_board->getSquare(initial);
     Square& final_square = _chess_board->getSquare(final);
@@ -175,7 +196,7 @@ void Game::simulateLegality(Move move, Color player_color, std::unordered_set<Mo
         valid_moves_out.insert(move);
     }
 
-    std::cout << move << std::endl;
+    // std::cout << move << std::endl;
 
     // Restore old board state depending on the type of move
     if (move.type == MoveType::KING_SIDE_CASTLE || move.type == MoveType::QUEEN_SIDE_CASTLE) {
