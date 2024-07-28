@@ -27,6 +27,50 @@ void Game::initDefaultGame() {
     _chess_board->defaultSetup(_white, _black, _chess_board);
 }
 
+void Game::performMove(Move move, Color player_color) {
+    auto initial = move.initial_pos;
+    auto final = move.final_pos;
+
+    Square& init_square = _chess_board->getSquare(initial);
+    Square& final_square = _chess_board->getSquare(final);
+
+    std::shared_ptr<Piece> moving_piece = init_square.getPiece();
+
+    // check if move is castle
+    char king_char = player_color == Color::WHITE ? 'K' : 'k';
+    if (moving_piece->getPieceChar() == king_char && (move.type == MoveType::KING_SIDE_CASTLE || move.type == MoveType::QUEEN_SIDE_CASTLE) && !moving_piece->hasMoved()) {
+        auto castle_type = move.type;
+        Position rook_init = {initial.r, castle_type == MoveType::KING_SIDE_CASTLE ? 7 : 0};
+        Position rook_final = {initial.r, castle_type == MoveType::KING_SIDE_CASTLE ? 5 : 3};
+        Move rook_move = {rook_init, rook_final, MoveType::DEFAULT};
+        performMove(rook_move, player_color);
+
+        // Square& rook_init_square = _chess_board->getSquare(rook_init);
+        // Square& rook_final_square = _chess_board->getSquare(rook_final);
+        // auto rook = rook_init_square.getPiece();
+        // rook_init_square.disconnectPiece();
+        // rook_final_square.setPiece(rook, false);
+        // rook_final_square.getPiece()->setSquare(_chess_board->getSquarePtr(rook_final));
+        // rook->setSquare(_chess_board->getSquarePtr(rook_final));
+    }
+    // if a piece was captured
+    else if (final_square.getPiece() != nullptr) {
+        Player& captured_player = player_color == Color::WHITE ? *_black : *_white;
+        captured_player.removeDeadPiece(final_square.getPiece());
+    }
+
+    // Move the piece
+    init_square.disconnectPiece();
+    final_square.setPiece(moving_piece, false);
+    moving_piece->setSquare(_chess_board->getSquarePtr(final));
+
+    // mark the piece as moved
+    moving_piece->Moved();
+
+    // update attack map
+    _chess_board->updateAttackMap();
+}
+
 bool Game::makeTurn(Move move, Color player_color) {
     auto initial = move.initial_pos;
     auto final = move.final_pos;
@@ -53,7 +97,7 @@ bool Game::makeTurn(Move move, Color player_color) {
     std::unordered_set<Move> valid_moves = piece_at_init->getValidMoves();
     std::unordered_set<Move> valid_moves_out;
 
-    // for (auto m : valid_moves) std::cout << m.initial_pos << " 2-> " << m.final_pos << std::endl;
+    for (auto m : valid_moves) std::cout << m.initial_pos << " 2-> " << m.final_pos << std::endl;
 
     // simulate all moves to see if any move gets player out of check
     // This removes all moves that do not get player out of check/put the player into check
@@ -66,9 +110,12 @@ bool Game::makeTurn(Move move, Color player_color) {
         return false;
     }
 
-    // for comparing moves regardless of move type
+    // for comparing moves regardless of move type. We now determine the type of move the player wants to make
     auto compare_moves = [initial, final](Move m) { return m.initial_pos == initial && m.final_pos == final; };
     auto it = std::find_if(valid_moves_out.begin(), valid_moves_out.end(), compare_moves);
+
+    // print move
+    std::cout << "Move: " << move.initial_pos << " -> " << move.final_pos << std::endl;
 
     // If move is not in the piece's valid moves, return false
     if (it == valid_moves_out.end()) {
@@ -77,38 +124,11 @@ bool Game::makeTurn(Move move, Color player_color) {
         return false;
     }
 
+    move.type = it->type;
     std::cout << "matching moves" << *it << std::endl;
 
-    // check if move is castle
-    char king_char = player_color == Color::WHITE ? 'K' : 'k';
-    if (piece_at_init->getPieceChar() == king_char && (it->type == MoveType::KING_SIDE_CASTLE || it->type == MoveType::QUEEN_SIDE_CASTLE) && !piece_at_init->hasMoved()) {
-        auto castle_type = it->type;
-        Position rook_init = {initial.r, castle_type == MoveType::KING_SIDE_CASTLE ? 7 : 0};
-        Position rook_final = {initial.r, castle_type == MoveType::KING_SIDE_CASTLE ? 5 : 3};
-        Square& rook_init_square = _chess_board->getSquare(rook_init);
-        Square& rook_final_square = _chess_board->getSquare(rook_final);
-        auto rook = rook_init_square.getPiece();
-        rook_init_square.disconnectPiece();
-        rook_final_square.setPiece(rook, false);
-        rook->setSquare(_chess_board->getSquarePtr(rook_final));
-    }
-    // if a piece was captured
-    else if (final_square.getPiece() != nullptr) {
-        std::cout << "here" << std::endl;
-        Player& captured_player = player_color == Color::WHITE ? *_black : *_white;
-        captured_player.removeDeadPiece(final_square.getPiece());
-    }
+    performMove(move, player_color);
 
-    // Move the piece
-    init_square.disconnectPiece();
-    final_square.setPiece(piece_at_init, false);
-    piece_at_init->setSquare(_chess_board->getSquarePtr(final));
-
-    // mark the piece as moved
-    piece_at_init->Moved();
-
-    // update attack map
-    _chess_board->updateAttackMap();
     _chess_board->render();  // rerender board
 
     return true;  // move was valid
@@ -140,10 +160,7 @@ void Game::simulateLegality(Move move, Color player_color, std::unordered_set<Mo
     }
 
     // Move the piece
-    init_square.disconnectPiece();
-    final_square.setPiece(piece_at_init, false);
-    piece_at_init->setSquare(_chess_board->getSquarePtr(final));
-    _chess_board->updateAttackMap();
+    performMove(move, player_color);
 
     // Check if player is in check
     bool in_check;
@@ -158,14 +175,34 @@ void Game::simulateLegality(Move move, Color player_color, std::unordered_set<Mo
         valid_moves_out.insert(move);
     }
 
-    // Restore old board state
+    std::cout << move << std::endl;
+
+    // Restore old board state depending on the type of move
+    if (move.type == MoveType::KING_SIDE_CASTLE || move.type == MoveType::QUEEN_SIDE_CASTLE) {
+        // undo rook (king will be handled later)
+        Position rook_init = {initial.r, move.type == MoveType::KING_SIDE_CASTLE ? 7 : 0};
+        Position rook_final = {initial.r, move.type == MoveType::KING_SIDE_CASTLE ? 5 : 3};
+        Square& rook_init_square = _chess_board->getSquare(rook_init);
+        Square& rook_final_square = _chess_board->getSquare(rook_final);
+
+        if (rook_final_square.getPiece() == nullptr) {
+            _chess_board->render();
+            std::cout << "wtf" << std::endl;
+        }
+
+        rook_init_square.setPiece(rook_final_square.getPiece(), false);
+        rook_init_square.getPiece()->setSquare(_chess_board->getSquarePtr(rook_init));
+        rook_final_square.disconnectPiece();
+        rook_init_square.getPiece()->Moved(false);
+        _chess_board->render();
+    }
+
     init_square.setPiece(piece_at_init, false);
     final_square.disconnectPiece();
-    if (captured_piece != nullptr) {
-        final_square.setPiece(captured_piece, false);
-    }
+    if (captured_piece != nullptr) final_square.setPiece(captured_piece, false);
     piece_at_init->setSquare(_chess_board->getSquarePtr(initial));
     captured_player.setAlivePieces(old_opponent_alive_pieces);
+    piece_at_init->Moved(false);
 }
 
 void Game::renderBoard() const {

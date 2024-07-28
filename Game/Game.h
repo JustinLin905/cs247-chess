@@ -18,6 +18,8 @@ class Game {
     std::shared_ptr<GraphicsObserver> _graphics_observer;
     std::shared_ptr<TextObserver> _text_observer;
 
+    void performMove(Move move, Color player_color);
+
    public:
     std::unique_ptr<Player> createPlayerPtr(PlayerType::Type type);
 
