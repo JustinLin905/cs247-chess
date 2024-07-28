@@ -31,7 +31,9 @@ class Game {
     Player& getWhite() const;
     Player& getBlack() const;
 
-    ~Game() = default;
+    ~Game() {
+        std::cout << "FUCKKKKKKKKKK" << std::endl;
+    };
 };
 
 #endif
