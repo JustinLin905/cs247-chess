@@ -11,7 +11,6 @@
 #include "../PlayerType/PlayerType.h"
 
 class Game {
-   public:
     std::shared_ptr<ChessBoard> _chess_board;
     std::unique_ptr<Player> _white;
     std::unique_ptr<Player> _black;
@@ -19,6 +18,7 @@ class Game {
     std::shared_ptr<GraphicsObserver> _graphics_observer;
     std::shared_ptr<TextObserver> _text_observer;
 
+   public:
     std::unique_ptr<Player> createPlayerPtr(PlayerType::Type type);
 
     Game(PlayerType::Type white, PlayerType::Type black);

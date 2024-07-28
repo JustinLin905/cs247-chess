@@ -58,6 +58,9 @@ bool Game::makeTurn(Move move, Color player_color) {
     final_square.setPiece(piece_at_init, false);
     piece_at_init->setSquare(_chess_board->getSquarePtr(final));
 
+    // mark the piece as moved
+    piece_at_init->Moved();
+
     // update attack map
     _chess_board->updateAttackMap();
     _chess_board->render();  // rerender board
