@@ -11,9 +11,8 @@ void Square::setPosition(Position position) { _position = position; }
 
 Position Square::getPosition() const { return _position; }
 
-void Square::setPiece(std::shared_ptr<Piece> piece, bool isNew) {
+void Square::setPiece(std::weak_ptr<Piece> piece, bool isNew) {
     _piece = piece;
-    if (isNew && !_piece.expired()) piece->getPlayer()->addAlivePiece(piece);
 }
 
 void Square::disconnectPiece() {

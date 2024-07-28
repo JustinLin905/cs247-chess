@@ -16,7 +16,6 @@ class King;
 
 class Player {
    protected:
-    std::vector<std::shared_ptr<Piece>> _alive_pieces;
     Color _color;
     std::shared_ptr<Game> _game;
     std::weak_ptr<King> _king;
@@ -26,12 +25,9 @@ class Player {
     void resign();
     std::vector<Move> getValidPlayerMoves();
     bool inCheck() const;
-    bool hasValidMove() const;
     virtual Move getMove() = 0;
-    void addAlivePiece(std::shared_ptr<Piece> piece);
-    void setAlivePieces(std::vector<std::shared_ptr<Piece>> pieces);
     void removeDeadPiece(std::shared_ptr<Piece> piece);
-    std::vector<std::shared_ptr<Piece>> getAlivePieces() const;
+    void setKing(std::weak_ptr<King> king);
 };
 
 #endif

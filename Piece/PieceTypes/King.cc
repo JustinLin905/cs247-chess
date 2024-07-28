@@ -37,6 +37,8 @@ void King::getCastleMoves(std::unordered_set<Move>& validMoves, Position current
     auto piece_at_queen_rook = temp_board_ref->getSquare(Position{row, queen_rook_col}).getPiece();  // piece currently at the king's position
     auto piece_at_king_rook = temp_board_ref->getSquare(Position{row, king_rook_col}).getPiece();    // piece currently at the king's position
 
+    if (piece_at_queen_rook == nullptr || piece_at_king_rook == nullptr) return;
+
     auto check_castle = [&](int start, int end) {
         for (int i = start; i <= end; i++) {
             if (temp_board_ref->getSquare(Position{row, i}).getPiece() != nullptr) return false;                                              // cannot castle through pieces

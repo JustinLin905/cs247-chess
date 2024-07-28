@@ -24,11 +24,34 @@ void Manager::startGame(PlayerType::Type white, PlayerType::Type black) {
 
     // Game loop
     while (true) {
+        // Check for checks
+        bool is_white = turn_count % 2 == 0;
+        Color player_color = is_white ? Color::WHITE : Color::BLACK;
+        bool in_check = is_white ? _CurrGame->getWhite().inCheck() : _CurrGame->getBlack().inCheck();
+        std::string player_color_string = is_white ? "White" : "Black";
+        std::string opponent_color_string = is_white ? "Black" : "White";
+
+        std::cout << player_color_string << "'s turn." << std::endl;
+
+        // Check if player has any valid moves in this position
+        if (!_CurrGame->anyValidMoves(player_color) && in_check) {
+            std::cout << player_color << " is checkmated! " << opponent_color_string << " wins!" << std::endl;
+            break;
+        } else if (!_CurrGame->anyValidMoves(player_color) && !in_check) {
+            std::cout << "Stalemate! It's a draw!" << std::endl;
+            break;
+        }
+
+        if (in_check) {
+            std::cout << player_color_string << " is in check." << std::endl;
+        }
+
         Move next_move = turn_count % 2 == 0 ? _CurrGame->getWhite().getMove() : _CurrGame->getBlack().getMove();
 
-        if (!_CurrGame) break; // if player resigns
+        if (!_CurrGame) break;  // if player resigns
 
-        if (!_CurrGame->makeTurn(next_move, static_cast<Color>(turn_count % 2))) {
+        // Player has valid moves: allow them to play their turn
+        if (!_CurrGame->makeTurn(next_move, static_cast<Color>(turn_count % 2), in_check)) {
             std::cout << "Invalid move" << std::endl;
             continue;
         }
@@ -50,9 +73,9 @@ void Manager::startGame(PlayerType::Type white, PlayerType::Type black) {
     }
 }
 
-void Manager::closeGame() { 
-  std::cout << "Game over" << std::endl;
-  _CurrGame = nullptr;
+void Manager::closeGame() {
+    std::cout << "Game over" << std::endl;
+    _CurrGame = nullptr;
 }
 
 LeaderBoard& Manager::getLeaderBoard() {

@@ -17,7 +17,7 @@ std::unique_ptr<Player> Game::createPlayerPtr(PlayerType::Type type) {
         case PlayerType::Type::HUMAN:
             return std::make_unique<HumanPlayer>(Color::WHITE);
         case PlayerType::Type::COMPUTER_LEVEL1:
-            return std::make_unique<ComputerLevel1>(Color::WHITE);
+            return std::make_unique<ComputerLevel1>(Color::WHITE, _chess_board);
         default:
             throw std::invalid_argument("Invalid player type");
     }
@@ -25,6 +25,27 @@ std::unique_ptr<Player> Game::createPlayerPtr(PlayerType::Type type) {
 
 void Game::initDefaultGame() {
     _chess_board->defaultSetup(_white, _black, _chess_board);
+}
+
+bool Game::anyValidMoves(Color player_color) {
+    // Get all pieces of player color
+    auto alive_pieces = _chess_board->getAlivePieces(player_color);
+
+    // Get all valid moves for each piece
+    std::unordered_set<Move> all_valid_moves;
+    for (auto piece : alive_pieces) {
+        auto valid_moves = piece->getValidMoves();
+        all_valid_moves.insert(valid_moves.begin(), valid_moves.end());
+    }
+
+    // For all of these moves, parse them using simulateLegality to see if any of them are valid
+    std::unordered_set<Move> valid_moves_out;
+    for (auto it = all_valid_moves.begin(); it != all_valid_moves.end();) {
+        simulateLegality(*it, player_color, valid_moves_out);
+        it++;
+    }
+
+    return !valid_moves_out.empty();
 }
 
 void Game::performMove(Move move, Color player_color) {
@@ -56,7 +77,7 @@ void Game::performMove(Move move, Color player_color) {
     // if a piece was captured
     else if (final_square.getPiece() != nullptr) {
         Player& captured_player = player_color == Color::WHITE ? *_black : *_white;
-        captured_player.removeDeadPiece(final_square.getPiece());
+        _chess_board->removeDeadPiece(final_square.getPiece());
     }
 
     // Move the piece
@@ -71,21 +92,11 @@ void Game::performMove(Move move, Color player_color) {
     _chess_board->updateAttackMap();
 }
 
-bool Game::makeTurn(Move move, Color player_color) {
+bool Game::makeTurn(Move move, Color player_color, bool in_check) {
     auto initial = move.initial_pos;
     auto final = move.final_pos;
     std::cout << initial << std::endl;
     std::cout << final << std::endl;
-
-    // Check current player is in check
-    bool in_check;
-    if (player_color == Color::WHITE) {
-        in_check = _white->inCheck();
-        if (in_check) std::cout << "White is in check" << std::endl;
-    } else if (_black->inCheck()) {
-        in_check = _black->inCheck();
-        if (in_check) std::cout << "Black is in check" << std::endl;
-    }
 
     Square& init_square = _chess_board->getSquare(initial);
     Square& final_square = _chess_board->getSquare(final);
@@ -97,13 +108,13 @@ bool Game::makeTurn(Move move, Color player_color) {
     std::unordered_set<Move> valid_moves = piece_at_init->getValidMoves();
     std::unordered_set<Move> valid_moves_out;
 
-    for (auto m : valid_moves) std::cout << m.initial_pos << " 2-> " << m.final_pos << std::endl;
+    // for (auto m : valid_moves) std::cout << m.initial_pos << " 2-> " << m.final_pos << std::endl;
 
     // simulate all moves to see if any move gets player out of check
     // This removes all moves that do not get player out of check/put the player into check
     for (auto it = valid_moves.begin(); it != valid_moves.end(); it++) simulateLegality(*it, player_color, valid_moves_out);
 
-    for (auto m : valid_moves_out) std::cout << m.initial_pos << " -> " << m.final_pos << std::endl;
+    // for (auto m : valid_moves_out) std::cout << m.initial_pos << " -> " << m.final_pos << std::endl;
 
     if (valid_moves_out.empty()) {
         std::cout << "No legal moves for this piece!" << std::endl;
@@ -115,7 +126,7 @@ bool Game::makeTurn(Move move, Color player_color) {
     auto it = std::find_if(valid_moves_out.begin(), valid_moves_out.end(), compare_moves);
 
     // print move
-    std::cout << "Move: " << move.initial_pos << " -> " << move.final_pos << std::endl;
+    // std::cout << "Move: " << move.initial_pos << " -> " << move.final_pos << std::endl;
 
     // If move is not in the piece's valid moves, return false
     if (it == valid_moves_out.end()) {
@@ -125,7 +136,7 @@ bool Game::makeTurn(Move move, Color player_color) {
     }
 
     move.type = it->type;
-    std::cout << "matching moves" << *it << std::endl;
+    // std::cout << "matching moves" << *it << std::endl;
 
     performMove(move, player_color);
 
@@ -141,8 +152,8 @@ If the player is in check after the move, the move is not legal and is added to 
 void Game::simulateLegality(Move move, Color player_color, std::unordered_set<Move>& valid_moves_out) {
     // Create copies of old board state
     // auto old_board = *_chess_board;
-    auto old_opponent_alive_pieces = player_color == Color::WHITE ? _black->getAlivePieces() : _white->getAlivePieces();
-
+    Color opponent_color = player_color == Color::WHITE ? Color::BLACK : Color::WHITE;
+    auto old_opponent_alive_pieces = _chess_board->getAlivePieces(opponent_color);
     auto initial = move.initial_pos;
     auto final = move.final_pos;
 
@@ -156,7 +167,7 @@ void Game::simulateLegality(Move move, Color player_color, std::unordered_set<Mo
     std::shared_ptr<Piece> captured_piece = final_square.getPiece();
     if (captured_piece != nullptr) {
         // store the piece that was captured
-        captured_player.removeDeadPiece(captured_piece);
+        _chess_board->removeDeadPiece(captured_piece);
     }
 
     // Move the piece
@@ -175,7 +186,7 @@ void Game::simulateLegality(Move move, Color player_color, std::unordered_set<Mo
         valid_moves_out.insert(move);
     }
 
-    std::cout << move << std::endl;
+    // std::cout << move << std::endl;
 
     // Restore old board state depending on the type of move
     if (move.type == MoveType::KING_SIDE_CASTLE || move.type == MoveType::QUEEN_SIDE_CASTLE) {
@@ -201,7 +212,7 @@ void Game::simulateLegality(Move move, Color player_color, std::unordered_set<Mo
     final_square.disconnectPiece();
     if (captured_piece != nullptr) final_square.setPiece(captured_piece, false);
     piece_at_init->setSquare(_chess_board->getSquarePtr(initial));
-    captured_player.setAlivePieces(old_opponent_alive_pieces);
+    _chess_board->setAlivePieces(old_opponent_alive_pieces, opponent_color);
     piece_at_init->Moved(false);
 }
 

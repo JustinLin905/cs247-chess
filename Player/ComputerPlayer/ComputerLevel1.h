@@ -10,7 +10,7 @@ class ComputerLevel1 : public ComputerPlayer {
     std::mt19937 gen{seed()};
 
    public:
-    ComputerLevel1(Color color);
+    ComputerLevel1(Color color, std::weak_ptr<ChessBoard> chess_board);
     Move getMove() override;
 };
 
