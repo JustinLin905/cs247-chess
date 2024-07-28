@@ -5,7 +5,7 @@
 
 class HumanPlayer : public Player {
    public:
-    HumanPlayer(Color color, std::shared_ptr<Game> game);
+    HumanPlayer(Color color);
     Move getMove() override;
 };
 

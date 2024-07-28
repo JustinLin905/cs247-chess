@@ -1,7 +1,11 @@
 #ifndef ENUMS_H
 #define ENUMS_H
 
-enum class Color { WHITE,
-                   BLACK };
+#include <iostream>
+
+enum class Color { WHITE, BLACK };
+
+std::ostream& operator<<(std::ostream& out, Color& col);
+std::istream& operator>>(std::istream& in, Color& color);
 
 #endif
