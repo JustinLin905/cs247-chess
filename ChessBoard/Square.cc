@@ -11,12 +11,9 @@ void Square::setPosition(Position position) { _position = position; }
 
 Position Square::getPosition() const { return _position; }
 
-void Square::setPiece(std::shared_ptr<Piece> piece) {
+void Square::setPiece(std::shared_ptr<Piece> piece, bool isNew) {
     _piece = piece;
-    if (!_piece.expired())
-        piece->getPlayer()->addAlivePiece(piece);
-    else
-        std::cout << "Piece is expired" << std::endl;
+    if (isNew && !_piece.expired()) piece->getPlayer()->addAlivePiece(piece);
 }
 
 void Square::disconnectPiece() {
