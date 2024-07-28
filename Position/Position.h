@@ -23,6 +23,7 @@ struct Position {
     }
 
     friend std::ostream& operator<<(std::ostream& out, Position& pos);
+    friend std::istream& operator>>(std::istream& in, Position& pos);
 };
 
 // Hash function for Position
