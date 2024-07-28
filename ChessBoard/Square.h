@@ -16,7 +16,7 @@ class Square {
     Square(Position position);
     void setPosition(Position position);
     Position getPosition() const;
-    void setPiece(std::shared_ptr<Piece> piece);
+    void setPiece(std::shared_ptr<Piece> piece, bool isNew = true);
     std::shared_ptr<Piece> getPiece() const;
     void disconnectPiece();
     bool isEmpty() const;

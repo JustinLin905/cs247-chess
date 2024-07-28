@@ -15,6 +15,10 @@ void Player::addAlivePiece(std::shared_ptr<Piece> piece) {
     }
 }
 
+void Player::removeDeadPiece(std::shared_ptr<Piece> piece) {
+    _alive_pieces.erase(std::remove(_alive_pieces.begin(), _alive_pieces.end(), piece), _alive_pieces.end());
+}
+
 void Player::resign() {
     Manager::closeGame();
 }
