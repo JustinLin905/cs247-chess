@@ -2,10 +2,9 @@
 
 #include "../ChessBoard/ChessBoard.h"
 
-GraphicsObserver::GraphicsObserver(std::shared_ptr<ChessBoard> chess_board)
-    : _chess_board(chess_board) {
+GraphicsObserver::GraphicsObserver(std::weak_ptr<ChessBoard> chess_board) : _chess_board(chess_board) {
   _w = new Xwindow(800, 800);
-  _chess_board->attach(std::shared_ptr<GraphicsObserver>(this));
+  _chess_board.lock()->attach(this);
 }
 
 GraphicsObserver::~GraphicsObserver() { delete _w; }
@@ -21,9 +20,9 @@ void GraphicsObserver::notify() {
       }
 
       // If square is occupied by piece, render text
-      if (_chess_board->getSquare(Position{i, j}).getPiece() == nullptr) continue;
+      if (_chess_board.lock()->getSquare(Position{i, j}).getPiece() == nullptr) continue;
 
-      char cur = _chess_board->getSquare(Position{i, j}).getPiece()->getPieceChar();
+      char cur = _chess_board.lock()->getSquare(Position{i, j}).getPiece()->getPieceChar();
 
       // Draw a small white rectangle as a background if the piece is on a black
       // square
@@ -45,7 +44,7 @@ void GraphicsObserver::notify() {
       }
 
       // Add a "w" or "b" to the piece to indicate color
-      char color_indicator = _chess_board->getSquare(Position{i, j}).getPiece()->getColor() == Color::WHITE ? 'w' : 'b';
+      char color_indicator = _chess_board.lock()->getSquare(Position{i, j}).getPiece()->getColor() == Color::WHITE ? 'w' : 'b';
       _w->drawString(100 * j + 50, 100 * i + 50, std::string{color_indicator} + std::string{cur});
     }
   }

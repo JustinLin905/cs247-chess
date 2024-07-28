@@ -8,7 +8,7 @@ ChessBoard::ChessBoard() {
         }
     }
 
-    observers = std::vector<std::shared_ptr<Observer>>();
+    observers = std::vector<Observer*>();
 }
 
 void ChessBoard::reset() {

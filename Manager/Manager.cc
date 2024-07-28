@@ -26,6 +26,8 @@ void Manager::startGame(PlayerType::Type white, PlayerType::Type black) {
     while (true) {
         Move next_move = turn_count % 2 == 0 ? _CurrGame->getWhite().getMove() : _CurrGame->getBlack().getMove();
 
+        if (!_CurrGame) break; // if player resigns
+
         if (!_CurrGame->makeTurn(next_move, static_cast<Color>(turn_count % 2))) {
             std::cout << "Invalid move" << std::endl;
             continue;
@@ -48,7 +50,10 @@ void Manager::startGame(PlayerType::Type white, PlayerType::Type black) {
     }
 }
 
-void Manager::closeGame() { std::cout << "Game over" << std::endl; }
+void Manager::closeGame() { 
+  std::cout << "Game over" << std::endl;
+  _CurrGame = nullptr;
+}
 
 LeaderBoard& Manager::getLeaderBoard() {
     if (_leaderBoard == nullptr) {

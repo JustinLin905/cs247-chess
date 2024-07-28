@@ -9,11 +9,11 @@
 class ChessBoard;
 
 class TextObserver : public Observer {
-    std::shared_ptr<ChessBoard> _chess_board;
+    std::weak_ptr<ChessBoard> _chess_board;
     std::ostream &_out;
 
    public:
-    TextObserver(std::shared_ptr<ChessBoard> chess_board, std::ostream &out);
+    TextObserver(std::weak_ptr<ChessBoard> chess_board, std::ostream &out);
     ~TextObserver() = default;
     void notify() override;
 };

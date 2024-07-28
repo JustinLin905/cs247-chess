@@ -7,7 +7,7 @@
 
 #include "../../Move/Move.h"
 
-ComputerLevel1::ComputerLevel1(Color color, std::shared_ptr<Game> game) : ComputerPlayer(color, game) {}
+ComputerLevel1::ComputerLevel1(Color color) : ComputerPlayer(color) {}
 
 Move ComputerLevel1::getMove() {
     while (true) {

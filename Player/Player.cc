@@ -4,7 +4,7 @@
 #include "../Manager/Manager.h"
 #include "../Piece/Piece.h"
 
-Player::Player(Color color, std::shared_ptr<Game> game) : _color(color), _game{game} {}
+Player::Player(Color color) : _color(color) {}
 
 void Player::addAlivePiece(std::shared_ptr<Piece> piece) {
     _alive_pieces.emplace_back(piece);
