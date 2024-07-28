@@ -5,7 +5,7 @@
 
 class ComputerPlayer : public Player {
    public:
-    ComputerPlayer(Color color, std::shared_ptr<Game> game) : Player{color, game} {};
+    ComputerPlayer(Color color) : Player{color} {};
     virtual Move getMove() override = 0;
 };
 

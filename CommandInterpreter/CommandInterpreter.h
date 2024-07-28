@@ -20,7 +20,8 @@ class CommandInterpreter {
     CMD_RESIGN,
     CMD_MOVE,
     CMD_SETUP,
-    CMD_UNKNOWN
+    CMD_UNKNOWN,
+    CMD_END
   };
 
   static GameCmds hashGameCommand(const std::string& cmd);
@@ -36,7 +37,7 @@ class CommandInterpreter {
   }
 
   static bool processGameInput();
-  static Move processPlayerInput(std::shared_ptr<Game> Game, Player& player);
+  static Move processPlayerInput(Player& player);
   static void processSetupInput();
 };
 #endif

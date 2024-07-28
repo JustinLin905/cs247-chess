@@ -22,7 +22,7 @@ class Player {
     std::weak_ptr<King> _king;
 
    public:
-    Player(Color color, std::shared_ptr<Game> game);
+    Player(Color color);
     void resign();
     std::vector<Move> getValidPlayerMoves();
     bool inCheck() const;

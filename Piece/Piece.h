@@ -15,6 +15,7 @@ struct Position;
 
 class Piece {
    protected:
+    bool _moved = false;
     std::weak_ptr<Square> _square;
     Player* _player;
     std::weak_ptr<ChessBoard> _board;
@@ -25,13 +26,19 @@ class Piece {
 
    public:
     Piece(Color color, Player* player, std::weak_ptr<ChessBoard> board, std::weak_ptr<Square> square);
+
     virtual std::unordered_set<Position> getAttackedSquares() const = 0;
     virtual std::unordered_set<Move> getValidMoves() const;
+
     std::shared_ptr<Square> getSquare() const;
     void setSquare(std::weak_ptr<Square> square);
+
     Color getColor() const;
     Player* getPlayer() const;
     virtual char getPieceChar() const = 0;
+
+    void Moved() { _moved = true; };
+
     virtual ~Piece() = default;
 };
 

@@ -15,9 +15,9 @@ Game::Game(PlayerType::Type white, PlayerType::Type black) : _chess_board(std::m
 std::unique_ptr<Player> Game::createPlayerPtr(PlayerType::Type type) {
     switch (type) {
         case PlayerType::Type::HUMAN:
-            return std::make_unique<HumanPlayer>(Color::WHITE, std::shared_ptr<Game>(this));
+            return std::make_unique<HumanPlayer>(Color::WHITE);
         case PlayerType::Type::COMPUTER_LEVEL1:
-            return std::make_unique<ComputerLevel1>(Color::WHITE, std::shared_ptr<Game>(this));
+            return std::make_unique<ComputerLevel1>(Color::WHITE);
         default:
             throw std::invalid_argument("Invalid player type");
     }
@@ -90,6 +90,9 @@ bool Game::makeTurn(Move move, Color player_color) {
     init_square.disconnectPiece();
     final_square.setPiece(piece_at_init, false);
     piece_at_init->setSquare(_chess_board->getSquarePtr(final));
+
+    // mark the piece as moved
+    piece_at_init->Moved();
 
     // update attack map
     _chess_board->updateAttackMap();
