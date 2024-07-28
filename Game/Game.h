@@ -23,7 +23,7 @@ class Game {
    public:
     Game(PlayerType::Type white, PlayerType::Type black);
     void initDefaultGame();
-    bool makeTurn(Move move);
+    bool makeTurn(Move move, Color color);
     void reverseMoves(int n);
 
     void renderBoard() const;
