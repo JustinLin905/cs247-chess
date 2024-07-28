@@ -23,7 +23,7 @@ void ChessBoard::defaultSetup(std::unique_ptr<Player> &whitePlayer, std::unique_
     // Thought: we will need to be able to reverse this based on the current
     // player's color
     reset();
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < 7; i++) {
         // Need to update to set Player pointers correctly, instead of to nullptr
         _board[1][i]->setPiece(std::make_unique<Pawn>(
             Color::BLACK, blackPlayer.get(), std::shared_ptr<ChessBoard>(this),
