@@ -3,8 +3,7 @@
 #include "../../Manager/Manager.h"
 #include "../../Player/Player.h"
 
-King::King(Color color, Player* player, std::weak_ptr<ChessBoard> board, std::weak_ptr<Square> square)
-    : Piece(color, player, board, square) {}
+King::King(Color color, std::weak_ptr<ChessBoard> board, std::weak_ptr<Square> square) : Piece(color, board, square) {}
 
 char King::getPieceChar() const { return _color == Color::WHITE ? 'K' : 'k'; }
 
@@ -67,7 +66,7 @@ std::unordered_set<Move> King::getValidMoves() const {
         validMoves.insert(Move{current_pos, p, MoveType::DEFAULT});
     }
 
-    if (!_player->inCheck()) getCastleMoves(validMoves, current_pos);
+    if (!inCheck()) getCastleMoves(validMoves, current_pos);
     return validMoves;
 }
 

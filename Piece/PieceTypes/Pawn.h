@@ -10,7 +10,7 @@ class Pawn final : public Piece {
     void getEnPassantMoves(std::unordered_set<Move>& moves, Position current_pos) const;
 
    public:
-    Pawn(Color color, Player* player, std::weak_ptr<ChessBoard> board, std::weak_ptr<Square> square);
+    Pawn(Color color, std::weak_ptr<ChessBoard> board, std::weak_ptr<Square> square);
     char getPieceChar() const override;
     std::unordered_set<Position> getAttackedSquares() const override;
     std::unordered_set<Move> getValidMoves() const override;

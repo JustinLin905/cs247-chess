@@ -25,9 +25,10 @@ class Game {
     void performMove(Move move, Color player_color);
 
    public:
+    Game();
     std::unique_ptr<Player> createPlayerPtr(PlayerType::Type type);
-
-    Game(PlayerType::Type white, PlayerType::Type black);
+    void setupPlayers(PlayerType::Type white, PlayerType::Type black);
+    void setupBoard();
     void initDefaultGame();
     bool anyValidMoves(Color player_color);
     bool makeTurn(Move move, Color color, bool in_check);
