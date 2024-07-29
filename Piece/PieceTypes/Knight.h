@@ -8,7 +8,7 @@
 
 class Knight final : public Piece {
    public:
-    Knight(Color color, Player* player, std::weak_ptr<ChessBoard> board, std::weak_ptr<Square> square);
+    Knight(Color color, std::weak_ptr<ChessBoard> board, std::weak_ptr<Square> square);
     char getPieceChar() const override;
     std::unordered_set<Position> getAttackedSquares() const override;
     ~Knight() = default;

@@ -1,7 +1,6 @@
 #include "Bishop.h"
 
-Bishop::Bishop(Color color, Player* player, std::weak_ptr<ChessBoard> board, std::weak_ptr<Square> square)
-    : Piece(color, player, board, square) {}
+Bishop::Bishop(Color color, std::weak_ptr<ChessBoard> board, std::weak_ptr<Square> square) : Piece(color, board, square) {}
 
 char Bishop::getPieceChar() const { return _color == Color::WHITE ? 'B' : 'b'; }
 

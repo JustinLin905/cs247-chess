@@ -8,7 +8,7 @@
 
 class Bishop final : public Piece {
    public:
-    Bishop(Color color, Player* player, std::weak_ptr<ChessBoard> board, std::weak_ptr<Square> square);
+    Bishop(Color color, std::weak_ptr<ChessBoard> board, std::weak_ptr<Square> square);
     char getPieceChar() const override;
     std::unordered_set<Position> getAttackedSquares() const override;
     ~Bishop() = default;
