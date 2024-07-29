@@ -34,24 +34,23 @@ void Manager::startGame(PlayerType::Type white, PlayerType::Type black) {
         // Check for checks
         bool is_white = _turn == 0;
         Color player_color = is_white ? Color::WHITE : Color::BLACK;
+        Color opponent_color = is_white ? Color::BLACK : Color::WHITE;
         bool in_check = is_white ? _CurrGame->getWhite().inCheck() : _CurrGame->getBlack().inCheck();
-        std::string player_color_string = is_white ? "White" : "Black";
-        std::string opponent_color_string = is_white ? "Black" : "White";
 
         // Check if player has any valid moves in this position
         bool any_valid_moves = _CurrGame->anyValidMoves(player_color);
         if (!any_valid_moves && in_check) {
-            std::cout << player_color << " is checkmated! " << opponent_color_string << " wins!" << std::endl;
+            std::cout << player_color << " is checkmated! " << opponent_color << " wins!" << std::endl;
             break;
         } else if (!any_valid_moves && !in_check) {
             std::cout << "Stalemate! It's a draw!" << std::endl;
             break;
         }
 
-        std::cout << player_color_string << "'s turn." << std::endl;
+        std::cout << player_color << "'s turn." << std::endl;
 
         if (in_check) {
-            std::cout << player_color_string << " is in check." << std::endl;
+            std::cout << player_color << " is in check." << std::endl;
         }
 
         Move next_move = _turn == 0 ? _CurrGame->getWhite().getMove() : _CurrGame->getBlack().getMove();

@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include <memory>
+#include <vector>
 
 #include "../ChessBoard/ChessBoard.h"
 #include "../Move/Move.h"
@@ -14,6 +15,9 @@ class Game {
     std::shared_ptr<ChessBoard> _chess_board;
     std::unique_ptr<Player> _white;
     std::unique_ptr<Player> _black;
+
+    std::vector<Move> _white_moves;
+    std::vector<Move> _black_moves;
 
     std::shared_ptr<GraphicsObserver> _graphics_observer;
     std::shared_ptr<TextObserver> _text_observer;
@@ -32,6 +36,8 @@ class Game {
     void reverseMoves(int n);
 
     void renderBoard() const;
+
+    Move getLastMove(Color player_color) const;
 
     Player& getWhite() const;
     Player& getBlack() const;
