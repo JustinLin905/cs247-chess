@@ -12,7 +12,12 @@ std::unique_ptr<LeaderBoard> Manager::_leaderBoard = nullptr;
 
 Manager::Manager() {}
 
-void Manager::setupGame() {}
+int Manager::_turn = 0;
+
+void Manager::setupGame() {
+    _CurrGame = std::make_shared<Game>();
+    _CurrGame->setupBoard();
+}
 
 void Manager::startGame(PlayerType::Type white, PlayerType::Type black) {
 
@@ -25,12 +30,10 @@ void Manager::startGame(PlayerType::Type white, PlayerType::Type black) {
 
     _CurrGame->renderBoard();
 
-    int turn_count = 0;
-
     // Game loop
     while (true) {
         // Check for checks
-        bool is_white = turn_count % 2 == 0;
+        bool is_white = _turn == 0;
         Color player_color = is_white ? Color::WHITE : Color::BLACK;
         bool in_check = is_white ? _CurrGame->getWhite().inCheck() : _CurrGame->getBlack().inCheck();
         std::string player_color_string = is_white ? "White" : "Black";
@@ -52,7 +55,7 @@ void Manager::startGame(PlayerType::Type white, PlayerType::Type black) {
             std::cout << player_color_string << " is in check." << std::endl;
         }
 
-        Move next_move = turn_count % 2 == 0 ? _CurrGame->getWhite().getMove() : _CurrGame->getBlack().getMove();
+        Move next_move =_turn == 0 ? _CurrGame->getWhite().getMove() : _CurrGame->getBlack().getMove();
 
         if (next_move.initial_pos.c == -1 && next_move.initial_pos.r == -1 && next_move.final_pos.c == -1 && next_move.final_pos.r == -1) {
             std::cout << "Enter a valid command" << std::endl;
@@ -62,7 +65,7 @@ void Manager::startGame(PlayerType::Type white, PlayerType::Type black) {
         if (!_CurrGame) break;  // if player resigns
 
         // Player has valid moves: allow them to play their turn
-        if (!_CurrGame->makeTurn(next_move, static_cast<Color>(turn_count % 2), in_check)) {
+        if (!_CurrGame->makeTurn(next_move, static_cast<Color>(_turn), in_check)) {
             std::cout << "Invalid move" << std::endl;
             continue;
         }
@@ -80,13 +83,17 @@ void Manager::startGame(PlayerType::Type white, PlayerType::Type black) {
 
         // std::cout << std::endl;
 
-        turn_count++;
+        _turn = (_turn + 1) % 2;
     }
 }
 
 void Manager::closeGame() {
     std::cout << "Game over" << std::endl;
     _CurrGame = nullptr;
+}
+
+void Manager::setTurn(Color color) {
+    _turn = static_cast<int>(color);
 }
 
 LeaderBoard& Manager::getLeaderBoard() {

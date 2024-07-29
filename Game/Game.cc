@@ -37,6 +37,10 @@ void Game::initDefaultGame() {
     _chess_board->defaultSetup(_chess_board);
 }
 
+void Game::setupBoard() {
+    _chess_board->customSetup(_chess_board);
+}
+
 bool Game::anyValidMoves(Color player_color) {
     // Get all pieces of player color
     auto alive_pieces = _chess_board->getAlivePieces(player_color);

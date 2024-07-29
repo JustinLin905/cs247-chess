@@ -8,8 +8,9 @@
 #include "../PlayerType/PlayerType.h"
 
 class Manager {
-    static std::shared_ptr<Game> _CurrGame;
-    static std::unique_ptr<LeaderBoard> _leaderBoard;
+  static std::shared_ptr<Game> _CurrGame;
+  static std::unique_ptr<LeaderBoard> _leaderBoard;
+  static int _turn;
 
     Manager();
 
@@ -26,6 +27,7 @@ class Manager {
     static void setupGame();
     static void startGame(PlayerType::Type white, PlayerType::Type black);
     static void closeGame();
+    static void setTurn(Color color);
     static LeaderBoard& getLeaderBoard();
 };
 

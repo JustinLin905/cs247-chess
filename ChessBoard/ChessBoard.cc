@@ -1,5 +1,5 @@
 #include "ChessBoard.h"
-
+#include "../CommandInterpreter/CommandInterpreter.h"
 #include "SampleBoards.h"
 
 ChessBoard::ChessBoard() {
@@ -19,6 +19,40 @@ void ChessBoard::reset() {
             // needs implementation to move pieces to their initial positions
         }
     }
+}
+
+void ChessBoard::addPieceToBoard(char c, Position pos, std::shared_ptr<ChessBoard> chessBoard) {
+    
+    char p = std::toupper(c);
+    bool isWhite = p == c;
+    Color col = isWhite ? Color::WHITE : Color::BLACK;
+    std::shared_ptr<Piece> piece;
+
+    switch (p) {
+        case 'R':
+            piece = std::make_shared<Rook>(col, chessBoard, std::weak_ptr<Square>(_board.at(pos.r).at(pos.c)));
+            break;
+        case 'N':
+            piece = std::make_shared<Knight>(col, chessBoard, std::weak_ptr<Square>(_board.at(pos.r).at(pos.c)));
+            break;
+        case 'B':
+            piece = std::make_shared<Bishop>(col, chessBoard, std::weak_ptr<Square>(_board.at(pos.r).at(pos.c)));
+            break;
+        case 'Q':
+            piece = std::make_shared<Queen>(col, chessBoard, std::weak_ptr<Square>(_board.at(pos.r).at(pos.c)));
+            break;
+        case 'K':
+            piece = std::make_shared<King>(col, chessBoard, std::weak_ptr<Square>(_board.at(pos.r).at(pos.c)));
+            (isWhite ? _white_king : _black_king) = std::dynamic_pointer_cast<King>(piece);
+            break;
+        case 'P':
+            piece = std::make_shared<Pawn>(col, chessBoard, std::weak_ptr<Square>(_board.at(pos.r).at(pos.c)));
+            break;
+    }
+
+    _board.at(pos.r).at(pos.c)->setPiece(piece);
+    if (isWhite) _white_alive_pieces.emplace_back(piece);
+    else _black_alive_pieces.emplace_back(piece);
 }
 
 void ChessBoard::defaultSetup(std::shared_ptr<ChessBoard> chessBoard) {
@@ -69,43 +103,51 @@ void ChessBoard::defaultSetup(std::shared_ptr<ChessBoard> chessBoard) {
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
             if (defaultBoard[i][j] == '-') continue;
-
-            char p = std::toupper(defaultBoard[i][j]);
-            bool isWhite = p == defaultBoard[i][j];
-            Color col = isWhite ? Color::WHITE : Color::BLACK;
-            std::shared_ptr<Piece> piece;
-
-            switch (p) {
-                case 'R':
-                    piece = std::make_shared<Rook>(col, chessBoard, std::weak_ptr<Square>(_board.at(i).at(j)));
-                    break;
-                case 'N':
-                    piece = std::make_shared<Knight>(col, chessBoard, std::weak_ptr<Square>(_board.at(i).at(j)));
-                    break;
-                case 'B':
-                    piece = std::make_shared<Bishop>(col, chessBoard, std::weak_ptr<Square>(_board.at(i).at(j)));
-                    break;
-                case 'Q':
-                    piece = std::make_shared<Queen>(col, chessBoard, std::weak_ptr<Square>(_board.at(i).at(j)));
-                    break;
-                case 'K':
-                    piece = std::make_shared<King>(col, chessBoard, std::weak_ptr<Square>(_board.at(i).at(j)));
-                    (isWhite ? _white_king : _black_king) = std::dynamic_pointer_cast<King>(piece);
-                    break;
-                case 'P':
-                    piece = std::make_shared<Pawn>(col, chessBoard, std::weak_ptr<Square>(_board.at(i).at(j)));
-                    break;
-            }
-
-            _board.at(i).at(j)->setPiece(piece);
-            if (isWhite)
-                _white_alive_pieces.emplace_back(piece);
-            else
-                _black_alive_pieces.emplace_back(piece);
+            addPieceToBoard(defaultBoard[i][j], Position{i, j}, chessBoard);
         }
     }
 
     updateAttackMap();
+}
+
+void ChessBoard::customSetup(std::shared_ptr<ChessBoard> chessBoard) {
+    render();
+
+    while (true) {
+        SetupInstruction instr = CommandInterpreter::processSetupInput();
+
+        switch(instr.cmd) {
+            case SetupCmds::CMD_ADD_PIECE : {
+                // if we're adding a piece to a square that already has a piece, delete the old one
+                std::shared_ptr<Piece> oldPiece = _board[instr.pos.r][instr.pos.c]->getPiece();
+                if (oldPiece != nullptr) removeDeadPiece(oldPiece);
+
+                // add new piece
+                addPieceToBoard(instr.piece, instr.pos, chessBoard);
+
+                render();
+                break;
+            }
+            case SetupCmds::CMD_REMOVE_PIECE : {        
+                {
+                    // remove piece if a piece exists on specified square
+                    std::shared_ptr<Piece> oldPiece = _board[instr.pos.r][instr.pos.c]->getPiece();
+                    if (oldPiece != nullptr) removeDeadPiece(oldPiece);
+                }
+                
+                // render board after oldPiece goes out of scope and the Piece is destructed
+                render();
+                break;
+            }
+            case SetupCmds::CMD_SET_TURN :
+                Manager::setTurn(instr.color);
+                break;
+            case SetupCmds::CMD_SETUP_DONE :
+                // validity checks
+                return;
+                break;
+        }
+    }
 }
 
 char ChessBoard::getState(int row, int col) const {
@@ -184,6 +226,12 @@ bool ChessBoard::isPositionUnderAttack(Position position, Color color) const {
 }
 
 void ChessBoard::removeDeadPiece(std::shared_ptr<Piece> piece) {
+    // if the removed piece is a King, also remove the king ptr to it in ChessBoard
+    if (std::toupper(piece->getPieceChar()) == 'K') {
+        if (piece->getColor() == Color::WHITE) _white_king = nullptr;
+        else _black_king = nullptr;
+    }
+
     _white_alive_pieces.erase(std::remove(_white_alive_pieces.begin(), _white_alive_pieces.end(), piece), _white_alive_pieces.end());
     _black_alive_pieces.erase(std::remove(_black_alive_pieces.begin(), _black_alive_pieces.end(), piece), _black_alive_pieces.end());
 }

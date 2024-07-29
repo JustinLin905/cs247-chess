@@ -1,5 +1,5 @@
 #include "CommandInterpreter.h"
-
+#include "../SetupInstruction/SetupInstruction.h"
 #include <memory>
 #include <string>
 
@@ -34,14 +34,29 @@ CommandInterpreter::GameCmds CommandInterpreter::hashPlayerCommand(
     }
 }
 
-// returns true if game has started. Flag to start taking player input for moves
-// instead
+SetupCmds CommandInterpreter::hashSetupCommand(
+    const std::string& cmd) {
+    if (cmd == "+") {
+        return SetupCmds::CMD_ADD_PIECE;
+    } else if (cmd == "-") {
+        return SetupCmds::CMD_REMOVE_PIECE;
+    } else if (cmd == "=") {
+        return SetupCmds::CMD_SET_TURN;
+    } else if (cmd == "done") {
+        return SetupCmds::CMD_SETUP_DONE;
+    } else {
+        return SetupCmds::CMD_UNKNOWN;
+    }
+}
+
 bool CommandInterpreter::processGameInput() {
     std::string cmd;
     _in >> cmd;
 
     switch (hashGameCommand(cmd)) {
         case GameCmds::CMD_SETUP:
+            Manager::setupGame();
+            return true;
             break;
         case GameCmds::CMD_GAME: {
             std::string white, black;
@@ -87,4 +102,37 @@ Move CommandInterpreter::processPlayerInput(Player& player) {
     }
 }
 
-void CommandInterpreter::processSetupInput() {}
+SetupInstruction CommandInterpreter::processSetupInput() {
+    std::string cmd;
+    _in >> cmd;
+    SetupCmds setupCmd = hashSetupCommand(cmd);
+
+    switch (setupCmd) {
+        case SetupCmds::CMD_ADD_PIECE: {
+            char piece;
+            Position pos;
+            _in >> piece >> pos;
+            return SetupInstruction{setupCmd, piece, pos};
+            break;
+        }
+        case SetupCmds::CMD_REMOVE_PIECE: {
+            Position pos;
+            _in >> pos;
+            return SetupInstruction{setupCmd, pos};
+            break;
+        }
+        case SetupCmds::CMD_SET_TURN:
+            Color color;
+            _in >> color;
+            return SetupInstruction{setupCmd, color};
+            break;
+        case SetupCmds::CMD_SETUP_DONE:
+            return SetupInstruction{setupCmd};
+            break;
+        case SetupCmds::CMD_UNKNOWN:  // equivalent to default
+            throw std::invalid_argument("Invalid command");
+            break;
+    }
+
+
+}

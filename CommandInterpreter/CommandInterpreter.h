@@ -8,6 +8,7 @@
 #include "../Game/Game.h"
 #include "../Manager/Manager.h"
 #include "../Player/Player.h"
+#include "../SetupInstruction/SetupInstruction.h"
 
 class CommandInterpreter {
   CommandInterpreter();
@@ -26,6 +27,7 @@ class CommandInterpreter {
 
   static GameCmds hashGameCommand(const std::string& cmd);
   static GameCmds hashPlayerCommand(const std::string& cmd);
+  static SetupCmds hashSetupCommand(const std::string& cmd);
 
  public:
   CommandInterpreter(CommandInterpreter const&) = delete;
@@ -38,6 +40,6 @@ class CommandInterpreter {
 
   static bool processGameInput();
   static Move processPlayerInput(Player& player);
-  static void processSetupInput();
+  static SetupInstruction processSetupInput();
 };
 #endif

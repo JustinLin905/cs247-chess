@@ -24,6 +24,7 @@ class Game {
     Game();
     std::unique_ptr<Player> createPlayerPtr(PlayerType::Type type);
     void setupPlayers(PlayerType::Type white, PlayerType::Type black);
+    void setupBoard();
     void initDefaultGame();
     bool anyValidMoves(Color player_color);
     bool makeTurn(Move move, Color color, bool in_check);
