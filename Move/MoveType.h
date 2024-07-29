@@ -7,7 +7,7 @@ enum class MoveType {
     KING_SIDE_CASTLE,
     ENPASSANT,
     PROMOTION,
-    UNDETERMINED
+    UNDETERMINED,
 };
 
 #endif

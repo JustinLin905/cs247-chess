@@ -52,7 +52,7 @@ bool CommandInterpreter::processGameInput() {
             return true;
             break;
         }
-        case GameCmds::CMD_END :
+        case GameCmds::CMD_END:
             return false;
             break;
         case GameCmds::CMD_UNKNOWN:  // equivalent to default
@@ -82,7 +82,7 @@ Move CommandInterpreter::processPlayerInput(Player& player) {
             break;
         }
         case GameCmds::CMD_UNKNOWN:  // equivalent to default
-            throw std::invalid_argument("Invalid command");
+            return Move(Position{-1, -1}, Position{-1, -1});
             break;
     }
 }

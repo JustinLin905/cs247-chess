@@ -49,6 +49,11 @@ void Manager::startGame(PlayerType::Type white, PlayerType::Type black) {
 
         Move next_move = turn_count % 2 == 0 ? _CurrGame->getWhite().getMove() : _CurrGame->getBlack().getMove();
 
+        if (next_move.initial_pos.c == -1 && next_move.initial_pos.r == -1 && next_move.final_pos.c == -1 && next_move.final_pos.r == -1) {
+            std::cout << "Enter a valid command" << std::endl;
+            continue;
+        }
+
         if (!_CurrGame) break;  // if player resigns
 
         // Player has valid moves: allow them to play their turn
