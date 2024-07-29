@@ -154,8 +154,6 @@ void ChessBoard::customSetup(std::shared_ptr<ChessBoard> chessBoard) {
                     return std::dynamic_pointer_cast<King>(piece) != nullptr;
                 });
 
-                std::cout << whiteKingCount << " " << blackKingCount << std::endl;
-
                 if (whiteKingCount != 1 || blackKingCount != 1) {
                     std::cout << "CANNOT EXIT SETUP MODE: Number of Kings on the board is not valid" << std::endl;
                     break;
