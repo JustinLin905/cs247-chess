@@ -1,4 +1,5 @@
 #include "ChessBoard.h"
+
 #include "../CommandInterpreter/CommandInterpreter.h"
 #include "SampleBoards.h"
 
@@ -22,7 +23,6 @@ void ChessBoard::reset() {
 }
 
 void ChessBoard::addPieceToBoard(char c, Position pos, std::shared_ptr<ChessBoard> chessBoard) {
-    
     char p = std::toupper(c);
     bool isWhite = p == c;
     Color col = isWhite ? Color::WHITE : Color::BLACK;
@@ -51,8 +51,10 @@ void ChessBoard::addPieceToBoard(char c, Position pos, std::shared_ptr<ChessBoar
     }
 
     _board.at(pos.r).at(pos.c)->setPiece(piece);
-    if (isWhite) _white_alive_pieces.emplace_back(piece);
-    else _black_alive_pieces.emplace_back(piece);
+    if (isWhite)
+        _white_alive_pieces.emplace_back(piece);
+    else
+        _black_alive_pieces.emplace_back(piece);
 }
 
 void ChessBoard::defaultSetup(std::shared_ptr<ChessBoard> chessBoard) {
@@ -116,8 +118,8 @@ void ChessBoard::customSetup(std::shared_ptr<ChessBoard> chessBoard) {
     while (true) {
         SetupInstruction instr = CommandInterpreter::processSetupInput();
 
-        switch(instr.cmd) {
-            case SetupCmds::CMD_ADD_PIECE : {
+        switch (instr.cmd) {
+            case SetupCmds::CMD_ADD_PIECE: {
                 // if we're adding a piece to a square that already has a piece, delete the old one
                 std::shared_ptr<Piece> oldPiece = _board[instr.pos.r][instr.pos.c]->getPiece();
                 if (oldPiece != nullptr) removeDeadPiece(oldPiece);
@@ -128,21 +130,21 @@ void ChessBoard::customSetup(std::shared_ptr<ChessBoard> chessBoard) {
                 render();
                 break;
             }
-            case SetupCmds::CMD_REMOVE_PIECE : {        
+            case SetupCmds::CMD_REMOVE_PIECE: {
                 {
                     // remove piece if a piece exists on specified square
                     std::shared_ptr<Piece> oldPiece = _board[instr.pos.r][instr.pos.c]->getPiece();
                     if (oldPiece != nullptr) removeDeadPiece(oldPiece);
                 }
-                
+
                 // render board after oldPiece goes out of scope and the Piece is destructed
                 render();
                 break;
             }
-            case SetupCmds::CMD_SET_TURN :
+            case SetupCmds::CMD_SET_TURN:
                 Manager::setTurn(instr.color);
                 break;
-            case SetupCmds::CMD_SETUP_DONE :
+            case SetupCmds::CMD_SETUP_DONE:
                 // validity checks
                 return;
                 break;
@@ -228,8 +230,10 @@ bool ChessBoard::isPositionUnderAttack(Position position, Color color) const {
 void ChessBoard::removeDeadPiece(std::shared_ptr<Piece> piece) {
     // if the removed piece is a King, also remove the king ptr to it in ChessBoard
     if (std::toupper(piece->getPieceChar()) == 'K') {
-        if (piece->getColor() == Color::WHITE) _white_king = nullptr;
-        else _black_king = nullptr;
+        if (piece->getColor() == Color::WHITE)
+            _white_king = nullptr;
+        else
+            _black_king = nullptr;
     }
 
     _white_alive_pieces.erase(std::remove(_white_alive_pieces.begin(), _white_alive_pieces.end(), piece), _white_alive_pieces.end());

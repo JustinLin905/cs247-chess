@@ -3,7 +3,7 @@
 #include <iostream>
 
 std::ostream& operator<<(std::ostream& out, const Position& pos) {
-    out << char(pos.c + 97) << pos.r;
+    out << char(pos.c + 97) << 8 - pos.r;
     return out;
 }
 
