@@ -142,9 +142,50 @@ void ChessBoard::customSetup(std::shared_ptr<ChessBoard> chessBoard) {
             case SetupCmds::CMD_SET_TURN :
                 Manager::setTurn(instr.color);
                 break;
-            case SetupCmds::CMD_SETUP_DONE :
-                // validity checks
+            case SetupCmds::CMD_SETUP_DONE : {
+                
+                // check number of kings
+                int whiteKingCount = std::count_if(_white_alive_pieces.begin(), _white_alive_pieces.end(),
+                    [](const std::shared_ptr<Piece>& piece) {
+                    return std::dynamic_pointer_cast<King>(piece) != nullptr;
+                });
+                int blackKingCount = std::count_if(_black_alive_pieces.begin(), _black_alive_pieces.end(),
+                    [](const std::shared_ptr<Piece>& piece) {
+                    return std::dynamic_pointer_cast<King>(piece) != nullptr;
+                });
+
+                std::cout << whiteKingCount << " " << blackKingCount << std::endl;
+
+                if (whiteKingCount != 1 || blackKingCount != 1) {
+                    std::cout << "CANNOT EXIT SETUP MODE: Number of Kings on the board is not valid" << std::endl;
+                    break;
+                }
+
+                // check if kings are in check
+                updateAttackMap();
+                if (_white_king->inCheck() || _black_king->inCheck()) {
+                    std::cout << "CANNOT EXIT SETUP MODE: King cannot be in check" << std::endl;
+                    break;
+                }
+
+                // check that there are no pawns in the first or last row
+                bool invalidPawnPos = false;
+                for(int i = 0; i < 8; i++) {
+                    if ((_board.at(0).at(i)->getPiece() && std::toupper(_board.at(0).at(i)->getPiece()->getPieceChar()) == 'P') ||
+                        (_board.at(7).at(i)->getPiece() && std::toupper(_board.at(7).at(i)->getPiece()->getPieceChar()) == 'P')) {
+                        std::cout << "CANNOT EXIT SETUP MODE: Pawn cannot be on first or last row of the board" << std::endl;
+                        invalidPawnPos = true;
+                        break;
+                    }
+                }
+                if (invalidPawnPos) break;
+
+                std::cout << "Exited Setup Mode" << std::endl;
                 return;
+                break;
+            }
+            case SetupCmds::CMD_UNKNOWN :
+                std::cerr << "Unknown Setup Instruction" << std::endl;
                 break;
         }
     }
