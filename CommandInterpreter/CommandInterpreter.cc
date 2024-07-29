@@ -92,6 +92,11 @@ Move CommandInterpreter::processPlayerInput(Player& player) {
             char og_col, new_col;
             int og_row, new_row;
             _in >> og_col >> og_row >> new_col >> new_row;
+            if (8 - og_row < 0 || 8 - og_row > 7 || (int)og_col - 97 < 0 || (int)og_col - 97 > 7 ||
+                8 - new_row < 0 || 8 - new_row > 7 || (int)new_col - 97 < 0 || (int)new_col - 97 > 7) {
+                return Move(Position{-1, -1}, Position{-1, -1});
+            }
+
             Move move(Position{8 - og_row, (int)og_col - 97},
                       Position{8 - new_row, (int)new_col - 97});
             return move;
@@ -134,4 +139,14 @@ SetupInstruction CommandInterpreter::processSetupInput() {
             throw std::invalid_argument("Invalid command");
             break;
     }
+}
+
+PromotionType::Type CommandInterpreter::processPromotionInput() {
+    std::cout << "Choose a piece to promote to (q, r, b, n): ";
+
+    char cmd;
+    _in >> cmd;
+
+    PromotionType::Type promotionType = PromotionType::HashPromotionType(cmd);
+    return promotionType;
 }

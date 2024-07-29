@@ -37,6 +37,7 @@ class ChessBoard : public Subject {
     void removeDeadPiece(std::shared_ptr<Piece> piece);
     std::vector<std::shared_ptr<Piece>> getAlivePieces(Color color) const;
     std::shared_ptr<King> getKing(Color color) const;
+    void addToAlivePieces(std::shared_ptr<Piece> piece, Color color);
     void setAlivePieces(std::vector<std::shared_ptr<Piece>> pieces, Color color);
     void reset();
 };

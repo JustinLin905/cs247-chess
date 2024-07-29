@@ -1,6 +1,7 @@
 #include "ChessBoard.h"
 
 #include "../CommandInterpreter/CommandInterpreter.h"
+#include "../SetupInstruction/SetupInstruction.h"
 #include "SampleBoards.h"
 
 ChessBoard::ChessBoard() {
@@ -62,15 +63,15 @@ void ChessBoard::defaultSetup(std::shared_ptr<ChessBoard> chessBoard) {
     // player's color
     reset();
 
-    char defaultBoard[8][8] = {
-        {'r', 'n', 'b', 'q', 'k', 'b', '-', 'r'},
-        {'p', 'p', 'p', 'p', 'p', 'p', 'P', 'p'},
-        {'-', '-', '-', '-', '-', '-', '-', '-'},
-        {'-', '-', '-', '-', '-', '-', '-', '-'},
-        {'-', '-', '-', '-', '-', '-', '-', '-'},
-        {'-', '-', '-', '-', '-', '-', '-', '-'},
-        {'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'},
-        {'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'}};
+    // char defaultBoard[8][8] = {
+    //     {'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'},
+    //     {'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'},
+    //     {'-', '-', '-', '-', '-', '-', '-', '-'},
+    //     {'-', '-', '-', '-', '-', '-', '-', '-'},
+    //     {'-', '-', '-', '-', '-', '-', '-', '-'},
+    //     {'-', '-', '-', '-', '-', '-', '-', '-'},
+    //     {'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'},
+    //     {'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'}};
 
     // char defaultBoard[8][8] = {
     //     {'r', 'n', 'b', '-', 'k', 'b', 'n', 'r'},
@@ -101,6 +102,16 @@ void ChessBoard::defaultSetup(std::shared_ptr<ChessBoard> chessBoard) {
     //     {'-', '-', '-', '-', '-', '-', '-', '-'},
     //     {'-', '-', '-', '-', '-', '-', '-', '-'},
     //     {'-', '-', '-', '-', '-', '-', '-', '-'}};
+
+    char defaultBoard[8][8] = {
+        {'-', '-', '-', '-', '-', '-', '-', '-'},
+        {'-', '-', '-', '-', '-', '-', 'k', '-'},
+        {'-', '-', '-', '-', '-', '-', '-', '-'},
+        {'p', '-', '-', 'P', '-', '-', '-', '-'},
+        {'-', '-', '-', '-', '-', '-', '-', '-'},
+        {'-', '-', '-', '-', '-', '-', '-', '-'},
+        {'-', '-', '-', '-', '-', '-', 'K', '-'},
+        {'-', '-', '-', '-', '-', '-', '-', '-'}};
 
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
@@ -289,4 +300,8 @@ std::vector<std::shared_ptr<Piece>> ChessBoard::getAlivePieces(Color color) cons
 
 std::shared_ptr<King> ChessBoard::getKing(Color color) const {
     return (color == Color::WHITE ? _white_king : _black_king);
+}
+
+void ChessBoard::addToAlivePieces(std::shared_ptr<Piece> piece, Color color) {
+    (color == Color::WHITE ? _white_alive_pieces : _black_alive_pieces).emplace_back(piece);
 }

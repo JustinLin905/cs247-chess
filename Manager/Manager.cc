@@ -20,9 +20,8 @@ void Manager::setupGame() {
 }
 
 void Manager::startGame(PlayerType::Type white, PlayerType::Type black) {
-
     // if there's no custom setup game that already exists, create a new one with default settings
-    if (_CurrGame == nullptr) {    
+    if (_CurrGame == nullptr) {
         _CurrGame = std::make_shared<Game>();
         _CurrGame->initDefaultGame();
     }
@@ -54,7 +53,7 @@ void Manager::startGame(PlayerType::Type white, PlayerType::Type black) {
             std::cout << player_color << " is in check." << std::endl;
         }
 
-        Move next_move =_turn == 0 ? _CurrGame->getWhite().getMove() : _CurrGame->getBlack().getMove();
+        Move next_move = _turn == 0 ? _CurrGame->getWhite().getMove() : _CurrGame->getBlack().getMove();
 
         if (next_move.initial_pos.c == -1 && next_move.initial_pos.r == -1 && next_move.final_pos.c == -1 && next_move.final_pos.r == -1) {
             std::cout << "Enter a valid command" << std::endl;

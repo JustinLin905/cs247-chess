@@ -62,6 +62,49 @@ bool Pawn::movedTwoPreviously() const {
 }
 
 /*
+Replaces the pawn with a piece of the player's choosing.
+*/
+void Pawn::promote() {
+    std::shared_ptr<Piece> this_piece = getSquare()->getPiece();
+
+    // remove pawn from player's list of pieces
+    std::shared_ptr<ChessBoard> board_ptr = _board.lock();
+    if (board_ptr == nullptr) {
+        std::cerr << "Error: board_ptr is null in Pawn::promote()" << std::endl;
+        return;
+    }
+
+    board_ptr->removeDeadPiece(this_piece);
+    getSquare()->disconnectPiece();
+
+    // get player's choice of piece
+    PromotionType::Type promotion_choice = CommandInterpreter::processPromotionInput();
+
+    // create new piece at the same location
+    std::shared_ptr<Piece> new_piece;
+    switch (promotion_choice) {
+        case PromotionType::Type::QUEEN:
+            new_piece = std::make_shared<Queen>(_color, _board, getSquare());
+            break;
+        case PromotionType::Type::ROOK:
+            new_piece = std::make_shared<Rook>(_color, _board, getSquare());
+            break;
+        case PromotionType::Type::BISHOP:
+            new_piece = std::make_shared<Bishop>(_color, _board, getSquare());
+            break;
+        case PromotionType::Type::KNIGHT:
+            new_piece = std::make_shared<Knight>(_color, _board, getSquare());
+            break;
+        default:
+            std::cerr << "Error: invalid promotion choice in Pawn::promote()" << std::endl;
+            return;
+    }
+
+    getSquare()->setPiece(new_piece);
+    board_ptr->addToAlivePieces(new_piece, _color);
+}
+
+/*
 Only has move for moving forward by one square.
 TODO: NEED UPDATE
 */
@@ -85,8 +128,9 @@ std::unordered_set<Move> Pawn::getValidMoves() const {
     ;  // default attack
 
     if (!_moved) {
+        int init_row = _color == Color::WHITE ? 6 : 1;
         Position next_pos2 = _color == Color::WHITE ? Position{row - 2, col} : Position{row + 2, col};
-        if (next_pos2.r >= 0 && next_pos2.r <= 7 && temp_board_ptr->getSquare(next_pos2).getPiece() == nullptr) validMoves.insert(Move{current_pos, next_pos2, MoveType::DEFAULT});
+        if (row == init_row && next_pos2.r >= 0 && next_pos2.r <= 7 && temp_board_ptr->getSquare(next_pos2).getPiece() == nullptr) validMoves.insert(Move{current_pos, next_pos2, MoveType::DEFAULT});
     }
 
     if ((_color == Color::WHITE && row == 3) || (_color == Color::BLACK && row == 4)) getEnPassantMoves(validMoves, current_pos);
