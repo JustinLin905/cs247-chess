@@ -45,14 +45,6 @@ std::unordered_set<Position> Pawn::getAttackedSquares() const {
     // en passant
     // int en_passant_row = _color == Color::WHITE ? 3 : 4;
 
-    Position nextPos = _color == Color::WHITE ? Position{row - 1, col} : Position{row + 1, col};
-    if (temp_board_ptr->getSquare(nextPos).getPiece() == nullptr) attackedSquares.insert(nextPos);  // default attack
-
-    if (!_moved) {
-        Position nextPos2 = _color == Color::WHITE ? Position{row - 2, col} : Position{row + 2, col};
-        if (temp_board_ptr->getSquare(nextPos2).getPiece() == nullptr) attackedSquares.insert(nextPos2);
-    }
-
     return attackedSquares;
 }
 
@@ -77,13 +69,24 @@ std::unordered_set<Move> Pawn::getValidMoves() const {
     Position current_pos = getSquare()->getPosition();
     int row = current_pos.r;
     int col = current_pos.c;
-    // Position nextPos = _color == Color::WHITE ? Position{row - 1, col} : Position{row + 1, col};
+    // Position next_pos = _color == Color::WHITE ? Position{row - 1, col} : Position{row + 1, col};
     std::unordered_set<Move> validMoves;
     std::unordered_set<Position> attackedSquares = getAttackedSquares();
 
     for (Position p : attackedSquares) {
         if (!Manager::getCurrGame()->simulateLegality(Move{current_pos, p, MoveType::DEFAULT}, _color)) continue;
         validMoves.insert(Move{current_pos, p, MoveType::DEFAULT});
+    }
+
+    // default moves
+    Position next_pos = _color == Color::WHITE ? Position{row - 1, col} : Position{row + 1, col};
+    auto temp_board_ptr = _board.lock();
+    if (next_pos.r >= 0 && next_pos.r <= 7 && temp_board_ptr->getSquare(next_pos).getPiece() == nullptr) validMoves.insert(Move{current_pos, next_pos, MoveType::DEFAULT});
+    ;  // default attack
+
+    if (!_moved) {
+        Position next_pos2 = _color == Color::WHITE ? Position{row - 2, col} : Position{row + 2, col};
+        if (next_pos2.r >= 0 && next_pos2.r <= 7 && temp_board_ptr->getSquare(next_pos2).getPiece() == nullptr) validMoves.insert(Move{current_pos, next_pos2, MoveType::DEFAULT});
     }
 
     if ((_color == Color::WHITE && row == 3) || (_color == Color::BLACK && row == 4)) getEnPassantMoves(validMoves, current_pos);
