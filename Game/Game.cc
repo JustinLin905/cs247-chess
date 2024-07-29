@@ -188,6 +188,8 @@ bool Game::simulateLegality(Move move, Color player_color) {
     _chess_board->setAlivePieces(old_opponent_alive_pieces, opponent_color);
     piece_at_init->Moved(false);
 
+    _chess_board->updateAttackMap();
+
     return valid;
 }
 
