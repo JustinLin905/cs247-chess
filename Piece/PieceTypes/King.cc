@@ -48,11 +48,13 @@ void King::getCastleMoves(std::unordered_set<Move>& validMoves, Position current
     };
 
     if (piece_at_queen_rook->getPieceChar() == rook_char && !piece_at_queen_rook->hasMoved()) {
-        if (check_castle(1, 3)) validMoves.insert(Move{current_pos, Position{row, 2}, MoveType::QUEEN_SIDE_CASTLE});
+        auto move = Move{current_pos, Position{row, 2}, MoveType::QUEEN_SIDE_CASTLE};
+        if (check_castle(1, 3) && Manager::getCurrGame()->simulateLegality(move, _color)) validMoves.insert(move);
     }
 
     if (piece_at_king_rook->getPieceChar() == rook_char && !piece_at_king_rook->hasMoved()) {
-        if (check_castle(5, 6)) validMoves.insert(Move{current_pos, Position{row, 6}, MoveType::KING_SIDE_CASTLE});
+        auto move = Move{current_pos, Position{row, 6}, MoveType::KING_SIDE_CASTLE};
+        if (check_castle(5, 6) && Manager::getCurrGame()->simulateLegality(move, _color)) validMoves.insert(move);
     }
 }
 
