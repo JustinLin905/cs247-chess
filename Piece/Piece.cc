@@ -2,6 +2,7 @@
 
 #include "../ChessBoard/ChessBoard.h"
 #include "../ChessBoard/Square.h"
+#include "../Manager/Manager.h"
 #include "../Player/Player.h"
 
 Piece::Piece(Color color, Player* player, std::weak_ptr<ChessBoard> board, std::weak_ptr<Square> square) : _color(color), _player(player), _board(board), _square(square) {}
@@ -139,6 +140,7 @@ std::unordered_set<Move> Piece::getValidMoves() const {
     Position current_pos = getSquare()->getPosition();
 
     for (Position p : attackedSquares) {
+        if (!Manager::getCurrGame()->simulateLegality(Move{current_pos, p, MoveType::DEFAULT}, _color)) continue;
         validMoves.insert(Move{current_pos, p, MoveType::DEFAULT});
     }
 

@@ -1,5 +1,6 @@
 #include "King.h"
 
+#include "../../Manager/Manager.h"
 #include "../../Player/Player.h"
 
 King::King(Color color, Player* player, std::weak_ptr<ChessBoard> board, std::weak_ptr<Square> square)
@@ -61,7 +62,10 @@ std::unordered_set<Move> King::getValidMoves() const {
     std::unordered_set<Position> attackedSquares = getAttackedSquares();
     Position current_pos = getSquare()->getPosition();
 
-    for (Position p : attackedSquares) validMoves.insert(Move{current_pos, p, MoveType::DEFAULT});
+    for (Position p : attackedSquares) {
+        if (!Manager::getCurrGame()->simulateLegality(Move{current_pos, p, MoveType::DEFAULT}, _color)) continue;
+        validMoves.insert(Move{current_pos, p, MoveType::DEFAULT});
+    }
 
     if (!_player->inCheck()) getCastleMoves(validMoves, current_pos);
     return validMoves;
