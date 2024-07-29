@@ -1,5 +1,7 @@
 #include "Pawn.h"
 
+#include "../../Manager/Manager.h"
+
 Pawn::Pawn(Color color, std::weak_ptr<ChessBoard> board, std::weak_ptr<Square> square) : Piece(color, board, square) {}
 
 char Pawn::getPieceChar() const { return _color == Color::WHITE ? 'P' : 'p'; }
