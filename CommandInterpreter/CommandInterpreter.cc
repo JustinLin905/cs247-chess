@@ -1,5 +1,5 @@
 #include "CommandInterpreter.h"
-#include "../SetupInstruction/SetupInstruction.h"
+
 #include <memory>
 #include <string>
 
@@ -7,6 +7,7 @@
 #include "../Move/Move.h"
 #include "../Player/Player.h"
 #include "../PlayerType/PlayerType.h"
+#include "../SetupInstruction/SetupInstruction.h"
 
 std::istream& CommandInterpreter::_in = std::cin;
 
@@ -91,8 +92,8 @@ Move CommandInterpreter::processPlayerInput(Player& player) {
             char og_col, new_col;
             int og_row, new_row;
             _in >> og_col >> og_row >> new_col >> new_row;
-            Move move(Position{og_row, (int)og_col - 97},
-                      Position{new_row, (int)new_col - 97});
+            Move move(Position{8 - og_row, (int)og_col - 97},
+                      Position{8 - new_row, (int)new_col - 97});
             return move;
             break;
         }
@@ -133,6 +134,4 @@ SetupInstruction CommandInterpreter::processSetupInput() {
             throw std::invalid_argument("Invalid command");
             break;
     }
-
-
 }
