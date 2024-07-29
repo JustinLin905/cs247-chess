@@ -57,6 +57,10 @@ void Game::performMove(Move move, Color player_color) {
 
     std::shared_ptr<Piece> moving_piece = init_square.getPiece();
 
+    // if (moving_piece != nullptr) {
+    //     std::cout << "Has " << moving_piece->getPieceChar() << " moved: " << moving_piece->hasMoved() << std::endl;
+    // }
+
     // check if move is castle
     char king_char = player_color == Color::WHITE ? 'K' : 'k';
     if (moving_piece->getPieceChar() == king_char && (move.type == MoveType::KING_SIDE_CASTLE || move.type == MoveType::QUEEN_SIDE_CASTLE) && !moving_piece->hasMoved()) {
@@ -64,15 +68,10 @@ void Game::performMove(Move move, Color player_color) {
         Position rook_init = {initial.r, castle_type == MoveType::KING_SIDE_CASTLE ? 7 : 0};
         Position rook_final = {initial.r, castle_type == MoveType::KING_SIDE_CASTLE ? 5 : 3};
         Move rook_move = {rook_init, rook_final, MoveType::DEFAULT};
-        performMove(rook_move, player_color);
 
-        // Square& rook_init_square = _chess_board->getSquare(rook_init);
-        // Square& rook_final_square = _chess_board->getSquare(rook_final);
-        // auto rook = rook_init_square.getPiece();
-        // rook_init_square.disconnectPiece();
-        // rook_final_square.setPiece(rook, false);
-        // rook_final_square.getPiece()->setSquare(_chess_board->getSquarePtr(rook_final));
-        // rook->setSquare(_chess_board->getSquarePtr(rook_final));
+        // std::cout << "Has rook moved: " << _chess_board->getSquare(rook_init).getPiece()->hasMoved() << std::endl;
+
+        performMove(rook_move, player_color);
     }
     // if a piece was captured
     else if (final_square.getPiece() != nullptr) {
@@ -205,7 +204,7 @@ void Game::simulateLegality(Move move, Color player_color, std::unordered_set<Mo
         rook_init_square.getPiece()->setSquare(_chess_board->getSquarePtr(rook_init));
         rook_final_square.disconnectPiece();
         rook_init_square.getPiece()->Moved(false);
-        _chess_board->render();
+        // _chess_board->render();
     }
 
     init_square.setPiece(piece_at_init, false);

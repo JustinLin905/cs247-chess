@@ -63,7 +63,7 @@ std::unordered_set<Move> King::getValidMoves() const {
 
     for (Position p : attackedSquares) validMoves.insert(Move{current_pos, p, MoveType::DEFAULT});
 
-    getCastleMoves(validMoves, current_pos);
+    if (!_player->inCheck()) getCastleMoves(validMoves, current_pos);
     return validMoves;
 }
 
