@@ -129,8 +129,9 @@ bool Game::makeTurn(Move move, Color player_color, bool in_check) {
     move.type = it->type;
     performMove(move, player_color);
 
-    // TEMP TESTING OF PAWN PROMOTION
-    if (piece_at_init->getPieceChar() == 'P') {
+    // Check for pawn promotion
+    bool is_at_final_rank = final.r == 0 || final.r == 7;
+    if ((piece_at_init->getPieceChar() == 'P' || piece_at_init->getPieceChar() == 'p') && is_at_final_rank) {
         std::shared_ptr<Pawn> pawn = std::dynamic_pointer_cast<Pawn>(piece_at_init);
         pawn->promote();
     }
