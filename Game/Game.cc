@@ -10,7 +10,17 @@
 #include "../Player/HumanPlayer.h"
 #include "../PlayerType/PlayerType.h"
 
-Game::Game(PlayerType::Type white, PlayerType::Type black) : _chess_board(std::make_shared<ChessBoard>()), _text_observer{std::make_shared<TextObserver>(_chess_board, std::cout)}, _graphics_observer{std::make_shared<GraphicsObserver>(_chess_board)}, _white{createPlayerPtr(white)}, _black{createPlayerPtr(black)} {}
+Game::Game() :
+    _chess_board(std::make_shared<ChessBoard>()),
+    _text_observer{std::make_shared<TextObserver>(_chess_board, std::cout)},
+    _graphics_observer{std::make_shared<GraphicsObserver>(_chess_board)} {}
+
+void Game::setupPlayers(PlayerType::Type white, PlayerType::Type black) {
+    _white = createPlayerPtr(white);
+    _white->setKing(_chess_board->getKing(Color::WHITE));
+    _black = createPlayerPtr(black);
+    _black->setKing(_chess_board->getKing(Color::BLACK));
+}
 
 std::unique_ptr<Player> Game::createPlayerPtr(PlayerType::Type type) {
     switch (type) {
@@ -24,7 +34,7 @@ std::unique_ptr<Player> Game::createPlayerPtr(PlayerType::Type type) {
 }
 
 void Game::initDefaultGame() {
-    _chess_board->defaultSetup(_white, _black, _chess_board);
+    _chess_board->defaultSetup(_chess_board);
 }
 
 bool Game::anyValidMoves(Color player_color) {

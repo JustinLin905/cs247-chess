@@ -14,9 +14,14 @@ Manager::Manager() {}
 
 void Manager::setupGame() {}
 
-void Manager::startGame(PlayerType::Type white, PlayerType::Type black) {
-    _CurrGame = std::make_shared<Game>(white, black);
-    _CurrGame->initDefaultGame();
+void Manager::startGame(PlayerType::Type white, PlayerType::Type black) {;
+
+    // if there's no custom setup game that already exists, create a new one with default settings
+    if (_CurrGame == nullptr) {    
+        _CurrGame = std::make_shared<Game>();
+        _CurrGame->initDefaultGame();
+    }
+    _CurrGame->setupPlayers(white, black);
 
     _CurrGame->renderBoard();
 

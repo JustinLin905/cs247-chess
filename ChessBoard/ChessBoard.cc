@@ -21,7 +21,7 @@ void ChessBoard::reset() {
     }
 }
 
-void ChessBoard::defaultSetup(std::unique_ptr<Player> &whitePlayer, std::unique_ptr<Player> &blackPlayer, std::shared_ptr<ChessBoard> chessBoard) {
+void ChessBoard::defaultSetup(std::shared_ptr<ChessBoard> chessBoard) {
     // Thought: we will need to be able to reverse this based on the current
     // player's color
     reset();
@@ -73,29 +73,27 @@ void ChessBoard::defaultSetup(std::unique_ptr<Player> &whitePlayer, std::unique_
             char p = std::toupper(defaultBoard[i][j]);
             bool isWhite = p == defaultBoard[i][j];
             Color col = isWhite ? Color::WHITE : Color::BLACK;
-            Player *player = isWhite ? whitePlayer.get() : blackPlayer.get();
-
             std::shared_ptr<Piece> piece;
 
             switch (p) {
                 case 'R':
-                    piece = std::make_shared<Rook>(col, player, chessBoard, std::weak_ptr<Square>(_board.at(i).at(j)));
+                    piece = std::make_shared<Rook>(col, chessBoard, std::weak_ptr<Square>(_board.at(i).at(j)));
                     break;
                 case 'N':
-                    piece = std::make_shared<Knight>(col, player, chessBoard, std::weak_ptr<Square>(_board.at(i).at(j)));
+                    piece = std::make_shared<Knight>(col, chessBoard, std::weak_ptr<Square>(_board.at(i).at(j)));
                     break;
                 case 'B':
-                    piece = std::make_shared<Bishop>(col, player, chessBoard, std::weak_ptr<Square>(_board.at(i).at(j)));
+                    piece = std::make_shared<Bishop>(col, chessBoard, std::weak_ptr<Square>(_board.at(i).at(j)));
                     break;
                 case 'Q':
-                    piece = std::make_shared<Queen>(col, player, chessBoard, std::weak_ptr<Square>(_board.at(i).at(j)));
+                    piece = std::make_shared<Queen>(col, chessBoard, std::weak_ptr<Square>(_board.at(i).at(j)));
                     break;
                 case 'K':
-                    piece = std::make_shared<King>(col, player, chessBoard, std::weak_ptr<Square>(_board.at(i).at(j)));
-                    player->setKing(std::dynamic_pointer_cast<King>(piece));
+                    piece = std::make_shared<King>(col, chessBoard, std::weak_ptr<Square>(_board.at(i).at(j)));
+                    (isWhite ? _white_king : _black_king) = std::dynamic_pointer_cast<King>(piece);
                     break;
                 case 'P':
-                    piece = std::make_shared<Pawn>(col, player, chessBoard, std::weak_ptr<Square>(_board.at(i).at(j)));
+                    piece = std::make_shared<Pawn>(col, chessBoard, std::weak_ptr<Square>(_board.at(i).at(j)));
                     break;
             }
 
@@ -197,4 +195,8 @@ void ChessBoard::setAlivePieces(std::vector<std::shared_ptr<Piece>> pieces, Colo
 
 std::vector<std::shared_ptr<Piece>> ChessBoard::getAlivePieces(Color color) const {
     return color == Color::WHITE ? _white_alive_pieces : _black_alive_pieces;
+}
+
+std::shared_ptr<King> ChessBoard::getKing(Color color) const {
+    return (color == Color::WHITE ? _white_king : _black_king);
 }

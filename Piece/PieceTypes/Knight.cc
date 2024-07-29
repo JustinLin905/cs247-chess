@@ -1,7 +1,6 @@
 #include "Knight.h"
 
-Knight::Knight(Color color, Player* player, std::weak_ptr<ChessBoard> board, std::weak_ptr<Square> square)
-    : Piece(color, player, board, square) {}
+Knight::Knight(Color color, std::weak_ptr<ChessBoard> board, std::weak_ptr<Square> square) : Piece(color, board, square) {}
 
 char Knight::getPieceChar() const { return _color == Color::WHITE ? 'N' : 'n'; }
 

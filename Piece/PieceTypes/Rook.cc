@@ -3,8 +3,7 @@
 #include "../../ChessBoard/ChessBoard.h"
 #include "../../Manager/Manager.h"
 
-Rook::Rook(Color color, Player* player, std::weak_ptr<ChessBoard> board, std::weak_ptr<Square> square)
-    : Piece(color, player, board, square) {}
+Rook::Rook(Color color, std::weak_ptr<ChessBoard> board, std::weak_ptr<Square> square) : Piece(color, board, square) {}
 
 char Rook::getPieceChar() const { return _color == Color::WHITE ? 'R' : 'r'; }
 
