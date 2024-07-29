@@ -10,10 +10,9 @@
 #include "../Player/HumanPlayer.h"
 #include "../PlayerType/PlayerType.h"
 
-Game::Game() :
-    _chess_board(std::make_shared<ChessBoard>()),
-    _text_observer{std::make_shared<TextObserver>(_chess_board, std::cout)},
-    _graphics_observer{std::make_shared<GraphicsObserver>(_chess_board)} {}
+Game::Game() : _chess_board(std::make_shared<ChessBoard>()),
+               _text_observer{std::make_shared<TextObserver>(_chess_board, std::cout)},
+               _graphics_observer{std::make_shared<GraphicsObserver>(_chess_board)} {}
 
 void Game::setupPlayers(PlayerType::Type white, PlayerType::Type black) {
     _white = createPlayerPtr(white);
@@ -129,8 +128,16 @@ bool Game::makeTurn(Move move, Color player_color, bool in_check) {
 
     move.type = it->type;
     performMove(move, player_color);
+
+    // TEMP TESTING OF PAWN PROMOTION
+    if (piece_at_init->getPieceChar() == 'P') {
+        std::shared_ptr<Pawn> pawn = std::dynamic_pointer_cast<Pawn>(piece_at_init);
+        pawn->promote();
+    }
+
     _chess_board->render();  // rerender board
-    return true;             // move was valid
+
+    return true;  // move was valid
 }
 
 /*

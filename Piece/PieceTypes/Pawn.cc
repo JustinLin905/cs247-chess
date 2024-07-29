@@ -33,6 +33,49 @@ std::unordered_set<Position> Pawn::getAttackedSquares() const {
 }
 
 /*
+Replaces the pawn with a piece of the player's choosing.
+*/
+void Pawn::promote() {
+    std::shared_ptr<Piece> this_piece = getSquare()->getPiece();
+
+    // remove pawn from player's list of pieces
+    std::shared_ptr<ChessBoard> board_ptr = _board.lock();
+    if (board_ptr == nullptr) {
+        std::cerr << "Error: board_ptr is null in Pawn::promote()" << std::endl;
+        return;
+    }
+
+    board_ptr->removeDeadPiece(this_piece);
+    getSquare()->disconnectPiece();
+
+    // get player's choice of piece
+    PromotionType::Type promotion_choice = CommandInterpreter::processPromotionInput();
+
+    // create new piece at the same location
+    std::shared_ptr<Piece> new_piece;
+    switch (promotion_choice) {
+        case PromotionType::Type::QUEEN:
+            new_piece = std::make_shared<Queen>(_color, _board, getSquare());
+            break;
+        case PromotionType::Type::ROOK:
+            new_piece = std::make_shared<Rook>(_color, _board, getSquare());
+            break;
+        case PromotionType::Type::BISHOP:
+            new_piece = std::make_shared<Bishop>(_color, _board, getSquare());
+            break;
+        case PromotionType::Type::KNIGHT:
+            new_piece = std::make_shared<Knight>(_color, _board, getSquare());
+            break;
+        default:
+            std::cerr << "Error: invalid promotion choice in Pawn::promote()" << std::endl;
+            return;
+    }
+
+    getSquare()->setPiece(new_piece);
+    board_ptr->addToAlivePieces(new_piece, _color);
+}
+
+/*
 Only has move for moving forward by one square.
 TODO: NEED UPDATE
 */

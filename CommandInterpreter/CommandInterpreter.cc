@@ -1,5 +1,5 @@
 #include "CommandInterpreter.h"
-#include "../SetupInstruction/SetupInstruction.h"
+
 #include <memory>
 #include <string>
 
@@ -133,6 +133,14 @@ SetupInstruction CommandInterpreter::processSetupInput() {
             throw std::invalid_argument("Invalid command");
             break;
     }
+}
 
+PromotionType::Type CommandInterpreter::processPromotionInput() {
+    std::cout << "Choose a piece to promote to (q, r, b, n): ";
 
+    char cmd;
+    _in >> cmd;
+
+    PromotionType::Type promotionType = PromotionType::HashPromotionType(cmd);
+    return promotionType;
 }
