@@ -27,7 +27,7 @@ class Game {
     void initDefaultGame();
     bool anyValidMoves(Color player_color);
     bool makeTurn(Move move, Color color, bool in_check);
-    void simulateLegality(Move move, Color player_color, std::unordered_set<Move>& valid_moves_out);
+    bool simulateLegality(Move move, Color player_color);
     void reverseMoves(int n);
 
     void renderBoard() const;

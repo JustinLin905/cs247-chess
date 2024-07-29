@@ -8,24 +8,25 @@
 #include "../PlayerType/PlayerType.h"
 
 class Manager {
-  static std::shared_ptr<Game> _CurrGame;
-  static std::unique_ptr<LeaderBoard> _leaderBoard;
+    static std::shared_ptr<Game> _CurrGame;
+    static std::unique_ptr<LeaderBoard> _leaderBoard;
 
-  Manager();
+    Manager();
 
- public:
-  Manager(Manager const&) = delete;
-  Manager& operator=(Manager const&) = delete;
+   public:
+    Manager(Manager const&) = delete;
+    Manager& operator=(Manager const&) = delete;
 
-  static std::shared_ptr<Manager> instance() {
-    static std::shared_ptr<Manager> m{new Manager};
-    return m;
-  }
+    static std::shared_ptr<Manager> instance() {
+        static std::shared_ptr<Manager> m{new Manager};
+        return m;
+    }
 
-  static void setupGame();
-  static void startGame(PlayerType::Type white, PlayerType::Type black);
-  static void closeGame();
-  static LeaderBoard& getLeaderBoard();
+    static std::shared_ptr<Game> getCurrGame() { return _CurrGame; }
+    static void setupGame();
+    static void startGame(PlayerType::Type white, PlayerType::Type black);
+    static void closeGame();
+    static LeaderBoard& getLeaderBoard();
 };
 
 #endif
