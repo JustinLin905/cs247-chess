@@ -14,7 +14,7 @@ Manager::Manager() {}
 
 void Manager::setupGame() {}
 
-void Manager::startGame(PlayerType::Type white, PlayerType::Type black) {;
+void Manager::startGame(PlayerType::Type white, PlayerType::Type black) {
 
     // if there's no custom setup game that already exists, create a new one with default settings
     if (_CurrGame == nullptr) {    
