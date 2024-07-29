@@ -31,8 +31,6 @@ void Manager::startGame(PlayerType::Type white, PlayerType::Type black) {
         std::string player_color_string = is_white ? "White" : "Black";
         std::string opponent_color_string = is_white ? "Black" : "White";
 
-        std::cout << player_color_string << "'s turn." << std::endl;
-
         // Check if player has any valid moves in this position
         bool any_valid_moves = _CurrGame->anyValidMoves(player_color);
         if (!any_valid_moves && in_check) {
@@ -42,6 +40,8 @@ void Manager::startGame(PlayerType::Type white, PlayerType::Type black) {
             std::cout << "Stalemate! It's a draw!" << std::endl;
             break;
         }
+
+        std::cout << player_color_string << "'s turn." << std::endl;
 
         if (in_check) {
             std::cout << player_color_string << " is in check." << std::endl;
