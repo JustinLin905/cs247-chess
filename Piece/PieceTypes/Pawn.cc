@@ -15,11 +15,11 @@ std::unordered_set<Position> Pawn::getAttackedSquares() const {
     auto temp_board_ptr = _board.lock();
 
     if (_color == Color::WHITE) {
-        if (temp_board_ptr->getSquare(Position{row - 1, col - 1}).getPiece() != nullptr) attackedSquares.insert(Position{row - 1, col - 1});
-        if (temp_board_ptr->getSquare(Position{row - 1, col + 1}).getPiece() != nullptr) attackedSquares.insert(Position{row - 1, col + 1});
+        if (row > 0 && col > 0 && temp_board_ptr->getSquare(Position{row - 1, col - 1}).getPiece() != nullptr) attackedSquares.insert(Position{row - 1, col - 1});
+        if (row > 0 && col < 7 && temp_board_ptr->getSquare(Position{row - 1, col + 1}).getPiece() != nullptr) attackedSquares.insert(Position{row - 1, col + 1});
     } else {
-        if (temp_board_ptr->getSquare(Position{row + 1, col - 1}).getPiece() != nullptr) attackedSquares.insert(Position{row + 1, col - 1});
-        if (temp_board_ptr->getSquare(Position{row + 1, col + 1}).getPiece() != nullptr) attackedSquares.insert(Position{row + 1, col + 1});
+        if (row < 7 && col > 0 && temp_board_ptr->getSquare(Position{row + 1, col - 1}).getPiece() != nullptr) attackedSquares.insert(Position{row + 1, col - 1});
+        if (row < 7 && col < 7 && temp_board_ptr->getSquare(Position{row + 1, col + 1}).getPiece() != nullptr) attackedSquares.insert(Position{row + 1, col + 1});
     }
 
     Position nextPos = _color == Color::WHITE ? Position{row - 1, col} : Position{row + 1, col};
@@ -27,7 +27,7 @@ std::unordered_set<Position> Pawn::getAttackedSquares() const {
 
     if (!_moved) {
         Position nextPos2 = _color == Color::WHITE ? Position{row - 2, col} : Position{row + 2, col};
-        attackedSquares.insert(nextPos2);
+        if (temp_board_ptr->getSquare(nextPos2).getPiece() == nullptr) attackedSquares.insert(nextPos2);
     }
 
     return attackedSquares;
