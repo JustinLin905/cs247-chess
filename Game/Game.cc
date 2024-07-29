@@ -68,6 +68,8 @@ void Game::performMove(Move move, Color player_color) {
 
     // check if move is castle
     char king_char = player_color == Color::WHITE ? 'K' : 'k';
+    char pawn_char = player_color == Color::WHITE ? 'P' : 'p';
+
     if (moving_piece->getPieceChar() == king_char && (move.type == MoveType::KING_SIDE_CASTLE || move.type == MoveType::QUEEN_SIDE_CASTLE) && !moving_piece->hasMoved()) {
         auto castle_type = move.type;
         Position rook_init = {initial.r, castle_type == MoveType::KING_SIDE_CASTLE ? 7 : 0};
@@ -77,6 +79,11 @@ void Game::performMove(Move move, Color player_color) {
         // std::cout << "Has rook moved: " << _chess_board->getSquare(rook_init).getPiece()->hasMoved() << std::endl;
 
         performMove(rook_move, player_color);
+    }
+    // check if move is enpassant
+    else if (moving_piece->getPieceChar() == pawn_char && move.type == MoveType::ENPASSANT) {
+        Position captured_pawn_pos = {initial.r, final.c};
+        _chess_board->removeDeadPiece(_chess_board->getSquare(captured_pawn_pos).getPiece());
     }
     // if a piece was captured
     else if (final_square.getPiece() != nullptr) {
@@ -129,6 +136,15 @@ bool Game::makeTurn(Move move, Color player_color, bool in_check) {
 
     move.type = it->type;
     performMove(move, player_color);
+
+    if (player_color == Color::WHITE)
+        _white_moves.emplace_back(move);
+    else
+        _black_moves.emplace_back(move);
+
+    std::cout << "white move count: " << _white_moves.size() << std::endl;
+    std::cout << "black move count: " << _black_moves.size() << std::endl;
+
     _chess_board->render();  // rerender board
     return true;             // move was valid
 }
@@ -151,6 +167,7 @@ bool Game::simulateLegality(Move move, Color player_color) {
     Square& final_square = _chess_board->getSquare(final);
 
     auto piece_at_init = init_square.getPiece();
+    auto piece_at_init_moved = piece_at_init->hasMoved();
 
     // if a piece was captured
     Player& captured_player = player_color == Color::WHITE ? *_black : *_white;
@@ -173,8 +190,6 @@ bool Game::simulateLegality(Move move, Color player_color) {
     // If still in check, move is not legal
     if (in_check) valid = false;
 
-    // std::cout << move << std::endl;
-
     // Restore old board state depending on the type of move ---------------------------------------------
     if (move.type == MoveType::KING_SIDE_CASTLE || move.type == MoveType::QUEEN_SIDE_CASTLE) {
         // undo rook (king will be handled later)
@@ -193,6 +208,10 @@ bool Game::simulateLegality(Move move, Color player_color) {
         rook_final_square.disconnectPiece();
         rook_init_square.getPiece()->Moved(false);
         // _chess_board->render();
+    } else if (move.type == MoveType::ENPASSANT) {
+        // undo en passant
+        Position captured_pawn_pos = {initial.r, final.c};
+        _chess_board->getSquare(captured_pawn_pos).setPiece(captured_piece, false);
     }
 
     init_square.setPiece(piece_at_init, false);
@@ -200,8 +219,7 @@ bool Game::simulateLegality(Move move, Color player_color) {
     if (captured_piece != nullptr) final_square.setPiece(captured_piece, false);
     piece_at_init->setSquare(_chess_board->getSquarePtr(initial));
     _chess_board->setAlivePieces(old_opponent_alive_pieces, opponent_color);
-    piece_at_init->Moved(false);
-
+    piece_at_init->Moved(piece_at_init_moved);
     _chess_board->updateAttackMap();
 
     return valid;
@@ -212,6 +230,10 @@ void Game::renderBoard() const {
 }
 
 void Game::reverseMoves(int n) {
+}
+
+Move Game::getLastMove(Color player_color) const {
+    return player_color == Color::WHITE ? _white_moves.back() : _black_moves.back();
 }
 
 Player& Game::getWhite() const {
