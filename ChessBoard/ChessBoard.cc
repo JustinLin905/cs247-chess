@@ -30,11 +30,11 @@ void ChessBoard::defaultSetup(std::unique_ptr<Player> &whitePlayer, std::unique_
         {'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'},
         {'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'},
         {'-', '-', '-', '-', '-', '-', '-', '-'},
+        {'-', '-', '-', '-', 'q', '-', '-', '-'},
         {'-', '-', '-', '-', '-', '-', '-', '-'},
         {'-', '-', '-', '-', '-', '-', '-', '-'},
-        {'-', '-', '-', '-', '-', '-', '-', '-'},
-        {'P', 'P', 'P', 'P', 'P', 'b', 'P', 'P'},
-        {'R', '-', '-', '-', 'K', 'B', 'N', 'R'}};
+        {'P', 'P', 'P', 'P', '-', 'P', 'P', 'P'},
+        {'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'}};
 
     // char defaultBoard[8][8] = {
     //     {'r', 'n', 'b', '-', 'k', 'b', 'n', 'r'},
@@ -79,27 +79,27 @@ void ChessBoard::defaultSetup(std::unique_ptr<Player> &whitePlayer, std::unique_
 
             switch (p) {
                 case 'R':
-                    piece = std::make_shared<Rook>(col, player, chessBoard, std::weak_ptr<Square>(_board[i][j]));
+                    piece = std::make_shared<Rook>(col, player, chessBoard, std::weak_ptr<Square>(_board.at(i).at(j)));
                     break;
                 case 'N':
-                    piece = std::make_shared<Knight>(col, player, chessBoard, std::weak_ptr<Square>(_board[i][j]));
+                    piece = std::make_shared<Knight>(col, player, chessBoard, std::weak_ptr<Square>(_board.at(i).at(j)));
                     break;
                 case 'B':
-                    piece = std::make_shared<Bishop>(col, player, chessBoard, std::weak_ptr<Square>(_board[i][j]));
+                    piece = std::make_shared<Bishop>(col, player, chessBoard, std::weak_ptr<Square>(_board.at(i).at(j)));
                     break;
                 case 'Q':
-                    piece = std::make_shared<Queen>(col, player, chessBoard, std::weak_ptr<Square>(_board[i][j]));
+                    piece = std::make_shared<Queen>(col, player, chessBoard, std::weak_ptr<Square>(_board.at(i).at(j)));
                     break;
                 case 'K':
-                    piece = std::make_shared<King>(col, player, chessBoard, std::weak_ptr<Square>(_board[i][j]));
+                    piece = std::make_shared<King>(col, player, chessBoard, std::weak_ptr<Square>(_board.at(i).at(j)));
                     player->setKing(std::dynamic_pointer_cast<King>(piece));
                     break;
                 case 'P':
-                    piece = std::make_shared<Pawn>(col, player, chessBoard, std::weak_ptr<Square>(_board[i][j]));
+                    piece = std::make_shared<Pawn>(col, player, chessBoard, std::weak_ptr<Square>(_board.at(i).at(j)));
                     break;
             }
 
-            _board[i][j]->setPiece(piece);
+            _board.at(i).at(j)->setPiece(piece);
             if (isWhite)
                 _white_alive_pieces.emplace_back(piece);
             else
@@ -111,16 +111,16 @@ void ChessBoard::defaultSetup(std::unique_ptr<Player> &whitePlayer, std::unique_
 }
 
 char ChessBoard::getState(int row, int col) const {
-    return _board[row][col]->getState();
+    return _board.at(row).at(col)->getState();
 }
 
 Square &ChessBoard::getSquare(Position position) {
-    return *_board[position.r][position.c];
+    return *getSquarePtr(position);
 }
 
 // Currently used to swap the weak_ptr that pieces have to their new square, after moving
 std::shared_ptr<Square> ChessBoard::getSquarePtr(Position position) {
-    return _board[position.r][position.c];
+    return _board.at(position.r).at(position.c);
 }
 
 void ChessBoard::render() { notifyObservers(); }
@@ -142,7 +142,7 @@ void ChessBoard::updateAttackMap() {
     // Update attacked squares
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
-            auto piece = _board[i][j]->getPiece();
+            auto piece = getSquarePtr(Position{i, j})->getPiece();
             if (piece) {
                 auto attacked_squares = piece->getAttackedSquares();
                 for (auto &pos : attacked_squares) {

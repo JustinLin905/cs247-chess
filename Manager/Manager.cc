@@ -34,10 +34,11 @@ void Manager::startGame(PlayerType::Type white, PlayerType::Type black) {
         std::cout << player_color_string << "'s turn." << std::endl;
 
         // Check if player has any valid moves in this position
-        if (!_CurrGame->anyValidMoves(player_color) && in_check) {
+        bool any_valid_moves = _CurrGame->anyValidMoves(player_color);
+        if (!any_valid_moves && in_check) {
             std::cout << player_color << " is checkmated! " << opponent_color_string << " wins!" << std::endl;
             break;
-        } else if (!_CurrGame->anyValidMoves(player_color) && !in_check) {
+        } else if (!any_valid_moves && !in_check) {
             std::cout << "Stalemate! It's a draw!" << std::endl;
             break;
         }
