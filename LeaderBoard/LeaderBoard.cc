@@ -18,7 +18,8 @@ void LeaderBoard::printScores(bool final) {
     std::cout << "White: " << _white_score << std::endl;
     std::cout << "Black: " << _black_score << std::endl;
 
-    std::cout << "====================" << std::endl;
+    std::cout << "====================" << std::endl
+              << std::endl;
 }
 
 void LeaderBoard::resetScores() {

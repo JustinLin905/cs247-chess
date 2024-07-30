@@ -1,0 +1,134 @@
+Begin Game
+setup
+
+   A B C D E F G H 
+   — — — — — — — — 
+8| - - - - - - - - 
+7| - - - - - - - - 
+6| - - - - - - - - 
+5| - - - - - - - - 
+4| - - - - - - - - 
+3| - - - - - - - - 
+2| - - - - - - - - 
+1| - - - - - - - - 
+
++ k c7
+
+   A B C D E F G H 
+   — — — — — — — — 
+8| - - - - - - - - 
+7| - - k - - - - - 
+6| - - - - - - - - 
+5| - - - - - - - - 
+4| - - - - - - - - 
+3| - - - - - - - - 
+2| - - - - - - - - 
+1| - - - - - - - - 
+
++ Q a7
+
+   A B C D E F G H 
+   — — — — — — — — 
+8| - - - - - - - - 
+7| Q - k - - - - - 
+6| - - - - - - - - 
+5| - - - - - - - - 
+4| - - - - - - - - 
+3| - - - - - - - - 
+2| - - - - - - - - 
+1| - - - - - - - - 
+
++ K h8
+
+   A B C D E F G H 
+   — — — — — — — — 
+8| - - - - - - - K 
+7| Q - k - - - - - 
+6| - - - - - - - - 
+5| - - - - - - - - 
+4| - - - - - - - - 
+3| - - - - - - - - 
+2| - - - - - - - - 
+1| - - - - - - - - 
+
+done
+CANNOT EXIT SETUP MODE: King cannot be in check
++ k h1
+
+   A B C D E F G H 
+   — — — — — — — — 
+8| - - - - - - - K 
+7| Q - k - - - - - 
+6| - - - - - - - - 
+5| - - - - - - - - 
+4| - - - - - - - - 
+3| - - - - - - - - 
+2| - - - - - - - - 
+1| - - - - - - - k 
+
+done
+CANNOT EXIT SETUP MODE: Number of Kings on the board is not valid
+- c7
+
+   A B C D E F G H 
+   — — — — — — — — 
+8| - - - - - - - K 
+7| Q - - - - - - - 
+6| - - - - - - - - 
+5| - - - - - - - - 
+4| - - - - - - - - 
+3| - - - - - - - - 
+2| - - - - - - - - 
+1| - - - - - - - k 
+
+done
+==182887== Invalid read of size 8
+==182887==    at 0x11A8F2: std::__shared_count<(__gnu_cxx::_Lock_policy)2>::__shared_count(std::__weak_count<(__gnu_cxx::_Lock_policy)2> const&, std::nothrow_t) (in /u0/jk3lin/cs247/cs247-chess/chess)
+==182887==    by 0x11E762: std::__shared_ptr<Square, (__gnu_cxx::_Lock_policy)2>::__shared_ptr(std::__weak_ptr<Square, (__gnu_cxx::_Lock_policy)2> const&, std::nothrow_t) (in /u0/jk3lin/cs247/cs247-chess/chess)
+==182887==    by 0x11E2D4: std::shared_ptr<Square>::shared_ptr(std::weak_ptr<Square> const&, std::nothrow_t) (in /u0/jk3lin/cs247/cs247-chess/chess)
+==182887==    by 0x11E0A0: std::weak_ptr<Square>::lock() const (in /u0/jk3lin/cs247/cs247-chess/chess)
+==182887==    by 0x11D790: Piece::getSquare() const (in /u0/jk3lin/cs247/cs247-chess/chess)
+==182887==    by 0x120980: King::inCheck() const (in /u0/jk3lin/cs247/cs247-chess/chess)
+==182887==    by 0x12ECB3: ChessBoard::customSetup(std::shared_ptr<ChessBoard>) (in /u0/jk3lin/cs247/cs247-chess/chess)
+==182887==    by 0x11108A: Game::setupBoard() (in /u0/jk3lin/cs247/cs247-chess/chess)
+==182887==    by 0x10CEC1: Manager::setupGame() (in /u0/jk3lin/cs247/cs247-chess/chess)
+==182887==    by 0x10FB39: CommandInterpreter::processGameInput() (in /u0/jk3lin/cs247/cs247-chess/chess)
+==182887==    by 0x10CDBB: main (in /u0/jk3lin/cs247/cs247-chess/chess)
+==182887==  Address 0x18 is not stack'd, malloc'd or (recently) free'd
+==182887== 
+==182887== 
+==182887== Process terminating with default action of signal 11 (SIGSEGV)
+==182887==  Access not within mapped region at address 0x18
+==182887==    at 0x11A8F2: std::__shared_count<(__gnu_cxx::_Lock_policy)2>::__shared_count(std::__weak_count<(__gnu_cxx::_Lock_policy)2> const&, std::nothrow_t) (in /u0/jk3lin/cs247/cs247-chess/chess)
+==182887==    by 0x11E762: std::__shared_ptr<Square, (__gnu_cxx::_Lock_policy)2>::__shared_ptr(std::__weak_ptr<Square, (__gnu_cxx::_Lock_policy)2> const&, std::nothrow_t) (in /u0/jk3lin/cs247/cs247-chess/chess)
+==182887==    by 0x11E2D4: std::shared_ptr<Square>::shared_ptr(std::weak_ptr<Square> const&, std::nothrow_t) (in /u0/jk3lin/cs247/cs247-chess/chess)
+==182887==    by 0x11E0A0: std::weak_ptr<Square>::lock() const (in /u0/jk3lin/cs247/cs247-chess/chess)
+==182887==    by 0x11D790: Piece::getSquare() const (in /u0/jk3lin/cs247/cs247-chess/chess)
+==182887==    by 0x120980: King::inCheck() const (in /u0/jk3lin/cs247/cs247-chess/chess)
+==182887==    by 0x12ECB3: ChessBoard::customSetup(std::shared_ptr<ChessBoard>) (in /u0/jk3lin/cs247/cs247-chess/chess)
+==182887==    by 0x11108A: Game::setupBoard() (in /u0/jk3lin/cs247/cs247-chess/chess)
+==182887==    by 0x10CEC1: Manager::setupGame() (in /u0/jk3lin/cs247/cs247-chess/chess)
+==182887==    by 0x10FB39: CommandInterpreter::processGameInput() (in /u0/jk3lin/cs247/cs247-chess/chess)
+==182887==    by 0x10CDBB: main (in /u0/jk3lin/cs247/cs247-chess/chess)
+==182887==  If you believe this happened as a result of a stack
+==182887==  overflow in your program's main thread (unlikely but
+==182887==  possible), you can try to increase the size of the
+==182887==  main thread stack using the --main-stacksize= flag.
+==182887==  The main thread stack size used in this run was 16777216.
+==182887== 
+==182887== HEAP SUMMARY:
+==182887==     in use at exit: 136,737 bytes in 177 blocks
+==182887==   total heap usage: 1,470 allocs, 1,293 frees, 182,408 bytes allocated
+==182887== 
+==182887== LEAK SUMMARY:
+==182887==    definitely lost: 0 bytes in 0 blocks
+==182887==    indirectly lost: 0 bytes in 0 blocks
+==182887==      possibly lost: 0 bytes in 0 blocks
+==182887==    still reachable: 136,737 bytes in 177 blocks
+==182887==         suppressed: 0 bytes in 0 blocks
+==182887== Reachable blocks (those to which a pointer was found) are not shown.
+==182887== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==182887== 
+==182887== For lists of detected and suppressed errors, rerun with: -s
+==182887== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 1 from 1)
+Segmentation fault

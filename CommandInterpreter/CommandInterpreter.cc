@@ -75,8 +75,8 @@ bool CommandInterpreter::processGameInput() {
             return false;
             break;
         case GameCmds::CMD_UNKNOWN:  // equivalent to default
-            throw std::invalid_argument("Invalid command");
-            break;
+            std::cout << "Please enter a valid command" << std::endl;
+            return true;
     }
 
     return false;
