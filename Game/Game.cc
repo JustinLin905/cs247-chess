@@ -5,7 +5,7 @@
 
 #include "../Player/ComputerPlayer/ComputerLevel1.h"
 #include "../Player/ComputerPlayer/ComputerLevel2.h"
-// #include "../Player/ComputerPlayer/ComputerLevel3.h"
+#include "../Player/ComputerPlayer/ComputerLevel3.h"
 // #include "../Player/ComputerPlayer/ComputerLevel4.h"
 #include "../Player/HumanPlayer.h"
 #include "../PlayerType/PlayerType.h"
@@ -29,6 +29,8 @@ std::unique_ptr<Player> Game::createPlayerPtr(PlayerType::Type type, Color color
             return std::make_unique<ComputerLevel1>(color, _chess_board);
         case PlayerType::Type::COMPUTER_LEVEL2:
             return std::make_unique<ComputerLevel2>(color, _chess_board);
+        case PlayerType::Type::COMPUTER_LEVEL3:
+            return std::make_unique<ComputerLevel3>(color, _chess_board);
         default:
             throw std::invalid_argument("Invalid player type");
     }
