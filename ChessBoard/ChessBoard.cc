@@ -307,6 +307,8 @@ void ChessBoard::removeDeadPiece(std::shared_ptr<Piece> piece) {
 
     _white_alive_pieces.erase(std::remove(_white_alive_pieces.begin(), _white_alive_pieces.end(), piece), _white_alive_pieces.end());
     _black_alive_pieces.erase(std::remove(_black_alive_pieces.begin(), _black_alive_pieces.end(), piece), _black_alive_pieces.end());
+
+    piece->getSquare()->disconnectPiece();
 }
 
 // Used to restore alive pieces to an old state

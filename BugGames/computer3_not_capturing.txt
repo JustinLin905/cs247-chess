@@ -1,0 +1,128 @@
+Begin Game
+game human computer3
+
+   A B C D E F G H
+   — — — — — — — —
+8| r n b q k b n r
+7| p p p p p p p p
+6|   _   _   _   _
+5| _   _   _   _
+4|   _   _   _   _
+3| _   _   _   _
+2| P P P P P P P P
+1| R N B Q K B N R
+
+WHITE's turn.
+move e2 2
+3
+Enter a valid command
+WHITE's turn.
+move e2 e4
+
+   A B C D E F G H
+   — — — — — — — —
+8| r n b q k b n r
+7| p p p p p p p p
+6|   _   _   _   _
+5| _   _   _   _
+4|   _   _ P _   _
+3| _   _   _   _
+2| P P P P   P P P
+1| R N B Q K B N R
+
+BLACK's turn.
+
+   A B C D E F G H
+   — — — — — — — —
+8| r _ b q k b n r
+7| p p p p p p p p
+6| n _   _   _   _
+5| _   _   _   _
+4|   _   _ P _   _
+3| _   _   _   _
+2| P P P P   P P P
+1| R N B Q K B N R
+
+WHITE's turn.
+move g1 h3
+
+   A B C D E F G H
+   — — — — — — — —
+8| r _ b q k b n r
+7| p p p p p p p p
+6| n _   _   _   _
+5| _   _   _   _
+4|   _   _ P _   _
+3| _   _   _   _ N
+2| P P P P   P P P
+1| R N B Q K B _ R
+
+BLACK's turn.
+
+   A B C D E F G H
+   — — — — — — — —
+8| r n b q k b n r
+7| p p p p p p p p
+6|   _   _   _   _
+5| _   _   _   _
+4|   _   _ P _   _
+3| _   _   _   _ N
+2| P P P P   P P P
+1| R N B Q K B _ R
+
+WHITE's turn.
+move c2 c4
+
+   A B C D E F G H
+   — — — — — — — —
+8| r n b q k b n r
+7| p p p p p p p p
+6|   _   _   _   _
+5| _   _   _   _
+4|   _ P _ P _   _
+3| _   _   _   _ N
+2| P P   P   P P P
+1| R N B Q K B _ R
+
+BLACK's turn.
+
+   A B C D E F G H
+   — — — — — — — —
+8| r n b q k b n r
+7| p   p p p p p p
+6|   p   _   _   _
+5| _   _   _   _
+4|   _ P _ P _   _
+3| _   _   _   _ N
+2| P P   P   P P P
+1| R N B Q K B _ R
+
+WHITE's turn.
+move c4 c5
+
+   A B C D E F G H
+   — — — — — — — —
+8| r n b q k b n r
+7| p   p p p p p p
+6|   p   _   _   _
+5| _   P   _   _
+4|   _   _ P _   _
+3| _   _   _   _ N
+2| P P   P   P P P
+1| R N B Q K B _ R
+
+BLACK's turn.
+
+   A B C D E F G H
+   — — — — — — — —
+8| r n b q k b n r
+7| p   p p _ p p p
+6|   p   _ p _   _
+5| _   P   _   _
+4|   _   _ P _   _
+3| _   _   _   _ N
+2| P P   P   P P P
+1| R N B Q K B _ R
+
+WHITE's turn.
+
