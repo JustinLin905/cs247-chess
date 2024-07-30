@@ -105,8 +105,8 @@ void Game::performMove(Move move, Color player_color) {
 bool Game::makeTurn(Move move, Color player_color, bool in_check) {
     auto initial = move.initial_pos;
     auto final = move.final_pos;
-    std::cout << initial << std::endl;
-    std::cout << final << std::endl;
+    // std::cout << initial << std::endl;
+    // std::cout << final << std::endl;
 
     Square& init_square = _chess_board->getSquare(initial);
     Square& final_square = _chess_board->getSquare(final);
@@ -147,8 +147,8 @@ bool Game::makeTurn(Move move, Color player_color, bool in_check) {
     else
         _black_moves.emplace_back(move);
 
-    std::cout << "white move count: " << _white_moves.size() << std::endl;
-    std::cout << "black move count: " << _black_moves.size() << std::endl;
+    // std::cout << "white move count: " << _white_moves.size() << std::endl;
+    // std::cout << "black move count: " << _black_moves.size() << std::endl;
 
     _chess_board->render();  // rerender board
 
