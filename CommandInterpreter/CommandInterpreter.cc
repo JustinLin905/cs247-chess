@@ -140,15 +140,36 @@ SetupInstruction CommandInterpreter::processSetupInput() {
     switch (setupCmd) {
         case SetupCmds::CMD_ADD_PIECE: {
             char piece;
-            Position pos;
-            _in >> piece >> pos;
-            return SetupInstruction{setupCmd, piece, pos};
+            char col;
+            int row;
+            _in >> piece >> col >> row;
+
+            if (_in.fail()) {
+                _in.clear();
+                _in.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                return SetupInstruction{setupCmd};
+            }
+
+            if (8 - row < 0 || 8 - row > 7 || (int)col - 97 < 0 || (int)col - 97 > 7) {
+                return SetupInstruction{setupCmd};
+            }
+            return SetupInstruction{setupCmd, piece, Position{8 - row, (int)col - 97}};
             break;
         }
         case SetupCmds::CMD_REMOVE_PIECE: {
-            Position pos;
-            _in >> pos;
-            return SetupInstruction{setupCmd, pos};
+            char col;
+            int row;
+            _in >> col >> row;
+            if (_in.fail()) {
+                _in.clear();
+                _in.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                return SetupInstruction{setupCmd};
+            }
+
+            if (8 - row < 0 || 8 - row > 7 || (int)col - 97 < 0 || (int)col - 97 > 7) {
+                return SetupInstruction{setupCmd};
+            }
+            return SetupInstruction{setupCmd, Position{8 - row, (int)col - 97}};
             break;
         }
         case SetupCmds::CMD_SET_TURN:
