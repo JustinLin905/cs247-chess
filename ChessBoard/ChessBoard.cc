@@ -215,7 +215,7 @@ void ChessBoard::customSetup(std::shared_ptr<ChessBoard> chessBoard) {
                 break;
             }
             case SetupCmds::CMD_UNKNOWN:
-                std::cerr << "Unknown Setup Instruction" << std::endl;
+                std::cerr << "Unknown or Invalid Setup Instruction" << std::endl;
                 break;
         }
     }

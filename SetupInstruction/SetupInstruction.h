@@ -22,6 +22,7 @@ struct SetupInstruction {
     SetupInstruction(SetupCmds cmd, Position pos) : cmd{cmd}, pos{pos} {}
     SetupInstruction(SetupCmds cmd, Color color) : cmd{cmd}, color{color} {}
     SetupInstruction(SetupCmds cmd) : cmd{cmd} {}
+    SetupInstruction() : cmd{SetupCmds::CMD_UNKNOWN} {}
 };
 
 #endif

@@ -147,11 +147,11 @@ SetupInstruction CommandInterpreter::processSetupInput() {
             if (_in.fail()) {
                 _in.clear();
                 _in.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                return SetupInstruction{setupCmd};
+                return SetupInstruction();
             }
 
             if (8 - row < 0 || 8 - row > 7 || (int)col - 97 < 0 || (int)col - 97 > 7) {
-                return SetupInstruction{setupCmd};
+                return SetupInstruction();
             }
             return SetupInstruction{setupCmd, piece, Position{8 - row, (int)col - 97}};
             break;
@@ -163,11 +163,11 @@ SetupInstruction CommandInterpreter::processSetupInput() {
             if (_in.fail()) {
                 _in.clear();
                 _in.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                return SetupInstruction{setupCmd};
+                return SetupInstruction();
             }
 
             if (8 - row < 0 || 8 - row > 7 || (int)col - 97 < 0 || (int)col - 97 > 7) {
-                return SetupInstruction{setupCmd};
+                return SetupInstruction();
             }
             return SetupInstruction{setupCmd, Position{8 - row, (int)col - 97}};
             break;
@@ -181,7 +181,7 @@ SetupInstruction CommandInterpreter::processSetupInput() {
             return SetupInstruction{setupCmd};
             break;
         case SetupCmds::CMD_UNKNOWN:  // equivalent to default
-            throw std::invalid_argument("Invalid command");
+            return SetupInstruction();
             break;
     }
 }
