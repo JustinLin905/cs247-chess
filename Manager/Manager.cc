@@ -31,6 +31,8 @@ void Manager::startGame(PlayerType::Type white, PlayerType::Type black) {
 
     // Game loop
     while (true) {
+        if (!_CurrGame) break;  // if player resigns
+
         // Check for checks
         bool is_white = _turn == 0;
         Color player_color = is_white ? Color::WHITE : Color::BLACK;
@@ -55,16 +57,21 @@ void Manager::startGame(PlayerType::Type white, PlayerType::Type black) {
 
         Move next_move = _turn == 0 ? _CurrGame->getWhite().getMove() : _CurrGame->getBlack().getMove();
 
-        if (next_move.initial_pos.c == -1 && next_move.initial_pos.r == -1 && next_move.final_pos.c == -1 && next_move.final_pos.r == -1) {
+        // invalid move flag is {(-1, -1), (-1, -1)}
+        if (next_move.type == MoveType::INVALID) {
             std::cout << "Enter a valid command" << std::endl;
             continue;
         }
 
-        if (!_CurrGame) break;  // if player resigns
+        // invalid move, no warning flag is {(-2 -2), (-2, -2)}
+        if (next_move.type == MoveType::INVALID_NO_FLAG) {
+            continue;
+        }
 
         // Player has valid moves: allow them to play their turn
         if (!_CurrGame->makeTurn(next_move, static_cast<Color>(_turn), in_check)) {
-            std::cout << "Invalid move" << std::endl;
+            std::cout << "Invalid move." << std::endl
+                      << std::endl;
             continue;
         }
 

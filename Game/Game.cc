@@ -249,3 +249,21 @@ Player& Game::getWhite() const {
 Player& Game::getBlack() const {
     return *_black;
 }
+
+void Game::peek(Position pos, Color player_color) {
+    if (_graphics_observer == nullptr) {
+        throw std::invalid_argument("Graphics observer is not initialized");
+    }
+
+    if (_chess_board->getSquare(pos).getPiece() == nullptr) {
+        std::cout << "No piece to peek at this position." << std::endl;
+        return;
+    }
+
+    if (_chess_board->getSquare(pos).getPiece()->getColor() != player_color) {
+        std::cout << "Cannot peek at opponent's piece!" << std::endl;
+        return;
+    }
+
+    _graphics_observer->peek(pos);
+}

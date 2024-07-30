@@ -30,6 +30,8 @@ CommandInterpreter::GameCmds CommandInterpreter::hashPlayerCommand(
         return GameCmds::CMD_RESIGN;
     } else if (cmd == "move") {
         return GameCmds::CMD_MOVE;
+    } else if (cmd == "peek") {
+        return GameCmds::CMD_PEEK;
     } else {
         return GameCmds::CMD_UNKNOWN;
     }
@@ -94,7 +96,7 @@ Move CommandInterpreter::processPlayerInput(Player& player) {
             _in >> og_col >> og_row >> new_col >> new_row;
             if (8 - og_row < 0 || 8 - og_row > 7 || (int)og_col - 97 < 0 || (int)og_col - 97 > 7 ||
                 8 - new_row < 0 || 8 - new_row > 7 || (int)new_col - 97 < 0 || (int)new_col - 97 > 7) {
-                return Move(Position{-1, -1}, Position{-1, -1});
+                return Move(Position{-1, -1}, Position{-1, -1}, MoveType::INVALID);
             }
 
             Move move(Position{8 - og_row, (int)og_col - 97},
@@ -102,8 +104,15 @@ Move CommandInterpreter::processPlayerInput(Player& player) {
             return move;
             break;
         }
+        case GameCmds::CMD_PEEK:
+            char col;
+            int row;
+            _in >> col >> row;
+            Manager::getCurrGame()->peek(Position{8 - row, (int)col - 97}, player.getColor());
+            return Move(Position{-1, -1}, Position{-1, -1}, MoveType::INVALID_NO_FLAG);
+            break;
         case GameCmds::CMD_UNKNOWN:  // equivalent to default
-            return Move(Position{-1, -1}, Position{-1, -1});
+            return Move(Position{-1, -1}, Position{-1, -1}, MoveType::INVALID);
             break;
     }
 }

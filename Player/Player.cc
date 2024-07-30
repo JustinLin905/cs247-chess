@@ -24,3 +24,7 @@ bool Player::inCheck() const {
 
     return king_shared->inCheck();
 }
+
+Color Player::getColor() const {
+    return _color;
+}
