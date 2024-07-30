@@ -7,7 +7,8 @@ TextObserver::TextObserver(std::weak_ptr<ChessBoard> chess_board, std::ostream &
 }
 
 void TextObserver::notify() {
-    _out << "   ";
+    _out << std::endl
+         << "   ";
     for (int i = 0; i < 8; i++) {
         _out << char(65 + i) << " ";
     }
