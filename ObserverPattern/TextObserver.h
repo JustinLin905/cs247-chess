@@ -1,5 +1,6 @@
 #ifndef TEXT_OBSERVER_H
 #define TEXT_OBSERVER_H
+#include <cctype>
 #include <iostream>
 #include <memory>
 

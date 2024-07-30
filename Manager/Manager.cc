@@ -33,7 +33,6 @@ void Manager::startGame(PlayerType::Type white, PlayerType::Type black) {
 
     // Game loop
     while (true) {
-        if (!_CurrGame) break;  // if player resigns
 
         // Check for checks
         bool is_white = _turn == 0;
@@ -58,6 +57,7 @@ void Manager::startGame(PlayerType::Type white, PlayerType::Type black) {
         }
 
         Move next_move = _turn == 0 ? _CurrGame->getWhite().getMove() : _CurrGame->getBlack().getMove();
+        if (!_CurrGame) break;  // if player resigns
 
         // invalid move flag is {(-1, -1), (-1, -1)}
         if (next_move.type == MoveType::INVALID) {

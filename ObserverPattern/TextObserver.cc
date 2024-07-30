@@ -23,7 +23,14 @@ void TextObserver::notify() {
     for (int i = 0; i < 8; i++) {
         _out << 8 - i << "| ";
         for (int j = 0; j < 8; j++) {
-            _out << _chess_board.lock()->getState(i, j) << " ";
+            char state = _chess_board.lock()->getState(i, j);
+            if (std::islower(state)) {
+                _out << "\033[34m" << state << "\033[0m ";
+            } else if (std::isupper(state)) {
+                _out << "\033[36m" << state << "\033[0m ";
+            } else {
+                _out << state << " ";
+            }
         }
         _out << std::endl;
     }
