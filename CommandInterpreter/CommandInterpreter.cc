@@ -1,5 +1,6 @@
 #include "CommandInterpreter.h"
 
+#include <limits>
 #include <memory>
 #include <string>
 
@@ -94,6 +95,11 @@ Move CommandInterpreter::processPlayerInput(Player& player) {
             char og_col, new_col;
             int og_row, new_row;
             _in >> og_col >> og_row >> new_col >> new_row;
+            if (_in.fail()) {
+                _in.clear();
+                _in.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                return Move(Position{-1, -1}, Position{-1, -1}, MoveType::INVALID);
+            }
             if (8 - og_row < 0 || 8 - og_row > 7 || (int)og_col - 97 < 0 || (int)og_col - 97 > 7 ||
                 8 - new_row < 0 || 8 - new_row > 7 || (int)new_col - 97 < 0 || (int)new_col - 97 > 7) {
                 return Move(Position{-1, -1}, Position{-1, -1}, MoveType::INVALID);
@@ -104,13 +110,22 @@ Move CommandInterpreter::processPlayerInput(Player& player) {
             return move;
             break;
         }
-        case GameCmds::CMD_PEEK:
+        case GameCmds::CMD_PEEK: {
             char col;
             int row;
             _in >> col >> row;
+            if (_in.fail()) {
+                _in.clear();
+                _in.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                return Move(Position{-1, -1}, Position{-1, -1}, MoveType::INVALID);
+            }
+            if (8 - row < 0 || 8 - row > 7 || (int)col - 97 < 0 || (int)col - 97 > 7) {
+                return Move(Position{-1, -1}, Position{-1, -1}, MoveType::INVALID);
+            }
             Manager::getCurrGame()->peek(Position{8 - row, (int)col - 97}, player.getColor());
             return Move(Position{-1, -1}, Position{-1, -1}, MoveType::INVALID_NO_FLAG);
             break;
+        }
         case GameCmds::CMD_UNKNOWN:  // equivalent to default
             return Move(Position{-1, -1}, Position{-1, -1}, MoveType::INVALID);
             break;

@@ -74,6 +74,8 @@
                 "unordered_set": "cpp",
                 "fstream": "cpp",
                 "deque": "cpp",
-                "valarray": "cpp"
+                "valarray": "cpp",
+                "chrono": "cpp",
+                "semaphore": "cpp"
         }
 }
