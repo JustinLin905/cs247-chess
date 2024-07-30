@@ -21,5 +21,5 @@ Move ComputerLevel2::getMove() {
     }
 
     if (!validCaptureMoves.empty()) return getRandomMove(validCaptureMoves); // Computer Level 3
-    else return getRandomMove(validCaptureMoves); // Computer Level 1
+    else return getRandomMove(validMoves); // Computer Level 1
 }

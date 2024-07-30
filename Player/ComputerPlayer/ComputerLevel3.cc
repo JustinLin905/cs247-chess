@@ -24,7 +24,6 @@ Move ComputerLevel3::getMove() {
             // check if current piece is under attack, try to avoid being captured
             Color opponent_color = (_color == Color::WHITE) ? Color::BLACK : Color::WHITE;
             if (chess_boad->isPositionUnderAttack(move.initial_pos, opponent_color) && !chess_boad->isPositionUnderAttack(move.final_pos, opponent_color)) {
-                std::cout << move.initial_pos << " " << move.final_pos << std::endl;
                 validAvoidCaptureMoves.insert(move);
             }
         }
