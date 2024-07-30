@@ -33,7 +33,6 @@ void Manager::startGame(PlayerType::Type white, PlayerType::Type black) {
 
     // Game loop
     while (true) {
-
         // Check for checks
         bool is_white = _turn == 0;
         Color player_color = is_white ? Color::WHITE : Color::BLACK;
@@ -44,9 +43,15 @@ void Manager::startGame(PlayerType::Type white, PlayerType::Type black) {
         bool any_valid_moves = _CurrGame->anyValidMoves(player_color);
         if (!any_valid_moves && in_check) {
             std::cout << player_color << " is checkmated! " << opponent_color << " wins!" << std::endl;
+            if (opponent_color == Color::WHITE) {
+                getLeaderBoard().winWhite();
+            } else {
+                getLeaderBoard().winBlack();
+            }
             break;
         } else if (!any_valid_moves && !in_check) {
             std::cout << "Stalemate! It's a draw!" << std::endl;
+            getLeaderBoard().draw();
             break;
         }
 
@@ -92,6 +97,8 @@ void Manager::startGame(PlayerType::Type white, PlayerType::Type black) {
 
         _turn = (_turn + 1) % 2;
     }
+
+    getLeaderBoard().printScores();
 }
 
 void Manager::startTestGame() {

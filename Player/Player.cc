@@ -12,6 +12,13 @@ void Player::setKing(std::weak_ptr<King> king) {
 }
 
 void Player::resign() {
+    if (_color == Color::WHITE) {
+        std::cout << "Black wins!" << std::endl;
+        Manager::getLeaderBoard().winBlack();
+    } else {
+        std::cout << "White wins!" << std::endl;
+        Manager::getLeaderBoard().winWhite();
+    }
     Manager::closeGame();
 }
 
