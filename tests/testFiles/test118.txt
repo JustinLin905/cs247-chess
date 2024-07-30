@@ -1,0 +1,14 @@
+move h2 h4
+move d7 d5
+move g1 f3
+move g8 f6
+move e2 e3
+move c7 c5
+move d2 d4
+move c5 d4
+move e3 d4
+move b8 c6
+move c2 c4
+move c8 g4
+move c4 d5
+move g4 f3

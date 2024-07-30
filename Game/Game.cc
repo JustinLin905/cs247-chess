@@ -179,12 +179,14 @@ bool Game::simulateLegality(Move move, Color player_color) {
     auto piece_at_init = init_square.getPiece();
     auto piece_at_init_moved = piece_at_init->hasMoved();
 
-    // if a piece was captured
+    // if a piece was captured, store the piece that was captured
     Player& captured_player = player_color == Color::WHITE ? *_black : *_white;
     std::shared_ptr<Piece> captured_piece = final_square.getPiece();
-    if (captured_piece != nullptr) {
-        // store the piece that was captured
-        _chess_board->removeDeadPiece(captured_piece);
+
+    // store piece that will be captured by enpassant
+    if (move.type == MoveType::ENPASSANT) {
+        Position captured_pawn_pos = {initial.r, final.c};
+        captured_piece = _chess_board->getSquare(captured_pawn_pos).getPiece();
     }
 
     // Move the piece
@@ -210,7 +212,6 @@ bool Game::simulateLegality(Move move, Color player_color) {
 
         if (rook_final_square.getPiece() == nullptr) {
             _chess_board->render();
-            std::cout << "wtf" << std::endl;
         }
 
         rook_init_square.setPiece(rook_final_square.getPiece(), false);
@@ -226,7 +227,7 @@ bool Game::simulateLegality(Move move, Color player_color) {
 
     init_square.setPiece(piece_at_init, false);
     final_square.disconnectPiece();
-    if (captured_piece != nullptr) final_square.setPiece(captured_piece, false);
+    if (captured_piece != nullptr && move.type != MoveType::ENPASSANT) final_square.setPiece(captured_piece, false);
     piece_at_init->setSquare(_chess_board->getSquarePtr(initial));
     _chess_board->setAlivePieces(old_opponent_alive_pieces, opponent_color);
     piece_at_init->Moved(piece_at_init_moved);
