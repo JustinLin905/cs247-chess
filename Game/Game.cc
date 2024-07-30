@@ -15,18 +15,18 @@ Game::Game() : _chess_board(std::make_shared<ChessBoard>()),
                _graphics_observer{std::make_shared<GraphicsObserver>(_chess_board)} {}
 
 void Game::setupPlayers(PlayerType::Type white, PlayerType::Type black) {
-    _white = createPlayerPtr(white);
+    _white = createPlayerPtr(white, Color::WHITE);
     _white->setKing(_chess_board->getKing(Color::WHITE));
-    _black = createPlayerPtr(black);
+    _black = createPlayerPtr(black, Color::BLACK);
     _black->setKing(_chess_board->getKing(Color::BLACK));
 }
 
-std::unique_ptr<Player> Game::createPlayerPtr(PlayerType::Type type) {
+std::unique_ptr<Player> Game::createPlayerPtr(PlayerType::Type type, Color color) {
     switch (type) {
         case PlayerType::Type::HUMAN:
-            return std::make_unique<HumanPlayer>(Color::WHITE);
+            return std::make_unique<HumanPlayer>(color);
         case PlayerType::Type::COMPUTER_LEVEL1:
-            return std::make_unique<ComputerLevel1>(Color::WHITE, _chess_board);
+            return std::make_unique<ComputerLevel1>(color, _chess_board);
         default:
             throw std::invalid_argument("Invalid player type");
     }
@@ -105,8 +105,8 @@ void Game::performMove(Move move, Color player_color) {
 bool Game::makeTurn(Move move, Color player_color, bool in_check) {
     auto initial = move.initial_pos;
     auto final = move.final_pos;
-    std::cout << initial << std::endl;
-    std::cout << final << std::endl;
+    // std::cout << initial << std::endl;
+    // std::cout << final << std::endl;
 
     Square& init_square = _chess_board->getSquare(initial);
     Square& final_square = _chess_board->getSquare(final);
@@ -147,8 +147,8 @@ bool Game::makeTurn(Move move, Color player_color, bool in_check) {
     else
         _black_moves.emplace_back(move);
 
-    std::cout << "white move count: " << _white_moves.size() << std::endl;
-    std::cout << "black move count: " << _black_moves.size() << std::endl;
+    // std::cout << "white move count: " << _white_moves.size() << std::endl;
+    // std::cout << "black move count: " << _black_moves.size() << std::endl;
 
     _chess_board->render();  // rerender board
 

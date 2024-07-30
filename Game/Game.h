@@ -26,7 +26,7 @@ class Game {
 
    public:
     Game();
-    std::unique_ptr<Player> createPlayerPtr(PlayerType::Type type);
+    std::unique_ptr<Player> createPlayerPtr(PlayerType::Type type, Color color);
     void setupPlayers(PlayerType::Type white, PlayerType::Type black);
     void setupBoard();
     void initDefaultGame();
