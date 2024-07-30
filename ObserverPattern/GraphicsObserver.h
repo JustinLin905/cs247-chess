@@ -2,6 +2,7 @@
 #define _GRAPHICS_OBSERVER_H_
 #include <memory>
 #include <unordered_set>
+#include <vector>
 
 #include "Observer.h"
 #include "window.h"
@@ -9,6 +10,7 @@
 class ChessBoard;
 
 class GraphicsObserver : public Observer {
+    std::vector<std::vector<char>> prev_state;
     std::weak_ptr<ChessBoard> _chess_board;
     void drawPiece(char piece, int row, int col, bool isWhite);
     Xwindow *_w;
