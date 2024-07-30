@@ -34,7 +34,7 @@ class Game {
     bool makeTurn(Move move, Color color, bool in_check);
     bool simulateLegality(Move move, Color player_color);
     void reverseMoves(int n);
-    void peek(Position pos, Player& player);
+    void peek(Position pos, Color player_color);
 
     void renderBoard() const;
 

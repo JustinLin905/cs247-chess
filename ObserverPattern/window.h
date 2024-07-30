@@ -37,7 +37,7 @@ class Xwindow {
     void fillRectangle(int x, int y, int width, int height, int colour = Black);
 
     // Draws a string
-    void drawString(int x, int y, const std::string &msg, bool whiteText);
+    void drawString(int x, int y, const std::string &msg, bool fancy, bool whiteText);
 };
 
 #endif

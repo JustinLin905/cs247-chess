@@ -75,15 +75,17 @@ void Xwindow::fillRectangle(int x, int y, int width, int height, int colour) {
     XSetForeground(d, gc, colours[Black]);
 }
 
-void Xwindow::drawString(int x, int y, const std::string& msg, bool whiteText) {
-    const char* fontname = "-*-helvetica-*-r-*-*-24-*-*-*-*-*-*-*";
-    XFontStruct* font = XLoadQueryFont(d, fontname);
-    if (!font) {
-        std::cerr << "Unable to load font: " << fontname << std::endl;
-        return;
+void Xwindow::drawString(int x, int y, const std::string& msg, bool fancy, bool whiteText) {
+    XFontStruct* font;
+    if (fancy) {
+        const char* fontname = "-*-helvetica-*-r-*-*-24-*-*-*-*-*-*-*";
+        font = XLoadQueryFont(d, fontname);
+        if (!font) {
+            std::cerr << "Unable to load font: " << fontname << std::endl;
+            return;
+        }
+        XSetFont(d, DefaultGC(d, s), font->fid);
     }
-
-    XSetFont(d, DefaultGC(d, s), font->fid);
 
     // Set the text color
     if (whiteText) {
@@ -95,5 +97,6 @@ void Xwindow::drawString(int x, int y, const std::string& msg, bool whiteText) {
     // Draw the string
     XDrawString(d, w, DefaultGC(d, s), x, y, msg.c_str(), msg.length());
 
-    XFreeFont(d, font);
+    if (fancy)
+        XFreeFont(d, font);
 }

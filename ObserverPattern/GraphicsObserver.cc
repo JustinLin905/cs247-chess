@@ -24,13 +24,13 @@ GraphicsObserver::GraphicsObserver(std::weak_ptr<ChessBoard> chess_board) : _che
     // Render top coordinate row
     for (int i = 1; i < 9; ++i) {
         _w->fillRectangle(100 * i, 0, 100, 100, Xwindow::Green);
-        _w->drawString(100 * i + 45, 55, std::string{char(64 + i)}, false);
+        _w->drawString(100 * i + 45, 55, std::string{char(64 + i)}, false, false);
     }
 
     // Render side coordinate column
     for (int i = 1; i < 9; ++i) {
         _w->fillRectangle(0, 100 * i, 100, 100, Xwindow::Green);
-        _w->drawString(45, 100 * i + 55, std::to_string(9 - i), false);
+        _w->drawString(45, 100 * i + 55, std::to_string(9 - i), false, false);
     }
 }
 
@@ -63,7 +63,7 @@ void GraphicsObserver::render() {
 
             // Add a "w" or "b" to the piece to indicate color
             char color_indicator = _chess_board.lock()->getSquare(Position{i, j}).getPiece()->getColor() == Color::WHITE ? 'w' : 'b';
-            _w->drawString(100 * (j + 1) + 35, 100 * (i + 1) + 55, std::string{color_indicator} + std::string{cur}, !isWhite);
+            _w->drawString(100 * (j + 1) + 35, 100 * (i + 1) + 55, std::string{color_indicator} + std::string{cur}, false, !isWhite);
         }
     }
 }
@@ -93,7 +93,7 @@ void GraphicsObserver::peek(Position pos) {
         if (board_shared->getSquare(move.final_pos).getPiece() != nullptr) {
             _w->fillRectangle(100 * (move.final_pos.c + 1), 100 * (move.final_pos.r + 1), 100, 100, Xwindow::Red);
             char color_indicator = board_shared->getSquare(move.final_pos).getPiece()->getColor() == Color::WHITE ? 'w' : 'b';
-            _w->drawString(100 * (move.final_pos.c + 1) + 35, 100 * (move.final_pos.r + 1) + 55, std::string{color_indicator} + std::string{board_shared->getSquare(move.final_pos).getState()}, true);
+            _w->drawString(100 * (move.final_pos.c + 1) + 35, 100 * (move.final_pos.r + 1) + 55, std::string{color_indicator} + std::string{board_shared->getSquare(move.final_pos).getState()}, false, true);
         }
     }
 }

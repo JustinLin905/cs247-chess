@@ -31,6 +31,8 @@ void Manager::startGame(PlayerType::Type white, PlayerType::Type black) {
 
     // Game loop
     while (true) {
+        if (!_CurrGame) break;  // if player resigns
+
         // Check for checks
         bool is_white = _turn == 0;
         Color player_color = is_white ? Color::WHITE : Color::BLACK;
@@ -65,8 +67,6 @@ void Manager::startGame(PlayerType::Type white, PlayerType::Type black) {
         if (next_move.type == MoveType::INVALID_NO_FLAG) {
             continue;
         }
-
-        if (!_CurrGame) break;  // if player resigns
 
         // Player has valid moves: allow them to play their turn
         if (!_CurrGame->makeTurn(next_move, static_cast<Color>(_turn), in_check)) {
