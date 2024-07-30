@@ -249,3 +249,7 @@ Player& Game::getWhite() const {
 Player& Game::getBlack() const {
     return *_black;
 }
+
+void Game::peek(Position pos) {
+    _graphics_observer->peek(pos);
+}

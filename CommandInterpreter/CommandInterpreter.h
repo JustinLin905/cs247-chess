@@ -23,7 +23,8 @@ class CommandInterpreter {
         CMD_MOVE,
         CMD_SETUP,
         CMD_UNKNOWN,
-        CMD_END
+        CMD_END,
+        CMD_PEEK
     };
 
     static GameCmds hashGameCommand(const std::string& cmd);

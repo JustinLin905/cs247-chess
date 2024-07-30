@@ -30,6 +30,8 @@ CommandInterpreter::GameCmds CommandInterpreter::hashPlayerCommand(
         return GameCmds::CMD_RESIGN;
     } else if (cmd == "move") {
         return GameCmds::CMD_MOVE;
+    } else if (cmd == "peek") {
+        return GameCmds::CMD_PEEK;
     } else {
         return GameCmds::CMD_UNKNOWN;
     }
@@ -102,6 +104,13 @@ Move CommandInterpreter::processPlayerInput(Player& player) {
             return move;
             break;
         }
+        case GameCmds::CMD_PEEK:
+            char col;
+            int row;
+            _in >> col >> row;
+            Manager::getCurrGame()->peek(Position{8 - row, (int)col - 97});
+            return Move(Position{-1, -1}, Position{-1, -1});
+            break;
         case GameCmds::CMD_UNKNOWN:  // equivalent to default
             return Move(Position{-1, -1}, Position{-1, -1});
             break;
