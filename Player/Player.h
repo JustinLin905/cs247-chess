@@ -22,8 +22,8 @@ class Player {
 
    public:
     Player(Color color);
+    Color getColor() const;
     void resign();
-    std::vector<Move> getValidPlayerMoves();
     bool inCheck() const;
     virtual Move getMove() = 0;
     void removeDeadPiece(std::shared_ptr<Piece> piece);

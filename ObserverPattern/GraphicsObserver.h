@@ -4,6 +4,7 @@
 #include <unordered_set>
 #include <vector>
 
+#include "../Move/Move.h"
 #include "Observer.h"
 #include "window.h"
 
@@ -19,6 +20,8 @@ class GraphicsObserver : public Observer {
     GraphicsObserver(std::weak_ptr<ChessBoard> chess_board);
     ~GraphicsObserver();
     void notify() override;
+    void render();
+    void peek(Position pos);
 };
 
 #endif

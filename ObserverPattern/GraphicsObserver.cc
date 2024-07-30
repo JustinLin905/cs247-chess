@@ -39,6 +39,10 @@ GraphicsObserver::~GraphicsObserver() {
 }
 
 void GraphicsObserver::notify() {
+    render();
+}
+
+void GraphicsObserver::render() {
     for (int i = 0; i < 8; ++i) {
         for (int j = 0; j < 8; ++j) {
             // Only redraw the square if it has changed
@@ -60,6 +64,36 @@ void GraphicsObserver::notify() {
             // Add a "w" or "b" to the piece to indicate color
             char color_indicator = _chess_board.lock()->getSquare(Position{i, j}).getPiece()->getColor() == Color::WHITE ? 'w' : 'b';
             _w->drawString(100 * (j + 1) + 35, 100 * (i + 1) + 55, std::string{color_indicator} + std::string{cur}, !isWhite);
+        }
+    }
+}
+
+void GraphicsObserver::peek(Position pos) {
+    std::shared_ptr<ChessBoard> board_shared = _chess_board.lock();
+
+    if (!board_shared) {
+        throw std::invalid_argument("Invalid chess board while GraphicsObserver is trying to peek");
+    }
+
+    auto square = board_shared->getSquare(pos);
+    if (square.getPiece() == nullptr) {
+        std::cout << "No piece to peek at this position" << std::endl;
+        return;
+    };
+
+    // If any squares are rendered as peeked before, this, we need to redraw them
+    render();
+
+    std::unordered_set<Move> valid_moves = square.getPiece()->getValidMoves();
+    for (auto move : valid_moves) {
+        prev_state.at(move.final_pos.r).at(move.final_pos.c) = 'X';
+        _w->fillRectangle(100 * (move.final_pos.c + 1), 100 * (move.final_pos.r + 1), 100, 100, Xwindow::Blue);
+
+        // if the move is a capture, fill the square with red and draw the piece
+        if (board_shared->getSquare(move.final_pos).getPiece() != nullptr) {
+            _w->fillRectangle(100 * (move.final_pos.c + 1), 100 * (move.final_pos.r + 1), 100, 100, Xwindow::Red);
+            char color_indicator = board_shared->getSquare(move.final_pos).getPiece()->getColor() == Color::WHITE ? 'w' : 'b';
+            _w->drawString(100 * (move.final_pos.c + 1) + 35, 100 * (move.final_pos.r + 1) + 55, std::string{color_indicator} + std::string{board_shared->getSquare(move.final_pos).getState()}, true);
         }
     }
 }
