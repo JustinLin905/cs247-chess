@@ -13,13 +13,13 @@ Move ComputerLevel2::getMove() {
     for(auto piece : _chess_board.lock()->getAlivePieces(_color)) {
         for(auto move : piece->getValidMoves()) {
 
-            validMoves.insert(move);
+            validMoves.insert(move); // for Computer Level 1
 
             // if the final position of the move lands on an non-empty square, it's a capture move
             if (_chess_board.lock()->getSquare(move.final_pos).getPiece() != nullptr) validCaptureMoves.insert(move);
         }
     }
 
-    if (validCaptureMoves.empty()) return getRandomMove(validMoves);
-    else return getRandomMove(validCaptureMoves);
+    if (!validCaptureMoves.empty()) return getRandomMove(validCaptureMoves); // Computer Level 3
+    else return getRandomMove(validCaptureMoves); // Computer Level 1
 }

@@ -5,7 +5,7 @@
 
 class ComputerLevel3 : public ComputerPlayer {
    public:
-    ComputerLevel3(Color color, std::shared_ptr<ChessBoard> board);
+    ComputerLevel3(Color color, std::weak_ptr<ChessBoard> board);
     Move getMove() override;
 };
 
