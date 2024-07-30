@@ -30,11 +30,13 @@ class Manager {
     static std::shared_ptr<Game> getCurrGame() { return _CurrGame; }
     static void setupGame();
     static void startGame(PlayerType::Type white, PlayerType::Type black);
-    static void startTestGame();
-    static void playTurnInTestGame(Move move);
     static void closeGame();
     static void setTurn(Color color);
     static LeaderBoard& getLeaderBoard();
+
+    // for testing
+    static void startTestGame();
+    static void playTurnInTestGame(Move move);
 };
 
 #endif

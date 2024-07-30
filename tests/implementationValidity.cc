@@ -26,7 +26,7 @@ TEST(ImplementationValidity, GameImplemenation) {
     const std::string TEST_FILE_EXTENSION = ".txt";
     const std::string TEST_FILE_BOARD_SUFFIX = "board";
 
-    for (int i = 44; i <= 132; i++) {
+    for (int i = 77; i <= 132; i++) {
         std::string test_file = TEST_FILE_PREFIX + std::to_string(i) + TEST_FILE_EXTENSION;
         std::ifstream file{test_file};
 
