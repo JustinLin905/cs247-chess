@@ -1,0 +1,219 @@
+Begin Game
+game h h
+   A B C D E F G H 
+   — — — — — — — — 
+8| r n b q k b n r 
+7| p p p p p p p p 
+6| - - - - - - - - 
+5| - - - - - - - - 
+4| - - - - - - - - 
+3| - - - - - - - - 
+2| P P P P P P P P 
+1| R N B Q K B N R 
+
+WHITE's turn.
+move e2 e4
+e2
+e4
+white move count: 1
+black move count: 0
+   A B C D E F G H 
+   — — — — — — — — 
+8| r n b q k b n r 
+7| p p p p p p p p 
+6| - - - - - - - - 
+5| - - - - - - - - 
+4| - - - - P - - - 
+3| - - - - - - - - 
+2| P P P P - P P P 
+1| R N B Q K B N R 
+
+BLACK's turn.
+move c7 c5
+c7
+c5
+white move count: 1
+black move count: 1
+   A B C D E F G H 
+   — — — — — — — — 
+8| r n b q k b n r 
+7| p p - p p p p p 
+6| - - - - - - - - 
+5| - - p - - - - - 
+4| - - - - P - - - 
+3| - - - - - - - - 
+2| P P P P - P P P 
+1| R N B Q K B N R 
+
+WHITE's turn.
+move b1 c3
+b1
+c3
+white move count: 2
+black move count: 1
+   A B C D E F G H 
+   — — — — — — — — 
+8| r n b q k b n r 
+7| p p - p p p p p 
+6| - - - - - - - - 
+5| - - p - - - - - 
+4| - - - - P - - - 
+3| - - N - - - - - 
+2| P P P P - P P P 
+1| R - B Q K B N R 
+
+BLACK's turn.
+move e7 e6
+e7
+e6
+white move count: 2
+black move count: 2
+   A B C D E F G H 
+   — — — — — — — — 
+8| r n b q k b n r 
+7| p p - p - p p p 
+6| - - - - p - - - 
+5| - - p - - - - - 
+4| - - - - P - - - 
+3| - - N - - - - - 
+2| P P P P - P P P 
+1| R - B Q K B N R 
+
+WHITE's turn.
+move f2 f4
+f2
+f4
+white move count: 3
+black move count: 2
+   A B C D E F G H 
+   — — — — — — — — 
+8| r n b q k b n r 
+7| p p - p - p p p 
+6| - - - - p - - - 
+5| - - p - - - - - 
+4| - - - - P P - - 
+3| - - N - - - - - 
+2| P P P P - - P P 
+1| R - B Q K B N R 
+
+BLACK's turn.
+move b8 c6
+b8
+c6
+white move count: 3
+black move count: 3
+   A B C D E F G H 
+   — — — — — — — — 
+8| r - b q k b n r 
+7| p p - p - p p p 
+6| - - n - p - - - 
+5| - - p - - - - - 
+4| - - - - P P - - 
+3| - - N - - - - - 
+2| P P P P - - P P 
+1| R - B Q K B N R 
+
+WHITE's turn.
+move g2 g4
+g2
+g4
+white move count: 4
+black move count: 3
+   A B C D E F G H 
+   — — — — — — — — 
+8| r - b q k b n r 
+7| p p - p - p p p 
+6| - - n - p - - - 
+5| - - p - - - - - 
+4| - - - - P P P - 
+3| - - N - - - - - 
+2| P P P P - - - P 
+1| R - B Q K B N R 
+
+BLACK's turn.
+move d2 d3
+d2
+d3
+Invalid move
+BLACK's turn.
+move d2 d4
+d2
+d4
+Invalid move
+BLACK's turn.
+move c2 c3
+c2
+c3
+Invalid move
+BLACK's turn.
+move g1 c3
+g1
+c3
+Invalid move
+BLACK's turn.
+move d8 h4
+d8
+h4
+white move count: 4
+black move count: 4
+   A B C D E F G H 
+   — — — — — — — — 
+8| r - b - k b n r 
+7| p p - p - p p p 
+6| - - n - p - - - 
+5| - - p - - - - - 
+4| - - - - P P P q 
+3| - - N - - - - - 
+2| P P P P - - - P 
+1| R - B Q K B N R 
+
+WHITE's turn.
+WHITE is in check.
+move d2 d3
+d2
+d3
+No legal moves for this piece!
+Invalid move
+WHITE's turn.
+WHITE is in check.
+move g1 c3
+g1
+c3
+No legal moves for this piece!
+Invalid move
+WHITE's turn.
+WHITE is in check.
+move e1 e2
+e1
+e2
+white move count: 5
+black move count: 4
+   A B C D E F G H 
+   — — — — — — — — 
+8| r - b - k b n r 
+7| p p - p - p p p 
+6| - - n - p - - - 
+5| - - p - - - - - 
+4| - - - - P P P q 
+3| - - - - - - - - 
+2| P P P P K - - P 
+1| R - B Q - B N R 
+
+BLACK's turn.
+move b7 b6
+b7
+b6
+white move count: 5
+black move count: 5
+   A B C D E F G H 
+   — — — — — — — — 
+8| r - b - k b n r 
+7| p - - p - p p p 
+6| - p - - p - - - 
+5| - - p - - - - - 
+4| - - - - P P P q 
+3| - - - - - - - - 
+2| P P P P K - - P 
+1| R - B Q - B N R 
+
+WHITE's turn.

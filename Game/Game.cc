@@ -82,11 +82,13 @@ void Game::performMove(Move move, Color player_color) {
     // check if move is enpassant
     else if (moving_piece->getPieceChar() == pawn_char && move.type == MoveType::ENPASSANT) {
         Position captured_pawn_pos = {initial.r, final.c};
+        std::cout << "En passant removing piece at: " << captured_pawn_pos << std::endl;
         _chess_board->removeDeadPiece(_chess_board->getSquare(captured_pawn_pos).getPiece());
     }
     // if a piece was captured
     else if (final_square.getPiece() != nullptr) {
         Player& captured_player = player_color == Color::WHITE ? *_black : *_white;
+        std::cout << "Captured piece: " << final_square.getPiece()->getPieceChar() << " by piece " << moving_piece->getSquare()->getPosition() << std::endl;
         _chess_board->removeDeadPiece(final_square.getPiece());
     }
 
