@@ -16,6 +16,7 @@ int Manager::_turn = 0;
 
 void Manager::setupGame() {
     _CurrGame = std::make_shared<Game>();
+    _turn = 0;
     _CurrGame->setupBoard();
 }
 
@@ -23,6 +24,7 @@ void Manager::startGame(PlayerType::Type white, PlayerType::Type black) {
     // if there's no custom setup game that already exists, create a new one with default settings
     if (_CurrGame == nullptr) {
         _CurrGame = std::make_shared<Game>();
+        _turn = 0;
         _CurrGame->initDefaultGame();
     }
     _CurrGame->setupPlayers(white, black);
@@ -90,6 +92,65 @@ void Manager::startGame(PlayerType::Type white, PlayerType::Type black) {
 
         _turn = (_turn + 1) % 2;
     }
+}
+
+void Manager::startTestGame() {
+    // if there's no custom setup game that already exists, create a new one with default settings
+
+    std::cout << "GAME: " << (_CurrGame == nullptr) << std::endl;
+    if (_CurrGame == nullptr) {
+        _CurrGame = std::make_shared<Game>();
+        _turn = 0;
+        _CurrGame->initDefaultGame();
+    }
+    _CurrGame->setupPlayers(PlayerType::Type::HUMAN, PlayerType::Type::HUMAN);
+    _CurrGame->renderBoard();
+
+    std::cout << "HERE" << std::endl;
+}
+
+void Manager::playTurnInTestGame(Move move) {
+    if (!_CurrGame) throw std::runtime_error("No test game started");
+
+    // Check for checks
+    bool is_white = _turn == 0;
+    Color player_color = is_white ? Color::WHITE : Color::BLACK;
+    Color opponent_color = is_white ? Color::BLACK : Color::WHITE;
+    bool in_check = is_white ? _CurrGame->getWhite().inCheck() : _CurrGame->getBlack().inCheck();
+
+    // Check if player has any valid moves in this position
+    bool any_valid_moves = _CurrGame->anyValidMoves(player_color);
+    if (!any_valid_moves && in_check) {
+        std::cout << player_color << " is checkmated! " << opponent_color << " wins!" << std::endl;
+        return;
+    } else if (!any_valid_moves && !in_check) {
+        std::cout << "Stalemate! It's a draw!" << std::endl;
+        return;
+    }
+
+    std::cout << player_color << "'s turn." << std::endl;
+
+    if (in_check) {
+        std::cout << player_color << " is in check." << std::endl;
+    }
+
+    // invalid move flag is {(-1, -1), (-1, -1)}
+    if (move.type == MoveType::INVALID) {
+        throw std::runtime_error("Invalid move");
+    }
+
+    // invalid move, no warning flag is {(-2 -2), (-2, -2)}
+    if (move.type == MoveType::INVALID_NO_FLAG) {
+        throw std::runtime_error("Invalid move");
+    }
+
+    // Player has valid moves: allow them to play their turn
+    if (!_CurrGame->makeTurn(move, static_cast<Color>(_turn), in_check)) {
+        throw std::runtime_error("Invalid move");
+    }
+    // _CurrGame->renderBoard();
+
+    _turn = (_turn + 1) % 2;
 }
 
 void Manager::closeGame() {

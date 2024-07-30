@@ -119,7 +119,6 @@ std::unordered_set<Move> Pawn::getValidMoves() const {
     std::unordered_set<Position> attackedSquares = getAttackedSquares();
 
     for (Position p : attackedSquares) {
-
         // if attacked square is empty, don't add it to valid moves
         if (_board.lock()->getSquare(p).getPiece() == nullptr) continue;
 

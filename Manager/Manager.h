@@ -5,6 +5,7 @@
 
 // #include "../Game/Game.h"
 #include "../LeaderBoard/LeaderBoard.h"
+#include "../Move/Move.h"
 #include "../PlayerType/PlayerType.h"
 #include "../enums.h"
 
@@ -13,11 +14,12 @@ class Game;
 class Manager {
     static std::shared_ptr<Game> _CurrGame;
     static std::unique_ptr<LeaderBoard> _leaderBoard;
-    static int _turn;
 
     Manager();
 
    public:
+    static int _turn;
+
     Manager(Manager const&) = delete;
     Manager& operator=(Manager const&) = delete;
 
@@ -29,6 +31,8 @@ class Manager {
     static std::shared_ptr<Game> getCurrGame() { return _CurrGame; }
     static void setupGame();
     static void startGame(PlayerType::Type white, PlayerType::Type black);
+    static void startTestGame();
+    static void playTurnInTestGame(Move move);
     static void closeGame();
     static void setTurn(Color color);
     static LeaderBoard& getLeaderBoard();

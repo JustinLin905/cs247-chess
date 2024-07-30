@@ -42,6 +42,7 @@ class Game {
 
     Player& getWhite() const;
     Player& getBlack() const;
+    ChessBoard& getChessBoard() const;
 
     ~Game() = default;
 };
