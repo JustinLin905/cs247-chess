@@ -4,7 +4,7 @@
 
 GraphicsObserver::GraphicsObserver(std::weak_ptr<ChessBoard> chess_board) : _chess_board(chess_board) {
     _w = new Xwindow(900, 900);
-    // _chess_board.lock()->attach(this);
+    _chess_board.lock()->attach(this);
 }
 
 GraphicsObserver::~GraphicsObserver() { delete _w; }

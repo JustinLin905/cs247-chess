@@ -287,8 +287,6 @@ bool ChessBoard::isPositionUnderAttack(Position position, Color color) const {
 }
 
 void ChessBoard::removeDeadPiece(std::shared_ptr<Piece> piece) {
-    std::cout << "REMOVING PIECE: " << piece->getPieceChar() << " " << piece->getSquare()->getPosition() << std::endl;
-
     // if the removed piece is a King, also remove the king ptr to it in ChessBoard
     if (std::toupper(piece->getPieceChar()) == 'K') {
         if (piece->getColor() == Color::WHITE)
