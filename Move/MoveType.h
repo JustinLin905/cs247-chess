@@ -7,6 +7,8 @@ enum class MoveType {
     KING_SIDE_CASTLE,
     ENPASSANT,
     PROMOTION,
+    INVALID,
+    INVALID_NO_FLAG,
     UNDETERMINED,
 };
 
