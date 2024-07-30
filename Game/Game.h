@@ -13,8 +13,8 @@
 
 class Game {
     std::shared_ptr<ChessBoard> _chess_board;
-    std::unique_ptr<Player> _white;
-    std::unique_ptr<Player> _black;
+    std::shared_ptr<Player> _white;
+    std::shared_ptr<Player> _black;
 
     std::vector<Move> _white_moves;
     std::vector<Move> _black_moves;
@@ -26,7 +26,7 @@ class Game {
 
    public:
     Game();
-    std::unique_ptr<Player> createPlayerPtr(PlayerType::Type type, Color color);
+    std::shared_ptr<Player> createPlayerPtr(PlayerType::Type type, Color color);
     void setupPlayers(PlayerType::Type white, PlayerType::Type black);
     void setupBoard();
     void initDefaultGame();

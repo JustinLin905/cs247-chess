@@ -1,5 +1,5 @@
 #include "ComputerPlayer.h"
-
+#include "../../CommandInterpreter/PromotionCmds.h"
 #include "../../Move/Move.h"
 #include <random>
 
@@ -14,3 +14,5 @@ Move ComputerPlayer::getRandomMove(const std::unordered_set<Move>& moveSet) {
         if (counter == move_index) return *it;
     }
 }
+
+PromotionType::Type ComputerPlayer::getPromotionPiece() { return PromotionType::Type::QUEEN; }
