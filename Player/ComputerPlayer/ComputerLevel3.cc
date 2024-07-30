@@ -18,8 +18,11 @@ Move ComputerLevel3::getMove() {
 
             validMoves.insert(move); // for Computer Level 1
 
-            // if the final position of the move lands on an non-empty square, it's a capture move (for Computer Level 2)
-            if (chess_boad->getSquare(move.final_pos).getPiece() != nullptr) validCaptureMoves.insert(move);
+            if (move.type == MoveType::ENPASSANT) validCaptureMoves.insert(move); // all empassant moves are capture moves
+            else {
+                // if the final position of the move lands on an non-empty square, it's a capture move
+                if (_chess_board.lock()->getSquare(move.final_pos).getPiece() != nullptr) validCaptureMoves.insert(move);
+            }
 
             // check if current piece is under attack, try to avoid being captured
             Color opponent_color = (_color == Color::WHITE) ? Color::BLACK : Color::WHITE;
@@ -27,7 +30,6 @@ Move ComputerLevel3::getMove() {
                 validAvoidCaptureMoves.insert(move);
             }
         }
-
     }
 
     if (!validAvoidCaptureMoves.empty()) return getRandomMove(validAvoidCaptureMoves); // Computer Level 3

@@ -15,8 +15,11 @@ Move ComputerLevel2::getMove() {
 
             validMoves.insert(move); // for Computer Level 1
 
-            // if the final position of the move lands on an non-empty square, it's a capture move
-            if (_chess_board.lock()->getSquare(move.final_pos).getPiece() != nullptr) validCaptureMoves.insert(move);
+            if (move.type == MoveType::ENPASSANT) validCaptureMoves.insert(move); // all empassant moves are capture
+            else {
+                // if the final position of the move lands on an non-empty square, it's a capture move
+                if (_chess_board.lock()->getSquare(move.final_pos).getPiece() != nullptr) validCaptureMoves.insert(move);
+            }
         }
     }
 
