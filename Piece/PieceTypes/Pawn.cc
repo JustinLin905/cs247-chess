@@ -38,19 +38,12 @@ std::unordered_set<Position> Pawn::getAttackedSquares() const {
     auto temp_board_ptr = _board.lock();
 
     if (_color == Color::WHITE) {
-        auto piece1 = (row > 0 && col > 0) ? temp_board_ptr->getSquare(Position{row - 1, col - 1}).getPiece() : nullptr;
-        auto piece2 = (row > 0 && col < 7) ? temp_board_ptr->getSquare(Position{row - 1, col + 1}).getPiece() : nullptr;
-        if (piece1 != nullptr && piece1->getColor() == Color::BLACK) attackedSquares.insert(Position{row - 1, col - 1});
-        if (piece2 != nullptr && piece2->getColor() == Color::BLACK) attackedSquares.insert(Position{row - 1, col + 1});
+        tryAttackSquare(Position{row - 1, col - 1}, attackedSquares);
+        tryAttackSquare(Position{row - 1, col - 1}, attackedSquares);
     } else {
-        auto piece1 = (row < 7 && col > 0) ? temp_board_ptr->getSquare(Position{row + 1, col - 1}).getPiece() : nullptr;
-        auto piece2 = (row < 7 && col < 7) ? temp_board_ptr->getSquare(Position{row + 1, col + 1}).getPiece() : nullptr;
-        if (piece1 != nullptr && piece1->getColor() == Color::WHITE) attackedSquares.insert(Position{row + 1, col - 1});
-        if (piece2 != nullptr && piece2->getColor() == Color::WHITE) attackedSquares.insert(Position{row + 1, col + 1});
+        tryAttackSquare(Position{row + 1, col - 1}, attackedSquares);
+        tryAttackSquare(Position{row + 1, col - 1}, attackedSquares);
     }
-
-    // en passant
-    // int en_passant_row = _color == Color::WHITE ? 3 : 4;
 
     return attackedSquares;
 }
@@ -122,11 +115,14 @@ std::unordered_set<Move> Pawn::getValidMoves() const {
     Position current_pos = getSquare()->getPosition();
     int row = current_pos.r;
     int col = current_pos.c;
-    // Position next_pos = _color == Color::WHITE ? Position{row - 1, col} : Position{row + 1, col};
     std::unordered_set<Move> validMoves;
     std::unordered_set<Position> attackedSquares = getAttackedSquares();
 
     for (Position p : attackedSquares) {
+
+        // if attacked square is empty, don't add it to valid moves
+        if (_board.lock()->getSquare(p).getPiece() == nullptr) continue;
+
         if (!Manager::getCurrGame()->simulateLegality(Move{current_pos, p, MoveType::DEFAULT}, _color)) continue;
         validMoves.insert(Move{current_pos, p, MoveType::DEFAULT});
     }

@@ -20,7 +20,6 @@ class Square {
     std::shared_ptr<Piece> getPiece() const;
     void disconnectPiece();
     bool isEmpty() const;
-    bool isAttacked(Color color) const;
     char getState() const;
 };
 
