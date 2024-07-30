@@ -29,7 +29,11 @@ void TextObserver::notify() {
             } else if (std::isupper(state)) {
                 _out << "\033[36m" << state << "\033[0m ";
             } else {
-                _out << state << " ";
+                if ((i + j) % 2 == 0) {
+                    _out << "  ";
+                } else {
+                    _out << "_ ";
+                }
             }
         }
         _out << std::endl;
