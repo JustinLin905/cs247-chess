@@ -3,7 +3,7 @@
 #include "../ChessBoard/ChessBoard.h"
 
 GraphicsObserver::GraphicsObserver(std::weak_ptr<ChessBoard> chess_board) : _chess_board(chess_board) {
-    _w = new Xwindow(900, 900);
+    _w = std::make_unique<Xwindow>(900, 900);
     std::shared_ptr<ChessBoard> board_shared = chess_board.lock();
 
     if (!board_shared) {
@@ -34,9 +34,7 @@ GraphicsObserver::GraphicsObserver(std::weak_ptr<ChessBoard> chess_board) : _che
     }
 }
 
-GraphicsObserver::~GraphicsObserver() {
-    delete _w;
-}
+GraphicsObserver::~GraphicsObserver() {}
 
 void GraphicsObserver::notify() {
     render();

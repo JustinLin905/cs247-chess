@@ -14,7 +14,7 @@ class GraphicsObserver : public Observer {
     std::vector<std::vector<char>> prev_state;
     std::weak_ptr<ChessBoard> _chess_board;
     void drawPiece(char piece, int row, int col, bool isWhite);
-    Xwindow *_w;
+    std::unique_ptr<Xwindow> _w;
 
    public:
     GraphicsObserver(std::weak_ptr<ChessBoard> chess_board);
