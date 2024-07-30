@@ -101,5 +101,8 @@ int main() {
     while (CommandInterpreter::processGameInput()) {
     }
 
+    // Return final scores
+    Manager::getLeaderBoard().printScores(true);
+
     return 0;
 }
