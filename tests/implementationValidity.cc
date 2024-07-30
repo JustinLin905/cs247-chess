@@ -26,7 +26,7 @@ TEST(ImplementationValidity, GameImplemenation) {
     const std::string TEST_FILE_EXTENSION = ".txt";
     const std::string TEST_FILE_BOARD_SUFFIX = "board";
 
-    for (int i = 0; i <= 7; i++) {
+    for (int i = 44; i <= 132; i++) {
         std::string test_file = TEST_FILE_PREFIX + std::to_string(i) + TEST_FILE_EXTENSION;
         std::ifstream file{test_file};
 
@@ -39,10 +39,12 @@ TEST(ImplementationValidity, GameImplemenation) {
 
         std::cout << "NEW GAME STARTED" << std::endl;
 
-        std::string move, from, to;
+        std::string cmd, from, to;
 
-        while (file >> move >> from >> to) {
-            // std::cout << move << " " << from << " " << to << std::endl;
+        // std::cout.setstate(std::ios_base::failbit);  // to prevent outpout from game
+
+        while (file >> cmd >> from >> to) {
+            // std::cout << cmd << " " << from << " " << to << std::endl;
 
             char og_col = from[0];
             int og_row = (int)from[1] - '0';
@@ -50,15 +52,17 @@ TEST(ImplementationValidity, GameImplemenation) {
             int new_row = (int)to[1] - '0';
 
             Move move(Position{8 - og_row, (int)og_col - 97}, Position{8 - new_row, (int)new_col - 97});
-            // try {
-            //     Manager::playTurnInTestGame(move);
-            // } catch (std::exception& e) {
-            //     std::cerr << test_file << std::endl;
-            //     throw e;
-            // }
 
-            Manager::playTurnInTestGame(move);
+            try {
+                Manager::playTurnInTestGame(move);
+            } catch (std::exception e) {
+                std::cout.clear();
+                std::cout << "FILE :" << test_file << std::endl;
+                std::cout << move << std::endl;
+            }
         }
+
+        std::cout.clear();
 
         // bool in_check = Manager::_turn % 2 == 0 ? Manager::getCurrGame()->getWhite().inCheck() : Manager::getCurrGame()->getBlack().inCheck();
         // bool any_valid_moves = Manager::getCurrGame()->anyValidMoves(Manager::_turn % 2 == 0 ? Color::WHITE : Color::BLACK);
@@ -79,6 +83,8 @@ TEST(ImplementationValidity, GameImplemenation) {
         std::vector<std::string> board_lines;
         ChessBoard& cb = Manager::getCurrGame()->getChessBoard();
 
+        Manager::getCurrGame()->renderBoard();
+
         while (std::getline(board_file, board_line)) {
             board_line = ReplaceAll(board_line, " ", "");
             board_line = ReplaceAll(board_line, ".", "-");
@@ -89,15 +95,14 @@ TEST(ImplementationValidity, GameImplemenation) {
             for (int j = 0; j < 8; j++) {
                 auto p = cb.getSquare(Position{i, j}).getPiece();
                 char c = p != nullptr ? p->getPieceChar() : '-';
+                if (c != board_lines.at(i).at(j)) throw std::runtime_error("Board mismatch");
                 EXPECT_EQ(c, board_lines.at(i).at(j));
             }
-
-            std::cout << std::endl;
         }
 
         board_file.close();
 
-        std::cout << "CLOSE GAME" << std::endl;
+        std::cout << "CLOSING GAME FOR " << test_file << std::endl;
         Manager::closeGame();
     }
 }

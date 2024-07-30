@@ -21,7 +21,10 @@ void Pawn::getEnPassantMoves(std::unordered_set<Move>& moves, Position current_p
         std::shared_ptr<Pawn> pawn = std::dynamic_pointer_cast<Pawn>(piece);
         if (piece->getPieceChar() == opponent_pawn_char && pawn->movedTwoPreviously()) {
             auto move = Move{current_pos, Position{end_row, opponent_pawn_pos.c}, MoveType::ENPASSANT};
-            if (Manager::getCurrGame()->simulateLegality(move, _color)) moves.insert(move);
+            if (Manager::getCurrGame()->simulateLegality(move, _color)) {
+                moves.insert(move);
+                std::cout << move << " ENPASSANT" << std::endl;
+            }
         }
     };
 
@@ -40,10 +43,10 @@ std::unordered_set<Position> Pawn::getAttackedSquares() const {
 
     if (_color == Color::WHITE) {
         tryAttackSquare(Position{row - 1, col - 1}, attackedSquares);
-        tryAttackSquare(Position{row - 1, col - 1}, attackedSquares);
+        tryAttackSquare(Position{row - 1, col + 1}, attackedSquares);
     } else {
         tryAttackSquare(Position{row + 1, col - 1}, attackedSquares);
-        tryAttackSquare(Position{row + 1, col - 1}, attackedSquares);
+        tryAttackSquare(Position{row + 1, col + 1}, attackedSquares);
     }
 
     return attackedSquares;
