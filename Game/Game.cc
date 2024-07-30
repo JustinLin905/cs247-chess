@@ -21,7 +21,7 @@ void Game::setupPlayers(PlayerType::Type white, PlayerType::Type black) {
     _black->setKing(_chess_board->getKing(Color::BLACK));
 }
 
-std::unique_ptr<Player> Game::createPlayerPtr(PlayerType::Type type, Color color) {
+std::shared_ptr<Player> Game::createPlayerPtr(PlayerType::Type type, Color color) {
     switch (type) {
         case PlayerType::Type::HUMAN:
             return std::make_unique<HumanPlayer>(color);
@@ -144,7 +144,7 @@ bool Game::makeTurn(Move move, Color player_color, bool in_check) {
     bool is_at_final_rank = final.r == 0 || final.r == 7;
     if ((piece_at_init->getPieceChar() == 'P' || piece_at_init->getPieceChar() == 'p') && is_at_final_rank) {
         std::shared_ptr<Pawn> pawn = std::dynamic_pointer_cast<Pawn>(piece_at_init);
-        pawn->promote();
+        pawn->promote((player_color == Color::WHITE) ? _white : _black);
     }
     if (player_color == Color::WHITE)
         _white_moves.emplace_back(move);

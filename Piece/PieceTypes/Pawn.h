@@ -15,7 +15,7 @@ class Pawn final : public Piece {
     Pawn(Color color, std::weak_ptr<ChessBoard> board, std::weak_ptr<Square> square);
     char getPieceChar() const override;
     std::unordered_set<Position> getAttackedSquares() const override;
-    void promote();
+    void promote(std::shared_ptr<Player> player);
     std::unordered_set<Move> getValidMoves() const override;
     bool movedTwoPreviously() const;
     ~Pawn() = default;

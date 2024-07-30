@@ -1,6 +1,7 @@
 #include "Pawn.h"
 
 #include "../../Manager/Manager.h"
+#include "../../Player/ComputerPlayer/ComputerPlayer.h"
 
 Pawn::Pawn(Color color, std::weak_ptr<ChessBoard> board, std::weak_ptr<Square> square) : Piece(color, board, square) {}
 
@@ -64,7 +65,7 @@ bool Pawn::movedTwoPreviously() const {
 /*
 Replaces the pawn with a piece of the player's choosing.
 */
-void Pawn::promote() {
+void Pawn::promote(std::shared_ptr<Player> player) {
     std::shared_ptr<Piece> this_piece = getSquare()->getPiece();
 
     // remove pawn from player's list of pieces
@@ -78,7 +79,8 @@ void Pawn::promote() {
     getSquare()->disconnectPiece();
 
     // get player's choice of piece
-    PromotionType::Type promotion_choice = CommandInterpreter::processPromotionInput();
+    std::shared_ptr<ComputerPlayer> computerPlayer = std::dynamic_pointer_cast<ComputerPlayer>(player);
+    PromotionType::Type promotion_choice = (computerPlayer != nullptr) ? computerPlayer->getPromotionPiece() : CommandInterpreter::processPromotionInput();
 
     // create new piece at the same location
     std::shared_ptr<Piece> new_piece;
@@ -144,6 +146,19 @@ std::unordered_set<Move> Pawn::getValidMoves() const {
     }
 
     if ((_color == Color::WHITE && row == 3) || (_color == Color::BLACK && row == 4)) getEnPassantMoves(validMoves, current_pos);
+
+    // mark moves as promotion moves
+    // since we can't mutate elements in an unordered_set, we find all the promotion moves in the validMoves set,
+    // take them out, make them as promotion moves and add them back in
+    std::unordered_set<Move> promotionMoves;
+    for (auto it = validMoves.begin(); it != validMoves.end(); ) {
+        if (it->final_pos.r == 0 || it->final_pos.r == 7) {
+            promotionMoves.insert(Move{it->initial_pos, it->final_pos, MoveType::PROMOTION});
+            it = validMoves.erase(it); // erase returns the iterator to the next element
+        } else ++it;
+    }
+
+    validMoves.insert(promotionMoves.begin(), promotionMoves.end());
 
     return validMoves;
 }
