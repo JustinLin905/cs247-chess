@@ -22,6 +22,7 @@ class Player {
 
    public:
     Player(Color color);
+    Color getColor() const;
     void resign();
     bool inCheck() const;
     virtual Move getMove() = 0;

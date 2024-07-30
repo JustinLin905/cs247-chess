@@ -108,7 +108,7 @@ Move CommandInterpreter::processPlayerInput(Player& player) {
             char col;
             int row;
             _in >> col >> row;
-            Manager::getCurrGame()->peek(Position{8 - row, (int)col - 97});
+            Manager::getCurrGame()->peek(Position{8 - row, (int)col - 97}, player);
             return Move(Position{-1, -1}, Position{-1, -1}, MoveType::INVALID_NO_FLAG);
             break;
         case GameCmds::CMD_UNKNOWN:  // equivalent to default

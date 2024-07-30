@@ -70,7 +70,8 @@ void Manager::startGame(PlayerType::Type white, PlayerType::Type black) {
 
         // Player has valid moves: allow them to play their turn
         if (!_CurrGame->makeTurn(next_move, static_cast<Color>(_turn), in_check)) {
-            std::cout << "Invalid move" << std::endl;
+            std::cout << "Invalid move." << std::endl
+                      << std::endl;
             continue;
         }
 
