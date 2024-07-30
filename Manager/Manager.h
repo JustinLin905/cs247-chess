@@ -3,14 +3,17 @@
 
 #include <memory>
 
-#include "../Game/Game.h"
+// #include "../Game/Game.h"
 #include "../LeaderBoard/LeaderBoard.h"
 #include "../PlayerType/PlayerType.h"
+#include "../enums.h"
+
+class Game;
 
 class Manager {
-  static std::shared_ptr<Game> _CurrGame;
-  static std::unique_ptr<LeaderBoard> _leaderBoard;
-  static int _turn;
+    static std::shared_ptr<Game> _CurrGame;
+    static std::unique_ptr<LeaderBoard> _leaderBoard;
+    static int _turn;
 
     Manager();
 

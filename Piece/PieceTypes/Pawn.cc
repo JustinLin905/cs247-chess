@@ -18,7 +18,10 @@ void Pawn::getEnPassantMoves(std::unordered_set<Move>& moves, Position current_p
         if (temp_board_ptr->getSquare(opponent_pawn_pos).getPiece() == nullptr) return;
         auto piece = temp_board_ptr->getSquare(opponent_pawn_pos).getPiece();
         std::shared_ptr<Pawn> pawn = std::dynamic_pointer_cast<Pawn>(piece);
-        if (piece->getPieceChar() == opponent_pawn_char && pawn->movedTwoPreviously()) moves.insert(Move{current_pos, Position{end_row, opponent_pawn_pos.c}, MoveType::ENPASSANT});
+        if (piece->getPieceChar() == opponent_pawn_char && pawn->movedTwoPreviously()) {
+            auto move = Move{current_pos, Position{end_row, opponent_pawn_pos.c}, MoveType::ENPASSANT};
+            if (Manager::getCurrGame()->simulateLegality(move, _color)) moves.insert(move);
+        }
     };
 
     if (col > 0 && temp_board_ptr->getSquare(Position{row, col - 1}).getPiece() != nullptr) check_en_passant(Position{row, col - 1});
@@ -35,23 +38,19 @@ std::unordered_set<Position> Pawn::getAttackedSquares() const {
     auto temp_board_ptr = _board.lock();
 
     if (_color == Color::WHITE) {
-        if (row > 0 && col > 0 && temp_board_ptr->getSquare(Position{row - 1, col - 1}).getPiece() != nullptr) attackedSquares.insert(Position{row - 1, col - 1});
-        if (row > 0 && col < 7 && temp_board_ptr->getSquare(Position{row - 1, col + 1}).getPiece() != nullptr) attackedSquares.insert(Position{row - 1, col + 1});
+        auto piece1 = (row > 0 && col > 0) ? temp_board_ptr->getSquare(Position{row - 1, col - 1}).getPiece() : nullptr;
+        auto piece2 = (row > 0 && col < 7) ? temp_board_ptr->getSquare(Position{row - 1, col + 1}).getPiece() : nullptr;
+        if (piece1 != nullptr && piece1->getColor() == Color::BLACK) attackedSquares.insert(Position{row - 1, col - 1});
+        if (piece2 != nullptr && piece2->getColor() == Color::BLACK) attackedSquares.insert(Position{row - 1, col + 1});
     } else {
-        if (row < 7 && col > 0 && temp_board_ptr->getSquare(Position{row + 1, col - 1}).getPiece() != nullptr) attackedSquares.insert(Position{row + 1, col - 1});
-        if (row < 7 && col < 7 && temp_board_ptr->getSquare(Position{row + 1, col + 1}).getPiece() != nullptr) attackedSquares.insert(Position{row + 1, col + 1});
+        auto piece1 = (row > 7 && col > 0) ? temp_board_ptr->getSquare(Position{row + 1, col - 1}).getPiece() : nullptr;
+        auto piece2 = (row < 7 && col < 7) ? temp_board_ptr->getSquare(Position{row + 1, col + 1}).getPiece() : nullptr;
+        if (piece1 != nullptr && piece1->getColor() == Color::WHITE) attackedSquares.insert(Position{row + 1, col - 1});
+        if (piece2 != nullptr && piece2->getColor() == Color::WHITE) attackedSquares.insert(Position{row + 1, col + 1});
     }
 
     // en passant
     // int en_passant_row = _color == Color::WHITE ? 3 : 4;
-
-    Position nextPos = _color == Color::WHITE ? Position{row - 1, col} : Position{row + 1, col};
-    if (temp_board_ptr->getSquare(nextPos).getPiece() == nullptr) attackedSquares.insert(nextPos);  // default attack
-
-    if (!_moved) {
-        Position nextPos2 = _color == Color::WHITE ? Position{row - 2, col} : Position{row + 2, col};
-        if (temp_board_ptr->getSquare(nextPos2).getPiece() == nullptr) attackedSquares.insert(nextPos2);
-    }
 
     return attackedSquares;
 }
@@ -70,6 +69,52 @@ bool Pawn::movedTwoPreviously() const {
 }
 
 /*
+Replaces the pawn with a piece of the player's choosing.
+*/
+void Pawn::promote() {
+    std::shared_ptr<Piece> this_piece = getSquare()->getPiece();
+
+    // remove pawn from player's list of pieces
+    std::shared_ptr<ChessBoard> board_ptr = _board.lock();
+    if (board_ptr == nullptr) {
+        std::cerr << "Error: board_ptr is null in Pawn::promote()" << std::endl;
+        return;
+    }
+
+    board_ptr->removeDeadPiece(this_piece);
+    getSquare()->disconnectPiece();
+
+    // get player's choice of piece
+    PromotionType::Type promotion_choice = CommandInterpreter::processPromotionInput();
+
+    // create new piece at the same location
+    std::shared_ptr<Piece> new_piece;
+    switch (promotion_choice) {
+        case PromotionType::Type::QUEEN:
+            new_piece = std::make_shared<Queen>(_color, _board, getSquare());
+            break;
+        case PromotionType::Type::ROOK:
+            new_piece = std::make_shared<Rook>(_color, _board, getSquare());
+            break;
+        case PromotionType::Type::BISHOP:
+            new_piece = std::make_shared<Bishop>(_color, _board, getSquare());
+            break;
+        case PromotionType::Type::KNIGHT:
+            new_piece = std::make_shared<Knight>(_color, _board, getSquare());
+            break;
+        default:
+            std::cerr << "Error: invalid promotion choice in Pawn::promote()" << std::endl;
+            return;
+    }
+
+    getSquare()->setPiece(new_piece);
+    board_ptr->addToAlivePieces(new_piece, _color);
+
+    // Update attack map
+    board_ptr->updateAttackMap();
+}
+
+/*
 Only has move for moving forward by one square.
 TODO: NEED UPDATE
 */
@@ -77,13 +122,30 @@ std::unordered_set<Move> Pawn::getValidMoves() const {
     Position current_pos = getSquare()->getPosition();
     int row = current_pos.r;
     int col = current_pos.c;
-    // Position nextPos = _color == Color::WHITE ? Position{row - 1, col} : Position{row + 1, col};
+    // Position next_pos = _color == Color::WHITE ? Position{row - 1, col} : Position{row + 1, col};
     std::unordered_set<Move> validMoves;
     std::unordered_set<Position> attackedSquares = getAttackedSquares();
 
     for (Position p : attackedSquares) {
         if (!Manager::getCurrGame()->simulateLegality(Move{current_pos, p, MoveType::DEFAULT}, _color)) continue;
         validMoves.insert(Move{current_pos, p, MoveType::DEFAULT});
+    }
+
+    // default moves
+    Position next_pos = _color == Color::WHITE ? Position{row - 1, col} : Position{row + 1, col};
+    auto temp_board_ptr = _board.lock();
+    if (next_pos.r >= 0 && next_pos.r <= 7 && temp_board_ptr->getSquare(next_pos).getPiece() == nullptr) {
+        auto move = Move{current_pos, next_pos, MoveType::DEFAULT};
+        if (Manager::getCurrGame()->simulateLegality(move, _color)) validMoves.insert(move);
+    };  // default attack
+
+    if (!_moved) {
+        int init_row = _color == Color::WHITE ? 6 : 1;
+        Position next_pos2 = _color == Color::WHITE ? Position{row - 2, col} : Position{row + 2, col};
+        if (row == init_row && next_pos2.r >= 0 && next_pos2.r <= 7 && temp_board_ptr->getSquare(next_pos2).getPiece() == nullptr) {
+            auto move = Move{current_pos, next_pos2, MoveType::DEFAULT};
+            if (Manager::getCurrGame()->simulateLegality(move, _color)) validMoves.insert(move);
+        }
     }
 
     if ((_color == Color::WHITE && row == 3) || (_color == Color::BLACK && row == 4)) getEnPassantMoves(validMoves, current_pos);

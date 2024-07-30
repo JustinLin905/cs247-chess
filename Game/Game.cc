@@ -10,10 +10,9 @@
 #include "../Player/HumanPlayer.h"
 #include "../PlayerType/PlayerType.h"
 
-Game::Game() :
-    _chess_board(std::make_shared<ChessBoard>()),
-    _text_observer{std::make_shared<TextObserver>(_chess_board, std::cout)},
-    _graphics_observer{std::make_shared<GraphicsObserver>(_chess_board)} {}
+Game::Game() : _chess_board(std::make_shared<ChessBoard>()),
+               _text_observer{std::make_shared<TextObserver>(_chess_board, std::cout)},
+               _graphics_observer{std::make_shared<GraphicsObserver>(_chess_board)} {}
 
 void Game::setupPlayers(PlayerType::Type white, PlayerType::Type black) {
     _white = createPlayerPtr(white);
@@ -137,6 +136,12 @@ bool Game::makeTurn(Move move, Color player_color, bool in_check) {
     move.type = it->type;
     performMove(move, player_color);
 
+    // Check for pawn promotion
+    bool is_at_final_rank = final.r == 0 || final.r == 7;
+    if ((piece_at_init->getPieceChar() == 'P' || piece_at_init->getPieceChar() == 'p') && is_at_final_rank) {
+        std::shared_ptr<Pawn> pawn = std::dynamic_pointer_cast<Pawn>(piece_at_init);
+        pawn->promote();
+    }
     if (player_color == Color::WHITE)
         _white_moves.emplace_back(move);
     else
@@ -146,7 +151,8 @@ bool Game::makeTurn(Move move, Color player_color, bool in_check) {
     std::cout << "black move count: " << _black_moves.size() << std::endl;
 
     _chess_board->render();  // rerender board
-    return true;             // move was valid
+
+    return true;  // move was valid
 }
 
 /*
