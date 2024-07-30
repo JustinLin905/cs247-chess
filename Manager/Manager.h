@@ -14,12 +14,11 @@ class Game;
 class Manager {
     static std::shared_ptr<Game> _CurrGame;
     static std::unique_ptr<LeaderBoard> _leaderBoard;
+    static int _turn;
 
     Manager();
 
    public:
-    static int _turn;
-
     Manager(Manager const&) = delete;
     Manager& operator=(Manager const&) = delete;
 

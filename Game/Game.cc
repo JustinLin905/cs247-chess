@@ -152,7 +152,7 @@ bool Game::makeTurn(Move move, Color player_color, bool in_check) {
     // std::cout << "white move count: " << _white_moves.size() << std::endl;
     // std::cout << "black move count: " << _black_moves.size() << std::endl;
 
-    // _chess_board->render();  // rerender board
+    _chess_board->render();  // rerender board
 
     return true;  // move was valid
 }
