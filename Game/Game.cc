@@ -15,18 +15,18 @@ Game::Game() : _chess_board(std::make_shared<ChessBoard>()),
                _graphics_observer{std::make_shared<GraphicsObserver>(_chess_board)} {}
 
 void Game::setupPlayers(PlayerType::Type white, PlayerType::Type black) {
-    _white = createPlayerPtr(white);
+    _white = createPlayerPtr(white, Color::WHITE);
     _white->setKing(_chess_board->getKing(Color::WHITE));
-    _black = createPlayerPtr(black);
+    _black = createPlayerPtr(black, Color::BLACK);
     _black->setKing(_chess_board->getKing(Color::BLACK));
 }
 
-std::unique_ptr<Player> Game::createPlayerPtr(PlayerType::Type type) {
+std::unique_ptr<Player> Game::createPlayerPtr(PlayerType::Type type, Color color) {
     switch (type) {
         case PlayerType::Type::HUMAN:
-            return std::make_unique<HumanPlayer>(Color::WHITE);
+            return std::make_unique<HumanPlayer>(color);
         case PlayerType::Type::COMPUTER_LEVEL1:
-            return std::make_unique<ComputerLevel1>(Color::WHITE, _chess_board);
+            return std::make_unique<ComputerLevel1>(color, _chess_board);
         default:
             throw std::invalid_argument("Invalid player type");
     }

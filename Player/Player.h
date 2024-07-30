@@ -28,6 +28,7 @@ class Player {
     virtual Move getMove() = 0;
     void removeDeadPiece(std::shared_ptr<Piece> piece);
     void setKing(std::weak_ptr<King> king);
+    virtual ~Player() = default;
 };
 
 #endif
