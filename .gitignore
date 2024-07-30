@@ -37,3 +37,4 @@
 
 # Ignore "chess" executable
 chess
+chess_test

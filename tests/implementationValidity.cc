@@ -42,7 +42,7 @@ TEST(ImplementationValidity, GameImplemenation) {
         std::string move, from, to;
 
         while (file >> move >> from >> to) {
-            // std::cout << move << " " << from << " " << to << std::endl;
+            std::cout << move << " " << from << " " << to << std::endl;
 
             char og_col = from[0];
             int og_row = (int)from[1] - '0';
