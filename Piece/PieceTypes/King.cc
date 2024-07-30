@@ -37,7 +37,7 @@ void King::getCastleMoves(std::unordered_set<Move>& validMoves, Position current
     auto piece_at_queen_rook = temp_board_ref->getSquare(Position{row, queen_rook_col}).getPiece();  // piece currently at the king's position
     auto piece_at_king_rook = temp_board_ref->getSquare(Position{row, king_rook_col}).getPiece();    // piece currently at the king's position
 
-    if (piece_at_queen_rook == nullptr || piece_at_king_rook == nullptr) return;
+    // if (piece_at_queen_rook == nullptr || piece_at_king_rook == nullptr) return;
 
     auto check_castle = [&](int start, int end) {
         for (int i = start; i <= end; i++) {
@@ -47,12 +47,12 @@ void King::getCastleMoves(std::unordered_set<Move>& validMoves, Position current
         return true;
     };
 
-    if (piece_at_queen_rook->getPieceChar() == rook_char && !piece_at_queen_rook->hasMoved()) {
+    if (piece_at_queen_rook != nullptr && piece_at_queen_rook->getPieceChar() == rook_char && !piece_at_queen_rook->hasMoved()) {
         auto move = Move{current_pos, Position{row, 2}, MoveType::QUEEN_SIDE_CASTLE};
-        if (check_castle(1, 3) && Manager::getCurrGame()->simulateLegality(move, _color)) validMoves.insert(move);
+        if (check_castle(2, 3) && Manager::getCurrGame()->simulateLegality(move, _color)) validMoves.insert(move);
     }
 
-    if (piece_at_king_rook->getPieceChar() == rook_char && !piece_at_king_rook->hasMoved()) {
+    if (piece_at_king_rook != nullptr && piece_at_king_rook->getPieceChar() == rook_char && !piece_at_king_rook->hasMoved()) {
         auto move = Move{current_pos, Position{row, 6}, MoveType::KING_SIDE_CASTLE};
         if (check_castle(5, 6) && Manager::getCurrGame()->simulateLegality(move, _color)) validMoves.insert(move);
     }

@@ -150,7 +150,7 @@ bool Game::makeTurn(Move move, Color player_color, bool in_check) {
     // std::cout << "white move count: " << _white_moves.size() << std::endl;
     // std::cout << "black move count: " << _black_moves.size() << std::endl;
 
-    _chess_board->render();  // rerender board
+    // _chess_board->render();  // rerender board
 
     return true;  // move was valid
 }
@@ -248,6 +248,10 @@ Player& Game::getWhite() const {
 
 Player& Game::getBlack() const {
     return *_black;
+}
+
+ChessBoard& Game::getChessBoard() const {
+    return *_chess_board;
 }
 
 void Game::peek(Position pos, Color player_color) {

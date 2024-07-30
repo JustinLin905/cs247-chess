@@ -43,7 +43,7 @@ std::unordered_set<Position> Pawn::getAttackedSquares() const {
         if (piece1 != nullptr && piece1->getColor() == Color::BLACK) attackedSquares.insert(Position{row - 1, col - 1});
         if (piece2 != nullptr && piece2->getColor() == Color::BLACK) attackedSquares.insert(Position{row - 1, col + 1});
     } else {
-        auto piece1 = (row > 7 && col > 0) ? temp_board_ptr->getSquare(Position{row + 1, col - 1}).getPiece() : nullptr;
+        auto piece1 = (row < 7 && col > 0) ? temp_board_ptr->getSquare(Position{row + 1, col - 1}).getPiece() : nullptr;
         auto piece2 = (row < 7 && col < 7) ? temp_board_ptr->getSquare(Position{row + 1, col + 1}).getPiece() : nullptr;
         if (piece1 != nullptr && piece1->getColor() == Color::WHITE) attackedSquares.insert(Position{row + 1, col - 1});
         if (piece2 != nullptr && piece2->getColor() == Color::WHITE) attackedSquares.insert(Position{row + 1, col + 1});
