@@ -132,6 +132,14 @@ Move CommandInterpreter::processPlayerInput(Player& player) {
     }
 }
 
+Move CommandInterpreter::processComputerInput() {
+    std::string cmd;
+    _in >> cmd;
+
+    if (hashPlayerCommand(cmd) == GameCmds::CMD_MOVE) return Move{Position{-1, -1}, Position{-1, -1}, MoveType::DEFAULT};
+    else return Move{Position{-1, -1}, Position{-1, -1}, MoveType::INVALID};
+}
+
 SetupInstruction CommandInterpreter::processSetupInput() {
     std::string cmd;
     _in >> cmd;

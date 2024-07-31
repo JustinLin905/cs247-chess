@@ -42,6 +42,7 @@ class CommandInterpreter {
 
     static bool processGameInput();
     static Move processPlayerInput(Player& player);
+    static Move processComputerInput();
     static SetupInstruction processSetupInput();
     static PromotionType::Type processPromotionInput();
 };

@@ -7,7 +7,10 @@
 ComputerLevel4::ComputerLevel4(Color color, std::weak_ptr<ChessBoard> chess_board, std::weak_ptr<Game> game) : ComputerPlayer(color, chess_board, game) {}
 
 Move ComputerLevel4::getMove() {
-
+    // wait for command to make computer move
+    Move computerMoveInput = CommandInterpreter::processComputerInput();
+    if (computerMoveInput.type == MoveType::INVALID) return computerMoveInput;
+    
     int maxScore = INT16_MIN;
     std::unordered_set<Move> bestMoves;
 

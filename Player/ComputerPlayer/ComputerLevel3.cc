@@ -7,6 +7,11 @@
 ComputerLevel3::ComputerLevel3(Color color, std::weak_ptr<ChessBoard> chess_board, std::weak_ptr<Game> game) : ComputerPlayer(color, chess_board, game) {}
 
 Move ComputerLevel3::getMove() {
+    
+    // wait for command to make computer move
+    Move computerMoveInput = CommandInterpreter::processComputerInput();
+    if (computerMoveInput.type == MoveType::INVALID) return computerMoveInput;
+
     std::shared_ptr<ChessBoard> chess_board = _chess_board.lock();
     std::unordered_set<Move> validMoves;
     std::unordered_set<Move> validCaptureMoves;
