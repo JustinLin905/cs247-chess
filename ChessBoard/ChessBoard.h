@@ -22,14 +22,6 @@ class ChessBoard : public Subject {
     std::shared_ptr<King> _white_king;
     std::shared_ptr<King> _black_king;
 
-    const std::map<char, int> piece_score = {
-        {'P', 1},
-        {'N', 3},
-        {'B', 3},
-        {'R', 5},
-        {'Q', 9},
-    };
-
    public:
     ChessBoard();
     Square &getSquare(Position position);
@@ -49,6 +41,14 @@ class ChessBoard : public Subject {
     void setAlivePieces(std::vector<std::shared_ptr<Piece>> pieces, Color color);
     int calculateScore(Color color);
     void reset();
+
+    const std::map<char, int> piece_score = {
+        {'P', 1},
+        {'N', 3},
+        {'B', 3},
+        {'R', 5},
+        {'Q', 9},
+    };
 };
 
 #endif

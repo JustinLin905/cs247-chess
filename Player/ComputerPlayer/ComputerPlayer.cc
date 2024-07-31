@@ -15,4 +15,15 @@ Move ComputerPlayer::getRandomMove(const std::unordered_set<Move>& moveSet) {
     }
 }
 
+bool ComputerPlayer::isCaptureMove(Move move) {
+    
+    if (move.type == MoveType::ENPASSANT) return true; // all empassant moves are capture moves
+    else {
+        // if the final position of the move lands on an non-empty square, it's a capture move
+        if (_chess_board.lock()->getSquare(move.final_pos).getPiece() != nullptr) return true;
+    }
+
+    return false;
+}
+
 PromotionType::Type ComputerPlayer::getPromotionPiece() { return PromotionType::Type::QUEEN; }

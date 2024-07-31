@@ -12,6 +12,7 @@ class ComputerPlayer : public Player {
 protected:
     std::weak_ptr<ChessBoard> _chess_board;
     Move getRandomMove(const std::unordered_set<Move>& moveSet);
+    bool isCaptureMove(Move move);
 
 public:
     ComputerPlayer(Color color, std::weak_ptr<ChessBoard> chess_board, std::weak_ptr<Game> game) : Player{color, game}, _chess_board{chess_board} {};

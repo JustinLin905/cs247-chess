@@ -22,13 +22,9 @@ Move ComputerLevel3::getMove() {
     for(auto piece : chess_board->getAlivePieces(_color)) {
         for(auto move : piece->getValidMoves()) {
 
-            validMoves.insert(move); // for Computer Level 1
+            validMoves.insert(move); // Computer Level 1
 
-            if (move.type == MoveType::ENPASSANT) validCaptureMoves.insert(move); // all empassant moves are capture moves
-            else {
-                // if the final position of the move lands on an non-empty square, it's a capture move
-                if (_chess_board.lock()->getSquare(move.final_pos).getPiece() != nullptr) validCaptureMoves.insert(move);
-            }
+            if (isCaptureMove(move)) validCaptureMoves.insert(move); // Computer Level 2
 
             // check if current piece is under attack, try to avoid being captured
             Color opponent_color = (_color == Color::WHITE) ? Color::BLACK : Color::WHITE;
