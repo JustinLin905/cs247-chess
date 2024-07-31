@@ -5,7 +5,7 @@
 #include "../Piece/Piece.h"
 #include "../Piece/PieceTypes/King.h"
 
-Player::Player(Color color) : _color(color) {}
+Player::Player(Color color, std::weak_ptr<Game> game) : _color(color), _game(game) {}
 
 void Player::setKing(std::weak_ptr<King> king) {
     _king = king;

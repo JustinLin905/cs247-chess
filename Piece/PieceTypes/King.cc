@@ -49,12 +49,12 @@ void King::getCastleMoves(std::unordered_set<Move>& validMoves, Position current
 
     if (piece_at_queen_rook != nullptr && piece_at_queen_rook->getPieceChar() == rook_char && !piece_at_queen_rook->hasMoved()) {
         auto move = Move{current_pos, Position{row, 2}, MoveType::QUEEN_SIDE_CASTLE};
-        if (check_castle(2, 3) && Manager::getCurrGame()->simulateLegality(move, _color)) validMoves.insert(move);
+        if (check_castle(2, 3) && Manager::getCurrGame()->simulateLegality(move, _color).first) validMoves.insert(move);
     }
 
     if (piece_at_king_rook != nullptr && piece_at_king_rook->getPieceChar() == rook_char && !piece_at_king_rook->hasMoved()) {
         auto move = Move{current_pos, Position{row, 6}, MoveType::KING_SIDE_CASTLE};
-        if (check_castle(5, 6) && Manager::getCurrGame()->simulateLegality(move, _color)) validMoves.insert(move);
+        if (check_castle(5, 6) && Manager::getCurrGame()->simulateLegality(move, _color).first) validMoves.insert(move);
     }
 }
 
@@ -64,7 +64,7 @@ std::unordered_set<Move> King::getValidMoves() const {
     Position current_pos = getSquare()->getPosition();
 
     for (Position p : attackedSquares) {
-        if (!Manager::getCurrGame()->simulateLegality(Move{current_pos, p, MoveType::DEFAULT}, _color)) continue;
+        if (!Manager::getCurrGame()->simulateLegality(Move{current_pos, p, MoveType::DEFAULT}, _color).first) continue;
         validMoves.insert(Move{current_pos, p, MoveType::DEFAULT});
     }
 

@@ -14,7 +14,7 @@ protected:
     Move getRandomMove(const std::unordered_set<Move>& moveSet);
 
 public:
-    ComputerPlayer(Color color, std::weak_ptr<ChessBoard> chess_board) : Player{color}, _chess_board{chess_board} {};
+    ComputerPlayer(Color color, std::weak_ptr<ChessBoard> chess_board, std::weak_ptr<Game> game) : Player{color, game}, _chess_board{chess_board} {};
     virtual Move getMove() override = 0;
     virtual ~ComputerPlayer() = default;
     virtual PromotionType::Type getPromotionPiece();

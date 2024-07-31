@@ -6,7 +6,7 @@
 #include "../Player/ComputerPlayer/ComputerLevel1.h"
 #include "../Player/ComputerPlayer/ComputerLevel2.h"
 #include "../Player/ComputerPlayer/ComputerLevel3.h"
-// #include "../Player/ComputerPlayer/ComputerLevel4.h"
+#include "../Player/ComputerPlayer/ComputerLevel4.h"
 #include "../Player/HumanPlayer.h"
 #include "../PlayerType/PlayerType.h"
 
@@ -14,23 +14,25 @@ Game::Game() : _chess_board(std::make_shared<ChessBoard>()),
                _text_observer{std::make_shared<TextObserver>(_chess_board, std::cout)},
                _graphics_observer{std::make_shared<GraphicsObserver>(_chess_board)} {}
 
-void Game::setupPlayers(PlayerType::Type white, PlayerType::Type black) {
-    _white = createPlayerPtr(white, Color::WHITE);
+void Game::setupPlayers(PlayerType::Type white, PlayerType::Type black, std::weak_ptr<Game> game) {
+    _white = createPlayerPtr(white, Color::WHITE, game);
     _white->setKing(_chess_board->getKing(Color::WHITE));
-    _black = createPlayerPtr(black, Color::BLACK);
+    _black = createPlayerPtr(black, Color::BLACK, game);
     _black->setKing(_chess_board->getKing(Color::BLACK));
 }
 
-std::shared_ptr<Player> Game::createPlayerPtr(PlayerType::Type type, Color color) {
+std::shared_ptr<Player> Game::createPlayerPtr(PlayerType::Type type, Color color, std::weak_ptr<Game> game) {
     switch (type) {
         case PlayerType::Type::HUMAN:
-            return std::make_unique<HumanPlayer>(color);
+            return std::make_unique<HumanPlayer>(color, game);
         case PlayerType::Type::COMPUTER_LEVEL1:
-            return std::make_unique<ComputerLevel1>(color, _chess_board);
+            return std::make_unique<ComputerLevel1>(color, _chess_board, game);
         case PlayerType::Type::COMPUTER_LEVEL2:
-            return std::make_unique<ComputerLevel2>(color, _chess_board);
+            return std::make_unique<ComputerLevel2>(color, _chess_board, game);
         case PlayerType::Type::COMPUTER_LEVEL3:
-            return std::make_unique<ComputerLevel3>(color, _chess_board);
+            return std::make_unique<ComputerLevel3>(color, _chess_board, game);
+        case PlayerType::Type::COMPUTER_LEVEL4:
+            return std::make_unique<ComputerLevel4>(color, _chess_board, game);
         default:
             throw std::invalid_argument("Invalid player type");
     }
@@ -163,8 +165,9 @@ bool Game::makeTurn(Move move, Color player_color, bool in_check) {
 simulateLegality goes through all moves in the validMoves set and performs the move, then rechecks if the player is in check.
 If the player is in check after the move, the move is not legal and is added to the return set.
 */
-bool Game::simulateLegality(Move move, Color player_color) {
+std::pair<bool, int> Game::simulateLegality(Move move, Color player_color) {
     bool valid = true;
+    int boardScore = INT32_MIN;
 
     // Create copies of old board state
     // auto old_board = *_chess_board;
@@ -201,6 +204,7 @@ bool Game::simulateLegality(Move move, Color player_color) {
 
     // If still in check, move is not legal
     if (in_check) valid = false;
+    else boardScore = _chess_board->calculateScore(player_color);
 
     // Restore old board state depending on the type of move ---------------------------------------------
     if (move.type == MoveType::KING_SIDE_CASTLE || move.type == MoveType::QUEEN_SIDE_CASTLE) {
@@ -233,7 +237,7 @@ bool Game::simulateLegality(Move move, Color player_color) {
     piece_at_init->Moved(piece_at_init_moved);
     _chess_board->updateAttackMap();
 
-    return valid;
+    return {valid, boardScore};
 }
 
 void Game::renderBoard() const {

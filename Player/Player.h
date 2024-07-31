@@ -17,11 +17,11 @@ class King;
 class Player {
    protected:
     Color _color;
-    std::shared_ptr<Game> _game;
+    std::weak_ptr<Game> _game;
     std::weak_ptr<King> _king;
 
    public:
-    Player(Color color);
+    Player(Color color, std::weak_ptr<Game> game);
     Color getColor() const;
     void resign();
     bool inCheck() const;

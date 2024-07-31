@@ -26,13 +26,13 @@ class Game {
 
    public:
     Game();
-    std::shared_ptr<Player> createPlayerPtr(PlayerType::Type type, Color color);
-    void setupPlayers(PlayerType::Type white, PlayerType::Type black);
+    std::shared_ptr<Player> createPlayerPtr(PlayerType::Type type, Color color, std::weak_ptr<Game> game);
+    void setupPlayers(PlayerType::Type white, PlayerType::Type black, std::weak_ptr<Game> game);
     void setupBoard();
     void initDefaultGame();
     bool anyValidMoves(Color player_color);
     bool makeTurn(Move move, Color color, bool in_check);
-    bool simulateLegality(Move move, Color player_color);
+    std::pair<bool, int> simulateLegality(Move move, Color player_color);
     void reverseMoves(int n);
     void peek(Position pos, Color player_color);
 

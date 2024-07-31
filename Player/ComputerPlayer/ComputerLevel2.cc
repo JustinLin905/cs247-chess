@@ -4,7 +4,7 @@
 #include <set>
 #include <random>
 
-ComputerLevel2::ComputerLevel2(Color color, std::weak_ptr<ChessBoard> chess_board) : ComputerPlayer(color, chess_board) {}
+ComputerLevel2::ComputerLevel2(Color color, std::weak_ptr<ChessBoard> chess_board, std::weak_ptr<Game> game) : ComputerPlayer(color, chess_board, game) {}
 
 Move ComputerLevel2::getMove() {
     std::unordered_set<Move> validMoves;

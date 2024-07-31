@@ -7,7 +7,7 @@
 
 #include "../../Move/Move.h"
 
-ComputerLevel1::ComputerLevel1(Color color, std::weak_ptr<ChessBoard> chess_board) : ComputerPlayer(color, chess_board) {}
+ComputerLevel1::ComputerLevel1(Color color, std::weak_ptr<ChessBoard> chess_board, std::weak_ptr<Game> game) : ComputerPlayer(color, chess_board, game) {}
 
 Move ComputerLevel1::getMove() {
     std::unordered_set<Move> validMoves;

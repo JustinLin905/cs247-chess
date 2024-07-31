@@ -327,3 +327,27 @@ std::shared_ptr<King> ChessBoard::getKing(Color color) const {
 void ChessBoard::addToAlivePieces(std::shared_ptr<Piece> piece, Color color) {
     (color == Color::WHITE ? _white_alive_pieces : _black_alive_pieces).emplace_back(piece);
 }
+
+int ChessBoard::calculateScore(Color color) {
+    int score = 0, pieceVal = 0;
+    char c;
+    Color pieceCol;
+    
+    for(int i = 0; i < 8; i++) {
+        for(int j = 0; j < 8; j++) {
+
+            if (_board[i][j]->getPiece() == nullptr) continue;
+
+            c = _board[i][j]->getPiece()->getPieceChar();
+            pieceCol = std::toupper(c) == c ? Color::WHITE : Color::BLACK;
+
+            // any piece not in piece_score map has 0 value
+            pieceVal = (piece_score.find(std::toupper(c)) == piece_score.end()) ? 0 : piece_score.at(std::toupper(c));
+
+            if (pieceCol == color) score += pieceVal;
+            else score -= pieceVal;
+        }
+    }
+
+    return score;
+}

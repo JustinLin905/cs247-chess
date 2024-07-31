@@ -27,7 +27,7 @@ void Manager::startGame(PlayerType::Type white, PlayerType::Type black) {
         _turn = 0;
         _CurrGame->initDefaultGame();
     }
-    _CurrGame->setupPlayers(white, black);
+    _CurrGame->setupPlayers(white, black, _CurrGame);
 
     _CurrGame->renderBoard();
 
@@ -110,7 +110,7 @@ void Manager::startTestGame() {
         _turn = 0;
         _CurrGame->initDefaultGame();
     }
-    _CurrGame->setupPlayers(PlayerType::Type::HUMAN, PlayerType::Type::HUMAN);
+    _CurrGame->setupPlayers(PlayerType::Type::HUMAN, PlayerType::Type::HUMAN, _CurrGame);
     _CurrGame->renderBoard();
 
     std::cout << "HERE" << std::endl;

@@ -5,7 +5,7 @@
 
 class HumanPlayer : public Player {
    public:
-    HumanPlayer(Color color);
+    HumanPlayer(Color color, std::weak_ptr<Game> game);
     Move getMove() override;
 };
 

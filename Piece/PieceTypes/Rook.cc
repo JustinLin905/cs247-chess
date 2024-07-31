@@ -19,7 +19,7 @@ std::unordered_set<Move> Rook::getValidMoves() const {
     Position current_pos = getSquare()->getPosition();
 
     for (Position p : attackedSquares) {
-        if (!Manager::getCurrGame()->simulateLegality(Move{current_pos, p, MoveType::DEFAULT}, _color)) continue;
+        if (!Manager::getCurrGame()->simulateLegality(Move{current_pos, p, MoveType::DEFAULT}, _color).first) continue;
         validMoves.insert(Move{current_pos, p, MoveType::DEFAULT});
     }
 
