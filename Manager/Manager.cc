@@ -97,7 +97,7 @@ void Manager::startGame(PlayerType::Type white, PlayerType::Type black) {
 
         _turn = (_turn + 1) % 2;
     }
-
+    Manager::closeGame();
     getLeaderBoard().printScores();
 }
 
