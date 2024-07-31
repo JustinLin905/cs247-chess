@@ -141,8 +141,9 @@ std::unordered_set<Move> Pawn::getValidMoves() const {
 
     if (!_moved) {
         int init_row = _color == Color::WHITE ? 6 : 1;
+        Position middle_pos = _color == Color::WHITE ? Position{row - 1, col} : Position{row + 1, col};
         Position next_pos2 = _color == Color::WHITE ? Position{row - 2, col} : Position{row + 2, col};
-        if (row == init_row && next_pos2.r >= 0 && next_pos2.r <= 7 && temp_board_ptr->getSquare(next_pos2).getPiece() == nullptr) {
+        if (row == init_row && next_pos2.r >= 0 && next_pos2.r <= 7 && temp_board_ptr->getSquare(middle_pos).getPiece() == nullptr && temp_board_ptr->getSquare(next_pos2).getPiece() == nullptr) {
             auto move = Move{current_pos, next_pos2, MoveType::DEFAULT};
             if (Manager::getCurrGame()->simulateMove(move, _color).isLegal) validMoves.insert(move);
         }
@@ -154,11 +155,12 @@ std::unordered_set<Move> Pawn::getValidMoves() const {
     // since we can't mutate elements in an unordered_set, we find all the promotion moves in the validMoves set,
     // take them out, make them as promotion moves and add them back in
     std::unordered_set<Move> promotionMoves;
-    for (auto it = validMoves.begin(); it != validMoves.end(); ) {
+    for (auto it = validMoves.begin(); it != validMoves.end();) {
         if (it->final_pos.r == 0 || it->final_pos.r == 7) {
             promotionMoves.insert(Move{it->initial_pos, it->final_pos, MoveType::PROMOTION});
-            it = validMoves.erase(it); // erase returns the iterator to the next element
-        } else ++it;
+            it = validMoves.erase(it);  // erase returns the iterator to the next element
+        } else
+            ++it;
     }
 
     validMoves.insert(promotionMoves.begin(), promotionMoves.end());
