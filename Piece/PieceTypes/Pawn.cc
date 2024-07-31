@@ -56,10 +56,7 @@ bool Pawn::movedTwoPreviously() const {
     auto prev_move_final = Manager::getCurrGame()->getLastMove(_color);
     auto initial_pos = prev_move_final.initial_pos;
     auto final_pos = prev_move_final.final_pos;
-    std::cout << "HERE4" << std::endl;
-
     auto prev_move_piece = _board.lock()->getSquare(final_pos).getPiece();
-    std::cout << "HERE3" << std::endl;
 
     // prev_move_piece should never be nullptr
     return prev_move_piece->getPieceChar() == getPieceChar() && abs(initial_pos.r - final_pos.r) == 2;

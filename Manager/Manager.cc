@@ -112,8 +112,6 @@ void Manager::startTestGame() {
     }
     _CurrGame->setupPlayers(PlayerType::Type::HUMAN, PlayerType::Type::HUMAN, _CurrGame);
     _CurrGame->renderBoard();
-
-    std::cout << "HERE" << std::endl;
 }
 
 void Manager::playTurnInTestGame(Move move) {
