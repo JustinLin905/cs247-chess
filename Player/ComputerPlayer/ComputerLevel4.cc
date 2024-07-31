@@ -9,10 +9,9 @@ ComputerLevel4::ComputerLevel4(Color color, std::weak_ptr<ChessBoard> chess_boar
 Move ComputerLevel4::getMove() {
 
     int maxScore = INT16_MIN;
-    Move bestMove = Move{Position{-1, -1}, Position{-1, -1}};
+    std::unordered_set<Move> bestMoves;
 
     for(auto piece : _chess_board.lock()->getAlivePieces(_color)) {
-        
         for(auto move : piece->getValidMoves()) {
             
             // simulate the move and get the board score after move is made
@@ -21,10 +20,11 @@ Move ComputerLevel4::getMove() {
             // update max score move
             if (moveScore > maxScore) {
                 maxScore = moveScore;
-                bestMove = move;
-            }
+                bestMoves.clear();
+                bestMoves.insert(move);
+            } else if (moveScore == maxScore) bestMoves.insert(move);
         }
     }
 
-    return bestMove;
+    return getRandomMove(bestMoves);
 }
