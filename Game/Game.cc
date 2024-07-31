@@ -165,9 +165,10 @@ bool Game::makeTurn(Move move, Color player_color, bool in_check) {
 simulateLegality goes through all moves in the validMoves set and performs the move, then rechecks if the player is in check.
 If the player is in check after the move, the move is not legal and is added to the return set.
 */
-std::pair<bool, int> Game::simulateLegality(Move move, Color player_color) {
+SimulateMoveInfo Game::simulateMove(Move move, Color player_color) {
     bool valid = true;
-    int boardScore = INT32_MIN;
+    int board_score = INT32_MIN;
+    bool is_opponent_in_check = false;
 
     // Create copies of old board state
     // auto old_board = *_chess_board;
@@ -197,14 +198,17 @@ std::pair<bool, int> Game::simulateLegality(Move move, Color player_color) {
 
     // Check if player is in check
     bool in_check;
-    if (player_color == Color::WHITE)
+    if (player_color == Color::WHITE) {
         in_check = _white->inCheck();
-    else
+        is_opponent_in_check = _black->inCheck();
+    } else {
         in_check = _black->inCheck();
+        is_opponent_in_check = _white->inCheck();
+    }
 
     // If still in check, move is not legal
     if (in_check) valid = false;
-    else boardScore = _chess_board->calculateScore(player_color);
+    else board_score = _chess_board->calculateScore(player_color);
 
     // Restore old board state depending on the type of move ---------------------------------------------
     if (move.type == MoveType::KING_SIDE_CASTLE || move.type == MoveType::QUEEN_SIDE_CASTLE) {
@@ -237,7 +241,7 @@ std::pair<bool, int> Game::simulateLegality(Move move, Color player_color) {
     piece_at_init->Moved(piece_at_init_moved);
     _chess_board->updateAttackMap();
 
-    return {valid, boardScore};
+    return SimulateMoveInfo{valid, board_score, is_opponent_in_check};
 }
 
 void Game::renderBoard() const {

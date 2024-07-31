@@ -11,6 +11,12 @@
 #include "../Player/Player.h"
 #include "../PlayerType/PlayerType.h"
 
+struct SimulateMoveInfo {
+    bool isLegal;
+    int boardScore;
+    bool isOpponentInCheck;
+};
+
 class Game {
     std::shared_ptr<ChessBoard> _chess_board;
     std::shared_ptr<Player> _white;
@@ -32,7 +38,7 @@ class Game {
     void initDefaultGame();
     bool anyValidMoves(Color player_color);
     bool makeTurn(Move move, Color color, bool in_check);
-    std::pair<bool, int> simulateLegality(Move move, Color player_color);
+    SimulateMoveInfo simulateMove(Move move, Color player_color);
     void reverseMoves(int n);
     void peek(Position pos, Color player_color);
 

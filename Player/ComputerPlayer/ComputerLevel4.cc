@@ -1,6 +1,7 @@
 #include "ComputerLevel4.h"
 
 #include "../../Move/Move.h"
+#include "../../Game/Game.h"
 #include <vector>
 #include <set>
 
@@ -13,21 +14,25 @@ Move ComputerLevel4::getMove() {
     
     int maxScore = INT16_MIN;
     std::unordered_set<Move> bestMoves;
+    std::unordered_set<Move> validCheckMoves;
 
     for(auto piece : _chess_board.lock()->getAlivePieces(_color)) {
         for(auto move : piece->getValidMoves()) {
             
-            // simulate the move and get the board score after move is made
-            int moveScore = _game.lock()->simulateLegality(move, _color).second;
+            // simulate the move
+            SimulateMoveInfo moveInfo = _game.lock()->simulateMove(move, _color);
 
             // update max score move
-            if (moveScore > maxScore) {
-                maxScore = moveScore;
+            if (moveInfo.boardScore > maxScore) {
+                maxScore = moveInfo.boardScore;
                 bestMoves.clear();
                 bestMoves.insert(move);
-            } else if (moveScore == maxScore) bestMoves.insert(move);
+            } else if (moveInfo.boardScore == maxScore) bestMoves.insert(move);
+
+            if (moveInfo.isOpponentInCheck) validCheckMoves.insert(move);
         }
     }
 
+    if (!validCheckMoves.empty()) return getRandomMove(validCheckMoves);
     return getRandomMove(bestMoves);
 }

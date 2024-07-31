@@ -138,7 +138,7 @@ std::unordered_set<Move> Piece::getValidMoves() const {
     Position current_pos = getSquare()->getPosition();
 
     for (Position p : attackedSquares) {
-        if (!Manager::getCurrGame()->simulateLegality(Move{current_pos, p, MoveType::DEFAULT}, _color).first) continue;
+        if (!Manager::getCurrGame()->simulateMove(Move{current_pos, p, MoveType::DEFAULT}, _color).isLegal) continue;
         validMoves.insert(Move{current_pos, p, MoveType::DEFAULT});
     }
 

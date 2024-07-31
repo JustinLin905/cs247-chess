@@ -21,7 +21,7 @@ void Pawn::getEnPassantMoves(std::unordered_set<Move>& moves, Position current_p
         std::shared_ptr<Pawn> pawn = std::dynamic_pointer_cast<Pawn>(piece);
         if (piece->getPieceChar() == opponent_pawn_char && pawn->movedTwoPreviously()) {
             auto move = Move{current_pos, Position{end_row, opponent_pawn_pos.c}, MoveType::ENPASSANT};
-            if (Manager::getCurrGame()->simulateLegality(move, _color).first) {
+            if (Manager::getCurrGame()->simulateMove(move, _color).isLegal) {
                 moves.insert(move);
                 std::cout << move << " ENPASSANT" << std::endl;
             }
@@ -127,7 +127,7 @@ std::unordered_set<Move> Pawn::getValidMoves() const {
         // if attacked square is empty, don't add it to valid moves
         if (_board.lock()->getSquare(p).getPiece() == nullptr) continue;
 
-        if (!Manager::getCurrGame()->simulateLegality(Move{current_pos, p, MoveType::DEFAULT}, _color).first) continue;
+        if (!Manager::getCurrGame()->simulateMove(Move{current_pos, p, MoveType::DEFAULT}, _color).isLegal) continue;
         validMoves.insert(Move{current_pos, p, MoveType::DEFAULT});
     }
 
@@ -136,7 +136,7 @@ std::unordered_set<Move> Pawn::getValidMoves() const {
     auto temp_board_ptr = _board.lock();
     if (next_pos.r >= 0 && next_pos.r <= 7 && temp_board_ptr->getSquare(next_pos).getPiece() == nullptr) {
         auto move = Move{current_pos, next_pos, MoveType::DEFAULT};
-        if (Manager::getCurrGame()->simulateLegality(move, _color).first) validMoves.insert(move);
+        if (Manager::getCurrGame()->simulateMove(move, _color).isLegal) validMoves.insert(move);
     };  // default attack
 
     if (!_moved) {
@@ -144,7 +144,7 @@ std::unordered_set<Move> Pawn::getValidMoves() const {
         Position next_pos2 = _color == Color::WHITE ? Position{row - 2, col} : Position{row + 2, col};
         if (row == init_row && next_pos2.r >= 0 && next_pos2.r <= 7 && temp_board_ptr->getSquare(next_pos2).getPiece() == nullptr) {
             auto move = Move{current_pos, next_pos2, MoveType::DEFAULT};
-            if (Manager::getCurrGame()->simulateLegality(move, _color).first) validMoves.insert(move);
+            if (Manager::getCurrGame()->simulateMove(move, _color).isLegal) validMoves.insert(move);
         }
     }
 
