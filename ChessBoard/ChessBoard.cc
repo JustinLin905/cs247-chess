@@ -328,9 +328,9 @@ void ChessBoard::addToAlivePieces(std::shared_ptr<Piece> piece, Color color) {
     (color == Color::WHITE ? _white_alive_pieces : _black_alive_pieces).emplace_back(piece);
 }
 
-int ChessBoard::calculateScore(Color color) {
-    int score = 0, pieceVal = 0;
-    char c;
+float ChessBoard::calculateScore(Color color) {
+    float score = 0, pieceVal = 0;
+    char ch;
     Color pieceCol;
     
     for(int i = 0; i < 8; i++) {
@@ -338,11 +338,35 @@ int ChessBoard::calculateScore(Color color) {
 
             if (_board[i][j]->getPiece() == nullptr) continue;
 
-            c = _board[i][j]->getPiece()->getPieceChar();
-            pieceCol = std::toupper(c) == c ? Color::WHITE : Color::BLACK;
+            ch = _board[i][j]->getPiece()->getPieceChar();
+            pieceCol = std::toupper(ch) == ch ? Color::WHITE : Color::BLACK;
 
             // any piece not in piece_score map has 0 value
-            pieceVal = (piece_score.find(std::toupper(c)) == piece_score.end()) ? 0 : piece_score.at(std::toupper(c));
+            pieceVal = (piece_score.find(std::toupper(ch)) == piece_score.end()) ? 0 : piece_score.at(std::toupper(ch));
+
+            int r = color == Color::BLACK ? i : 7-i;
+            int c = j;
+
+            switch(std::toupper(ch)) {
+                case 'P' :
+                    pieceVal += pawn_pos_score_b.at(r).at(c) / (float)100;
+                break;
+                case 'N' :
+                    pieceVal += knight_pos_score_b.at(r).at(c) / (float)100;
+                break;
+                case 'B' :
+                    pieceVal += bishop_pos_score_b.at(r).at(c) / (float)100;
+                break;
+                case 'R' :
+                    pieceVal += rook_pos_score_b.at(r).at(c) / (float)100;
+                break;
+                case 'Q' :
+                    pieceVal += queen_pos_score_b.at(r).at(c) / (float)100;
+                break;
+                case 'K' :
+                    pieceVal += king_pos_score_b.at(r).at(c) / (float)100;
+                break;
+            }
 
             if (pieceCol == color) score += pieceVal;
             else score -= pieceVal;

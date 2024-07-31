@@ -13,8 +13,7 @@ Move ComputerLevel4::getMove() {
     // wait for command to make computer move
     Move computerMoveInput = CommandInterpreter::processComputerInput();
     if (computerMoveInput.type == MoveType::INVALID) return computerMoveInput;
-
-    int maxScore = INT16_MIN;
+    float maxScore = INT16_MIN;
     std::shared_ptr<ChessBoard> chess_board = _chess_board.lock();
     std::unordered_set<Move> bestMoves;
     std::unordered_set<Move> validCheckMoves;
@@ -25,7 +24,7 @@ Move ComputerLevel4::getMove() {
         for (auto move : piece->getValidMoves()) {
             // simulate the move
             SimulateMoveInfo moveInfo = _game.lock()->simulateMove(move, _color);
-            int curMoveScore = moveInfo.boardScore;
+            float curMoveScore = moveInfo.boardScore;
 
             // if move avoids being captured, add to board score to give it priority
             Color opponent_color = (_color == Color::WHITE) ? Color::BLACK : Color::WHITE;
@@ -39,8 +38,7 @@ Move ComputerLevel4::getMove() {
                 maxScore = curMoveScore;
                 bestMoves.clear();
                 bestMoves.insert(move);
-            } else if (curMoveScore == maxScore)
-                bestMoves.insert(move);
+            } else if (curMoveScore == maxScore) bestMoves.insert(move);
 
             if (moveInfo.isOpponentInCheck) validCheckMoves.insert(move);
         }

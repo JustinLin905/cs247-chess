@@ -167,7 +167,7 @@ If the player is in check after the move, the move is not legal and is added to 
 */
 SimulateMoveInfo Game::simulateMove(Move move, Color player_color) {
     bool valid = true;
-    int board_score = INT32_MIN;
+    float board_score = INT32_MIN;
     bool is_opponent_in_check = false;
 
     // Create copies of old board state

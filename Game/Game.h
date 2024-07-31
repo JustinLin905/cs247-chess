@@ -13,7 +13,7 @@
 
 struct SimulateMoveInfo {
     bool isLegal;
-    int boardScore;
+    float boardScore;
     bool isOpponentInCheck;
 };
 
