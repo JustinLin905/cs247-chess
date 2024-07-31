@@ -17,7 +17,7 @@ class Pawn final : public Piece {
     std::unordered_set<Position> getAttackedSquares() const override;
     void promote(std::shared_ptr<Player> player);
     std::unordered_set<Move> getValidMoves() const override;
-    bool movedTwoPreviously() const;
+    bool movedTwoPreviously(std::shared_ptr<Pawn> pawn) const;
     ~Pawn() = default;
 };
 

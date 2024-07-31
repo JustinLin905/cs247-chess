@@ -19,7 +19,7 @@ void Pawn::getEnPassantMoves(std::unordered_set<Move>& moves, Position current_p
         if (temp_board_ptr->getSquare(opponent_pawn_pos).getPiece() == nullptr) return;
         auto piece = temp_board_ptr->getSquare(opponent_pawn_pos).getPiece();
         std::shared_ptr<Pawn> pawn = std::dynamic_pointer_cast<Pawn>(piece);
-        if (piece->getPieceChar() == opponent_pawn_char && pawn->movedTwoPreviously()) {
+        if (piece->getPieceChar() == opponent_pawn_char && pawn->movedTwoPreviously(pawn)) {
             auto move = Move{current_pos, Position{end_row, opponent_pawn_pos.c}, MoveType::ENPASSANT};
             if (Manager::getCurrGame()->simulateMove(move, _color).isLegal) {
                 moves.insert(move);
@@ -52,14 +52,14 @@ std::unordered_set<Position> Pawn::getAttackedSquares() const {
     return attackedSquares;
 }
 
-bool Pawn::movedTwoPreviously() const {
+bool Pawn::movedTwoPreviously(std::shared_ptr<Pawn> pawn) const {
     auto prev_move_final = Manager::getCurrGame()->getLastMove(_color);
     auto initial_pos = prev_move_final.initial_pos;
     auto final_pos = prev_move_final.final_pos;
     auto prev_move_piece = _board.lock()->getSquare(final_pos).getPiece();
 
     // prev_move_piece should never be nullptr
-    return prev_move_piece->getPieceChar() == getPieceChar() && abs(initial_pos.r - final_pos.r) == 2;
+    return prev_move_piece == pawn && abs(initial_pos.r - final_pos.r) == 2;
 }
 
 /*
