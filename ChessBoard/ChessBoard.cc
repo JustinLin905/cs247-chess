@@ -176,17 +176,30 @@ void ChessBoard::customSetup(std::shared_ptr<ChessBoard> chessBoard) {
                 Manager::setTurn(instr.color);
                 break;
             case SetupCmds::CMD_SETUP_DONE: {
-                // check number of kings
-                int whiteKingCount = std::count_if(_white_alive_pieces.begin(), _white_alive_pieces.end(),
-                                                   [](const std::shared_ptr<Piece> &piece) {
-                                                       return std::dynamic_pointer_cast<King>(piece) != nullptr;
-                                                   });
-                int blackKingCount = std::count_if(_black_alive_pieces.begin(), _black_alive_pieces.end(),
-                                                   [](const std::shared_ptr<Piece> &piece) {
-                                                       return std::dynamic_pointer_cast<King>(piece) != nullptr;
-                                                   });
+                
+                // loop through white alive pieces to count total number of kings
+                int white_king_count = std::count_if(
+                    _white_alive_pieces.begin(), _white_alive_pieces.end(),
+                    [&](const std::shared_ptr<Piece> &piece) {
 
-                if (whiteKingCount != 1 || blackKingCount != 1) {
+                        // try to cast piece to King to see if it's valid
+                        auto king_piece = std::dynamic_pointer_cast<King>(piece);
+                        if (king_piece != nullptr) _white_king = king_piece; // update king ptr if piece is King
+                        return king_piece != nullptr; // add to king count if piece is King
+                });
+                
+                // loop through black alive pieces to count total number of kings
+                int black_king_count = std::count_if(
+                    _black_alive_pieces.begin(), _black_alive_pieces.end(),
+                    [&](const std::shared_ptr<Piece> &piece) {
+
+                        // try to cast piece to King to see if it's valid
+                        auto king_piece = std::dynamic_pointer_cast<King>(piece);
+                        if (king_piece != nullptr) _black_king = king_piece; // update king ptr if piece is King
+                        return king_piece != nullptr; // add to king count if piece is King
+                });
+
+                if (white_king_count != 1 || black_king_count != 1) {
                     std::cout << "CANNOT EXIT SETUP MODE: Number of Kings on the board is not valid" << std::endl;
                     break;
                 }
